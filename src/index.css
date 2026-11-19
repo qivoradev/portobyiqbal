@@ -35,6 +35,16 @@ body {
   padding: 0;
 }
 
+/* Global Unified Site Container (Exact same width & padding on every section) */
+.site-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(20px, 5vw, 48px);
+  padding-right: clamp(20px, 5vw, 48px);
+}
+
 /* Tactile Soft Drop Shadow */
 .shadow-tactile {
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.06), 0 20px 50px -20px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9);

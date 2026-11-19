@@ -23,16 +23,17 @@ export function Credentials({ content, lang = 'in', onModalStateChange }: Creden
   const bnspCert = credentials.certifications.find((c) => c.id === 'bnsp-web-developer');
 
   const graduatedChipText = lang === 'in' ? 'Lulus 2026' : 'Graduated 2026';
+  const periodLabel = lang === 'in' ? 'Periode:' : 'Period:';
 
   return (
     <>
       <section
         id="credentials"
-        className="relative w-full py-10 sm:py-14 px-4 sm:px-6 scroll-mt-[88px]"
+        className="relative w-full py-16 lg:py-20 scroll-mt-[88px]"
       >
-        <div className="w-full max-w-[1080px] mx-auto space-y-5 sm:space-y-6">
+        <div className="site-container">
           {/* Section Header */}
-          <div>
+          <div className="mb-10 sm:mb-12 text-left">
             <div className="flex items-center gap-2 mb-3">
               <span className="w-2.5 h-2.5 rounded-[2px] bg-[#F59E0B] shadow-xs shrink-0" />
               <span className="text-[12.5px] font-semibold tracking-[0.08em] text-[#6b6b6b] uppercase">
@@ -42,158 +43,147 @@ export function Credentials({ content, lang = 'in', onModalStateChange }: Creden
 
             <SectionTitle
               title={credentials.headline}
-              className="text-[28px] sm:text-[38px] md:text-[42px] font-semibold text-[#111111] leading-[1.1] tracking-[-0.035em] max-w-[740px]"
+              className="text-[clamp(32px,4vw,50px)] font-semibold text-[#111111] leading-[1.12] tracking-[-0.035em] max-w-[720px]"
             />
           </div>
 
-          {/* Bento Grid:
-              Desktop: Left Card (Pendidikan, Span 5, Full Height) | Right Stack (2 Certs, Span 7)
-              Mobile: 1 Column
-          */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
-            {/* Left Bento: Academic Degree (Span 5) */}
-            <FadeUp className="lg:col-span-5 bento-card p-6 sm:p-8 flex flex-col justify-between">
-              <div className="space-y-5">
-                {/* Header with Graduation Cap Tactile Badge & Chip */}
-                <div className="flex items-center justify-between">
-                  <div className="tactile-badge tactile-badge-yellow w-11 h-11">
-                    <GraduationCap size={22} strokeWidth={2.2} />
-                  </div>
-                  <span className="px-3 py-1 rounded-full bg-[#10B981]/10 text-[#047857] text-[12px] font-semibold border border-[#10B981]/20">
+          {/* 1. Academic Degree: Sleek Row DIRECT on Page Background (NO Card, Top & Bottom Hairline Borders) */}
+          <FadeUp className="py-5 sm:py-6 border-y border-black/10 flex flex-col md:flex-row md:items-center justify-between gap-4 text-left">
+            <div className="flex items-center gap-3.5">
+              <div className="tactile-badge tactile-badge-yellow w-10 h-10 shrink-0">
+                <GraduationCap size={20} strokeWidth={2.2} />
+              </div>
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-[17px] sm:text-[18px] font-semibold text-[#111111] tracking-tight">
+                    {credentials.degree}
+                  </h3>
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#10B981]/10 text-[#047857] text-[11.5px] font-semibold border border-[#10B981]/20">
                     {graduatedChipText}
                   </span>
                 </div>
-
-                {/* Degree Title & University */}
-                <div className="space-y-2">
-                  <span className="text-[12px] font-semibold tracking-[0.08em] text-[#6b6b6b] uppercase block">
-                    {credentials.educationTitle}
-                  </span>
-                  <h3 className="text-[22px] sm:text-[25px] font-semibold text-[#111111] leading-snug tracking-tight">
-                    {credentials.degree}
-                  </h3>
-                  <p className="text-[16px] text-[#3f3f3f] leading-relaxed">
-                    {credentials.university}
-                  </p>
-                </div>
+                <p className="text-[14px] text-[#555555] mt-0.5">
+                  {credentials.university}
+                </p>
               </div>
+            </div>
 
-              {/* Bottom Period */}
-              <div className="mt-8 pt-4 border-t border-black/5 flex items-center justify-between text-[14px]">
-                <span className="text-[#666666] font-medium">Periode:</span>
-                <span className="font-semibold text-[#111111] tabular-nums">
-                  {credentials.period}
-                </span>
-              </div>
-            </FadeUp>
+            <div className="text-[13.5px] font-medium text-[#666666] md:text-right shrink-0">
+              <span className="text-[#888888] mr-1.5">{periodLabel}</span>
+              <span className="font-semibold text-[#111111] tabular-nums">{credentials.period}</span>
+            </div>
+          </FadeUp>
 
-            {/* Right Stack (Span 7): Two Certificate Cards */}
-            <div className="lg:col-span-7 flex flex-col gap-5 sm:gap-6 justify-between">
-              {/* Card 1: Certiport Artificial Intelligence */}
-              {certiportCert && (
-                <FadeUp delay={0.1} className="bento-card p-5 sm:p-6 flex flex-col sm:flex-row gap-5 items-center">
-                  {/* Thumbnail: Left */}
-                  <div className="w-full sm:w-[160px] h-[115px] rounded-[14px] overflow-hidden border border-black/10 bg-white shrink-0 shadow-2xs">
+          {/* 2. Exactly Two Certificate Cards Side-by-Side (Equal Height) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-stretch mt-8 sm:mt-10">
+            {/* Certificate 1: Certiport Artificial Intelligence */}
+            {certiportCert && (
+              <FadeUp delay={0.1} className="bento-card p-6 sm:p-7 flex flex-col justify-between h-full group">
+                <div className="space-y-4">
+                  {/* Thumbnail on Top (16:10, contain, pure white canvas, light gray bg) */}
+                  <div className="w-full aspect-[16/10] bg-[#F4F4F5] rounded-[14px] p-2 flex items-center justify-center overflow-hidden border border-black/5 shadow-inner">
                     <img
                       src="/certificates/certiport-thumb.png"
                       alt={certiportCert.title}
                       loading="lazy"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                   </div>
 
-                  {/* Info & Actions: Right */}
-                  <div className="flex-1 w-full space-y-2 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="px-2 py-0.5 rounded-md bg-[#2563EB]/10 text-[#1D4ED8] text-[10.5px] font-bold uppercase tracking-wider">
-                          {certiportCert.issuer}
-                        </span>
-                        <span className="text-[12px] text-[#777777] tabular-nums">
-                          {certiportCert.date}
-                        </span>
-                      </div>
-                      <h4 className="text-[18px] sm:text-[20px] font-semibold text-[#111111] leading-snug tracking-tight">
-                        {certiportCert.title}
-                      </h4>
-                      <p className="text-[13.5px] text-[#555555] mt-0.5">
-                        {certiportCert.validity}
-                      </p>
-                    </div>
-
-                    {/* Actions: View Certificate Button + Verify Link (Single Arrow) */}
-                    <div className="flex flex-wrap items-center gap-3 pt-2">
-                      <button
-                        type="button"
-                        onClick={() => setActiveCert(certiportCert)}
-                        className="w-full sm:w-auto min-h-[44px] px-4 py-2 rounded-full bg-[#111111] text-white text-[13px] font-medium hover:bg-black/85 active:scale-95 transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
-                      >
-                        <Eye size={14} />
-                        <span>{credentials.viewCertButton}</span>
-                      </button>
-
-                      {certiportCert.verification?.url && (
-                        <a
-                          href={certiportCert.verification.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[13.5px] font-semibold text-[#2563EB] hover:underline px-2 py-1 flex items-center"
-                        >
-                          <span>{credentials.verifyLinkText}</span>
-                        </a>
-                      )}
-                    </div>
+                  {/* Issuer Chip + Date */}
+                  <div className="flex items-center gap-2 pt-1">
+                    <span className="px-2.5 py-0.5 rounded-md bg-[#2563EB]/10 text-[#1D4ED8] text-[11px] font-bold uppercase tracking-wider">
+                      {certiportCert.issuer}
+                    </span>
+                    <span className="text-[12.5px] text-[#777777] tabular-nums">
+                      {certiportCert.date}
+                    </span>
                   </div>
-                </FadeUp>
-              )}
 
-              {/* Card 2: BNSP Certified Web Developer (CWDev) */}
-              {bnspCert && (
-                <FadeUp delay={0.15} className="bento-card p-5 sm:p-6 flex flex-col sm:flex-row gap-5 items-center">
-                  {/* Thumbnail: Left */}
-                  <div className="w-full sm:w-[160px] h-[115px] rounded-[14px] overflow-hidden border border-black/10 bg-white shrink-0 shadow-2xs">
+                  {/* Title & Validity */}
+                  <div>
+                    <h4 className="text-[20px] sm:text-[22px] font-semibold text-[#111111] leading-snug tracking-tight">
+                      {certiportCert.title}
+                    </h4>
+                    <p className="text-[13.5px] text-[#555555] mt-1">
+                      {certiportCert.validity}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Actions Row */}
+                <div className="flex flex-wrap items-center gap-3 pt-6 mt-4 border-t border-black/5">
+                  <button
+                    type="button"
+                    onClick={() => setActiveCert(certiportCert)}
+                    className="min-h-[44px] px-4 py-2 rounded-full bg-[#111111] text-white text-[13px] font-medium hover:bg-black/85 active:scale-95 transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Eye size={14} />
+                    <span>{credentials.viewCertButton}</span>
+                  </button>
+
+                  {certiportCert.verification?.url && (
+                    <a
+                      href={certiportCert.verification.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="min-h-[44px] inline-flex items-center text-[13.5px] font-semibold text-[#2563EB] hover:underline px-2 py-1"
+                    >
+                      <span>{credentials.verifyLinkText}</span>
+                    </a>
+                  )}
+                </div>
+              </FadeUp>
+            )}
+
+            {/* Certificate 2: BNSP Certified Web Developer (CWDev) */}
+            {bnspCert && (
+              <FadeUp delay={0.15} className="bento-card p-6 sm:p-7 flex flex-col justify-between h-full group">
+                <div className="space-y-4">
+                  {/* Thumbnail on Top (16:10, contain, light gray bg) */}
+                  <div className="w-full aspect-[16/10] bg-[#F4F4F5] rounded-[14px] p-2 flex items-center justify-center overflow-hidden border border-black/5 shadow-inner">
                     <img
                       src="/certificates/bnsp-web-developer.jpg"
                       alt={bnspCert.title}
                       loading="lazy"
-                      className="w-full h-full object-cover object-top"
+                      className="w-full h-full object-contain"
                     />
                   </div>
 
-                  {/* Info & Actions: Right */}
-                  <div className="flex-1 w-full space-y-2 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="px-2 py-0.5 rounded-md bg-[#10B981]/10 text-[#047857] text-[10.5px] font-bold uppercase tracking-wider">
-                          {bnspCert.issuer}
-                        </span>
-                        <span className="text-[12px] text-[#777777] tabular-nums">
-                          {bnspCert.date}
-                        </span>
-                      </div>
-                      <h4 className="text-[18px] sm:text-[20px] font-semibold text-[#111111] leading-snug tracking-tight">
-                        {bnspCert.title}
-                      </h4>
-                      <p className="text-[13.5px] text-[#555555] mt-0.5">
-                        {bnspCert.validity}
-                      </p>
-                    </div>
-
-                    {/* Actions: View Certificate Button */}
-                    <div className="flex flex-wrap items-center gap-3 pt-2">
-                      <button
-                        type="button"
-                        onClick={() => setActiveCert(bnspCert)}
-                        className="w-full sm:w-auto min-h-[44px] px-4 py-2 rounded-full bg-[#111111] text-white text-[13px] font-medium hover:bg-black/85 active:scale-95 transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
-                      >
-                        <Eye size={14} />
-                        <span>{credentials.viewCertButton}</span>
-                      </button>
-                    </div>
+                  {/* Issuer Chip + Date */}
+                  <div className="flex items-center gap-2 pt-1">
+                    <span className="px-2.5 py-0.5 rounded-md bg-[#10B981]/10 text-[#047857] text-[11px] font-bold uppercase tracking-wider">
+                      {bnspCert.issuer}
+                    </span>
+                    <span className="text-[12.5px] text-[#777777] tabular-nums">
+                      {bnspCert.date}
+                    </span>
                   </div>
-                </FadeUp>
-              )}
-            </div>
+
+                  {/* Title & Validity */}
+                  <div>
+                    <h4 className="text-[20px] sm:text-[22px] font-semibold text-[#111111] leading-snug tracking-tight">
+                      {bnspCert.title}
+                    </h4>
+                    <p className="text-[13.5px] text-[#555555] mt-1">
+                      {bnspCert.validity}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Actions Row */}
+                <div className="flex flex-wrap items-center gap-3 pt-6 mt-4 border-t border-black/5">
+                  <button
+                    type="button"
+                    onClick={() => setActiveCert(bnspCert)}
+                    className="min-h-[44px] px-4 py-2 rounded-full bg-[#111111] text-white text-[13px] font-medium hover:bg-black/85 active:scale-95 transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Eye size={14} />
+                    <span>{credentials.viewCertButton}</span>
+                  </button>
+                </div>
+              </FadeUp>
+            )}
           </div>
         </div>
       </section>

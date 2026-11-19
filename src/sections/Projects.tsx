@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { ProjectCardVisual } from '../components/ProjectCardVisual';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, ExternalLink } from 'lucide-react';
+import { X, ExternalLink, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import type { PortfolioContent, ProjectItem, Language } from '../data/content';
 import { SectionTitle, FadeUp } from '../components/ScrollAnimations';
+import { scrollToLenis } from '../hooks/useLenis';
 
 interface ProjectDetailModalProps {
   project: ProjectItem;
@@ -151,28 +152,85 @@ interface ProjectsProps {
 
 export function Projects({ content, lang = 'in', onModalStateChange }: ProjectsProps) {
   const [activeProject, setActiveProject] = useState<ProjectItem | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const { projects } = content;
+
+  const galleryRef = useRef<HTMLDivElement | null>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     onModalStateChange?.(!!activeProject);
   }, [activeProject, onModalStateChange]);
 
-  const viewCaseText = lang === 'in' ? 'Lihat Kasus ↗' : 'View case ↗';
+  const viewCaseText = lang === 'in' ? 'Lihat kasus' : 'View case';
+  const talkPrompt =
+    lang === 'in'
+      ? 'Tertarik mendiskusikan analisis data? Mari bicara →'
+      : 'Interested in discussing data analytics? Let’s talk →';
 
-  const pizzaProject = projects.items.find((p) => p.id === 'pizza-sales') || projects.items[0];
-  const superstoreProject = projects.items.find((p) => p.id === 'superstore-sales') || projects.items[1];
-  const nycProject = projects.items.find((p) => p.id === 'nyc-traffic') || projects.items[2];
+  const projectBadges = [
+    'tactile-badge-green',
+    'tactile-badge-blue',
+    'tactile-badge-yellow',
+  ];
+
+  // Scroll gallery to a specific card index
+  const scrollToIndex = useCallback((index: number) => {
+    const total = projects.items.length;
+    const clamped = Math.max(0, Math.min(index, total - 1));
+    const targetCard = cardRefs.current[clamped];
+    if (targetCard && galleryRef.current) {
+      targetCard.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'start',
+        block: 'nearest',
+      });
+      setCurrentIndex(clamped);
+    }
+  }, [projects.items.length]);
+
+  // Track active card index during scroll
+  const handleScroll = useCallback(() => {
+    if (!galleryRef.current) return;
+    const scrollLeft = galleryRef.current.scrollLeft;
+    const firstCard = cardRefs.current[0];
+    if (!firstCard) return;
+
+    const cardWidth = firstCard.offsetWidth;
+    const gap = 24; // gap-6 is 24px
+    const index = Math.round(scrollLeft / (cardWidth + gap));
+    const clamped = Math.max(0, Math.min(index, projects.items.length - 1));
+    setCurrentIndex(clamped);
+  }, [projects.items.length]);
+
+  // Keyboard navigation when gallery is focused
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      scrollToIndex(currentIndex + 1);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      scrollToIndex(currentIndex - 1);
+    }
+  };
+
+  const handleContactClick = () => {
+    const contactEl = document.getElementById('contact');
+    if (contactEl) {
+      scrollToLenis(contactEl, -88);
+    }
+  };
 
   return (
     <>
       <section
         id="projects"
-        className="relative w-full py-10 sm:py-14 px-4 sm:px-6 scroll-mt-[88px]"
+        className="relative w-full py-16 lg:py-20 scroll-mt-[88px]"
       >
-        <div className="w-full max-w-[1080px] mx-auto space-y-5 sm:space-y-6">
-          {/* Section Header */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-            <div>
+        <div className="site-container">
+          {/* Section Header with Controls on the Right */}
+          <div className="mb-10 sm:mb-12 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div className="text-left">
               <div className="flex items-center gap-2 mb-3">
                 <span className="w-2.5 h-2.5 rounded-[2px] bg-[#10B981] shadow-xs shrink-0" />
                 <span className="text-[12.5px] font-semibold tracking-[0.08em] text-[#6b6b6b] uppercase">
@@ -181,186 +239,126 @@ export function Projects({ content, lang = 'in', onModalStateChange }: ProjectsP
               </div>
               <SectionTitle
                 title={projects.headline}
-                className="text-[28px] sm:text-[38px] md:text-[42px] font-semibold text-[#111111] leading-[1.1] tracking-[-0.035em] max-w-[740px]"
+                className="text-[clamp(32px,4vw,50px)] font-semibold text-[#111111] leading-[1.12] tracking-[-0.035em] max-w-[720px]"
               />
             </div>
-            <span className="text-[13px] sm:text-[14px] text-[#6b6b6b] font-medium">
-              {projects.subtitle}
-            </span>
-          </div>
 
-          {/* 1. Featured Project Card: Full-Width Bento (Span 12)
-              Desktop: Left Text (Span 5) | Right Preview (Span 7)
-          */}
-          <FadeUp className="bento-card p-6 sm:p-8 md:p-9 group">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
-              {/* Text Side (Span 5) */}
-              <div className="lg:col-span-5 space-y-4">
-                {/* Number Badge & Category Pill */}
-                <div className="flex items-center gap-3">
-                  <div className="tactile-badge tactile-badge-green w-9 h-9 text-[13px] font-mono font-bold">
-                    01
-                  </div>
-                  <span className="px-3 py-1 rounded-full bg-black/5 text-[11.5px] font-semibold uppercase tracking-wider text-[#555555]">
-                    {pizzaProject.category}
-                  </span>
-                </div>
+            {/* Gallery Navigation Controls: ‹ › & "01 / 03" Indicator */}
+            <div className="flex items-center gap-3 self-start sm:self-end shrink-0 pt-2 sm:pt-0">
+              <span className="text-[13px] sm:text-[14px] font-mono font-medium text-[#555555] tracking-wider tabular-nums px-1">
+                {`0${currentIndex + 1} / 0${projects.items.length}`}
+              </span>
 
-                {/* Title */}
-                <h3 className="text-[26px] sm:text-[32px] font-semibold text-[#111111] tracking-tight leading-[1.15]">
-                  {pizzaProject.title}
-                </h3>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => scrollToIndex(currentIndex - 1)}
+                  disabled={currentIndex === 0}
+                  className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-white border border-black/10 shadow-xs hover:bg-[#F5F5F5] active:scale-95 disabled:opacity-35 disabled:cursor-not-allowed flex items-center justify-center text-[#111111] transition-all cursor-pointer"
+                  aria-label="Previous project"
+                >
+                  <ChevronLeft size={18} strokeWidth={2.2} />
+                </button>
 
-                {/* 1-Sentence Summary (Max 2 lines, from CV) */}
-                <p className="text-[16px] text-[#3f3f3f] leading-[1.6] line-clamp-2">
-                  {pizzaProject.description}
-                </p>
-
-                {/* Keycaps Tools */}
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {pizzaProject.tools.map((t) => (
-                    <span key={t} className="keycap px-3.5 py-1.5 text-[14px]">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-
-                {/* View Case Action Button */}
-                <div className="pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setActiveProject(pizzaProject)}
-                    className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#111111] text-white text-[13.5px] font-medium shadow-xs hover:bg-black/85 active:scale-95 transition-all cursor-pointer"
-                  >
-                    <span>{viewCaseText}</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Large Preview Side (Span 7) */}
-              <div
-                className="lg:col-span-7 rounded-[20px] overflow-hidden border border-black/5 shadow-inner bg-white aspect-[16/11] sm:aspect-[16/10] cursor-pointer group-hover:shadow-md transition-all"
-                onClick={() => setActiveProject(pizzaProject)}
-              >
-                <div className="w-full h-full transform group-hover:scale-[1.02] transition-transform duration-300">
-                  <ProjectCardVisual id="pizza-sales" lang={lang} />
-                </div>
+                <button
+                  type="button"
+                  onClick={() => scrollToIndex(currentIndex + 1)}
+                  disabled={currentIndex === projects.items.length - 1}
+                  className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-white border border-black/10 shadow-xs hover:bg-[#F5F5F5] active:scale-95 disabled:opacity-35 disabled:cursor-not-allowed flex items-center justify-center text-[#111111] transition-all cursor-pointer"
+                  aria-label="Next project"
+                >
+                  <ChevronRight size={18} strokeWidth={2.2} />
+                </button>
               </div>
             </div>
-          </FadeUp>
-
-          {/* 2 & 3. Two Medium Bento Cards (Span 6 + 6) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 items-stretch">
-            {/* Superstore Sales Card (Span 6) */}
-            <FadeUp delay={0.1} className="bento-card p-6 sm:p-8 flex flex-col justify-between group">
-              <div className="space-y-4">
-                {/* Preview on top */}
-                <div
-                  className="w-full aspect-[16/10] rounded-[20px] overflow-hidden border border-black/5 shadow-inner bg-white cursor-pointer group-hover:shadow-md transition-all"
-                  onClick={() => setActiveProject(superstoreProject)}
-                >
-                  <div className="w-full h-full transform group-hover:scale-[1.02] transition-transform duration-300">
-                    <ProjectCardVisual id="superstore-sales" lang={lang} />
-                  </div>
-                </div>
-
-                {/* Number Badge & Category Pill */}
-                <div className="flex items-center gap-3 pt-2">
-                  <div className="tactile-badge tactile-badge-blue w-9 h-9 text-[13px] font-mono font-bold">
-                    02
-                  </div>
-                  <span className="px-3 py-1 rounded-full bg-black/5 text-[11.5px] font-semibold uppercase tracking-wider text-[#555555]">
-                    {superstoreProject.category}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-[22px] sm:text-[26px] font-semibold text-[#111111] tracking-tight leading-snug">
-                  {superstoreProject.title}
-                </h3>
-
-                {/* 1-Sentence Summary (Max 2 lines) */}
-                <p className="text-[15.5px] sm:text-[16px] text-[#3f3f3f] leading-[1.6] line-clamp-2">
-                  {superstoreProject.description}
-                </p>
-
-                {/* Keycaps Tools */}
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {superstoreProject.tools.map((t) => (
-                    <span key={t} className="keycap px-3.5 py-1.5 text-[14px]">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* View Case Action Button */}
-              <div className="pt-5">
-                <button
-                  type="button"
-                  onClick={() => setActiveProject(superstoreProject)}
-                  className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#111111] text-white text-[13.5px] font-medium shadow-xs hover:bg-black/85 active:scale-95 transition-all cursor-pointer"
-                >
-                  <span>{viewCaseText}</span>
-                </button>
-              </div>
-            </FadeUp>
-
-            {/* NYC Traffic Safety Card (Span 6) */}
-            <FadeUp delay={0.15} className="bento-card p-6 sm:p-8 flex flex-col justify-between group">
-              <div className="space-y-4">
-                {/* Preview on top */}
-                <div
-                  className="w-full aspect-[16/10] rounded-[20px] overflow-hidden border border-black/5 shadow-inner bg-white cursor-pointer group-hover:shadow-md transition-all"
-                  onClick={() => setActiveProject(nycProject)}
-                >
-                  <div className="w-full h-full transform group-hover:scale-[1.02] transition-transform duration-300">
-                    <ProjectCardVisual id="nyc-traffic" lang={lang} />
-                  </div>
-                </div>
-
-                {/* Number Badge & Category Pill */}
-                <div className="flex items-center gap-3 pt-2">
-                  <div className="tactile-badge tactile-badge-yellow w-9 h-9 text-[13px] font-mono font-bold">
-                    03
-                  </div>
-                  <span className="px-3 py-1 rounded-full bg-black/5 text-[11.5px] font-semibold uppercase tracking-wider text-[#555555]">
-                    {nycProject.category}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-[22px] sm:text-[26px] font-semibold text-[#111111] tracking-tight leading-snug">
-                  {nycProject.title}
-                </h3>
-
-                {/* 1-Sentence Summary (Max 2 lines) */}
-                <p className="text-[15.5px] sm:text-[16px] text-[#3f3f3f] leading-[1.6] line-clamp-2">
-                  {nycProject.description}
-                </p>
-
-                {/* Keycaps Tools */}
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {nycProject.tools.map((t) => (
-                    <span key={t} className="keycap px-3.5 py-1.5 text-[14px]">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* View Case Action Button */}
-              <div className="pt-5">
-                <button
-                  type="button"
-                  onClick={() => setActiveProject(nycProject)}
-                  className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#111111] text-white text-[13.5px] font-medium shadow-xs hover:bg-black/85 active:scale-95 transition-all cursor-pointer"
-                >
-                  <span>{viewCaseText}</span>
-                </button>
-              </div>
-            </FadeUp>
           </div>
+
+          {/* Horizontal Image-First Scroll-Snap Gallery */}
+          <div
+            ref={galleryRef}
+            data-lenis-prevent="true"
+            tabIndex={0}
+            role="region"
+            aria-label="Projects Gallery"
+            onScroll={handleScroll}
+            onKeyDown={handleKeyDown}
+            className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 pt-1 no-scrollbar focus:outline-none focus-visible:ring-2 focus-visible:ring-black/20 rounded-2xl"
+          >
+            {projects.items.map((project, idx) => (
+              <div
+                key={project.id}
+                ref={(el) => {
+                  cardRefs.current[idx] = el;
+                }}
+                onClick={() => setActiveProject(project)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActiveProject(project);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                className="w-[88%] sm:w-[75%] md:w-[62%] shrink-0 snap-start flex flex-col group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#111111] focus-visible:ring-offset-4 rounded-[26px]"
+              >
+                {/* 1. Image-First Clean Preview Container (16:10, 24px radius, hover zoom 1.03) */}
+                <div className="w-full aspect-[16/10] rounded-[24px] overflow-hidden border border-black/10 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.06),0_4px_12px_rgba(0,0,0,0.03)] bg-white relative">
+                  <div className="w-full h-full transform group-hover:scale-[1.03] transition-transform duration-300 ease-out">
+                    <ProjectCardVisual id={project.id} lang={lang} />
+                  </div>
+                </div>
+
+                {/* 2. Direct on Page Background Beneath Preview (NO card, NO box) */}
+                <div className="mt-5 space-y-2.5 text-left">
+                  {/* Number Badge + Category */}
+                  <div className="flex items-center gap-2.5">
+                    <div
+                      className={`tactile-badge ${projectBadges[idx]} w-7 h-7 text-[12px] font-mono font-bold`}
+                    >
+                      {`0${idx + 1}`}
+                    </div>
+                    <span className="text-[11.5px] font-semibold text-[#666666] uppercase tracking-wider">
+                      {project.category}
+                    </span>
+                  </div>
+
+                  {/* Title (28–32px) */}
+                  <h3 className="text-[26px] sm:text-[30px] font-semibold text-[#111111] tracking-tight leading-[1.18]">
+                    {project.title}
+                  </h3>
+
+                  {/* 1 Concise Sentence Summary (Max 2 lines) */}
+                  <p className="text-[15.5px] sm:text-[16px] text-[#444444] leading-[1.6] line-clamp-2 max-w-[60ch]">
+                    {project.description}
+                  </p>
+
+                  {/* Tools as Plain Text Separated by " · " (NO keycaps / NO cards) */}
+                  <div className="text-[14px] font-medium text-[#555555] pt-0.5">
+                    {project.tools.join(' · ')}
+                  </div>
+
+                  {/* View Case Action Link */}
+                  <div className="pt-1.5">
+                    <span className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-[#111111] group-hover:text-[#2563EB] transition-colors">
+                      <span>{viewCaseText}</span>
+                      <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Under Gallery: Single Small Text Line with Link to Contact */}
+          <FadeUp delay={0.2} className="mt-10 sm:mt-12 text-left">
+            <button
+              type="button"
+              onClick={handleContactClick}
+              className="text-[13.5px] sm:text-[14px] font-medium text-[#555555] hover:text-[#111111] transition-colors cursor-pointer inline-flex items-center gap-1.5"
+            >
+              <span>{talkPrompt}</span>
+            </button>
+          </FadeUp>
         </div>
       </section>
 

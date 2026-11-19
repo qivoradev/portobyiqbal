@@ -598,7 +598,7 @@ export const content: Record<Language, PortfolioContent> = {
           title: 'Dashboard & BI',
           description:
             'Designing interactive visual dashboards, business metric visualization, and Git version control.',
-          tools: ['Google Looker Studio', 'Visualisasi Data', 'Business Intelligence', 'Git'],
+          tools: ['Google Looker Studio', 'Data Visualization', 'Business Intelligence', 'Git'],
           toolsText: 'Google Looker Studio · Data Visualization · Business Intelligence · Git',
         },
       ],

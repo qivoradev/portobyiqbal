@@ -37,7 +37,7 @@ export function Header({
       <div className="absolute top-full left-0 right-0 h-6 bg-gradient-to-b from-[#EFEFEF]/82 to-transparent pointer-events-none" />
 
       {/* Desktop Header (≥ md / 768px): Nav pill at center, language & contact at right */}
-      <div className="hidden md:flex w-full max-w-[1080px] mx-auto items-center justify-between px-6 sm:px-8 py-3.5">
+      <div className="hidden md:flex site-container items-center justify-between py-3.5">
         {/* Left: Text Logo */}
         <div className="flex items-center">
           <button
@@ -128,8 +128,8 @@ export function Header({
         </div>
       </div>
 
-      {/* Mobile Header (< md): Exactly 56px height, 16px horizontal padding. Left: Logo, Right: Lang Toggle. No Nav! */}
-      <div className="flex md:hidden w-full h-[56px] items-center justify-between px-4">
+      {/* Mobile Header (< md): Exactly 56px height, consistent padding. Left: Logo, Right: Lang Toggle. No Nav! */}
+      <div className="flex md:hidden site-container h-[56px] items-center justify-between">
         <div>
           <button
             type="button"

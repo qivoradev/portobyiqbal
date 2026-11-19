@@ -30,9 +30,9 @@ export function Contact({ content }: ContactProps) {
   return (
     <section
       id="contact"
-      className="relative w-full pt-10 sm:pt-14 pb-28 sm:pb-24 px-4 sm:px-6 scroll-mt-[88px]"
+      className="relative w-full py-16 lg:py-20 pb-28 sm:pb-24 scroll-mt-[88px]"
     >
-      <div className="w-full max-w-[1140px] mx-auto">
+      <div className="site-container">
         {/* Section Header */}
         <div className="flex items-center gap-2 mb-3">
           <span className="w-2.5 h-2.5 rounded-[2px] bg-[#EF4444] shadow-xs" />
