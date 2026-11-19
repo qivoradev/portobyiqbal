@@ -20,9 +20,15 @@ export interface ProjectItem {
 
 export interface SkillItem {
   title: string;
-  bulletColor: string;
   description: string;
   tools: string[];
+  toolsText: string;
+}
+
+export interface MetricItem {
+  value: number;
+  suffix: string;
+  label: string;
 }
 
 export interface CertificationItem {
@@ -35,6 +41,7 @@ export interface CertificationItem {
   verification?: {
     site: string;
     code: string;
+    url: string;
   };
   fileType: 'pdf' | 'image';
   fileUrl: string;
@@ -106,6 +113,7 @@ export interface PortfolioContent {
     story: string;
     academicBaseLabel: string;
     academicBaseValue: string;
+    metrics: MetricItem[];
     approach: {
       label: string;
       steps: string[];
@@ -143,9 +151,9 @@ export interface PortfolioContent {
     degree: string;
     university: string;
     period: string;
-    courseworkNote: string;
     certificationsTitle: string;
     viewCertButton: string;
+    verifyLinkText: string;
     certifications: CertificationItem[];
   };
   contact: {
@@ -233,6 +241,23 @@ export const content: Record<Language, PortfolioContent> = {
       academicBaseLabel: 'Pendidikan:',
       academicBaseValue:
         'Universitas Muhammadiyah Yogyakarta · S1 Teknologi Informasi · Sep 2022 – Jun 2026',
+      metrics: [
+        {
+          value: 21350,
+          suffix: '+',
+          label: 'transaksi penjualan diolah dan divalidasi',
+        },
+        {
+          value: 238000,
+          suffix: '+',
+          label: 'catatan data dibersihkan dan divalidasi',
+        },
+        {
+          value: 3,
+          suffix: '',
+          label: 'project BI & analytics',
+        },
+      ],
       approach: {
         label: '5-Step Analytical Approach',
         steps: [
@@ -309,24 +334,24 @@ export const content: Record<Language, PortfolioContent> = {
       items: [
         {
           title: 'SQL & Database',
-          bulletColor: '#10B981',
           description:
             'Dasar pemodelan relasional dan ekstraksi query terstruktur (JOIN, Grouping, Having, Filtering).',
           tools: ['SQL', 'MySQL'],
+          toolsText: 'SQL · MySQL (dasar: JOIN, Grouping, Having, Filtering)',
         },
         {
           title: 'Spreadsheet & Reporting',
-          bulletColor: '#2563EB',
           description:
             'Pengolahan data tingkat lanjut (PivotTable, XLOOKUP, INDEX/MATCH, Data Modeling) serta pembersihan data.',
           tools: ['Microsoft Excel', 'Data Cleaning'],
+          toolsText: 'Microsoft Excel (PivotTable, XLOOKUP, INDEX/MATCH, Data Modeling) · Data Cleaning',
         },
         {
           title: 'Dashboard & BI',
-          bulletColor: '#F59E0B',
           description:
             'Pembuatan dashboard analitis interaktif, visualisasi metrik bisnis, dan manajemen version control.',
           tools: ['Google Looker Studio', 'Visualisasi Data', 'Business Intelligence', 'Git'],
+          toolsText: 'Google Looker Studio · Visualisasi Data · Business Intelligence · Git',
         },
       ],
       softSkillsLabel: 'Kemampuan Interpersonal & Kolaboratif',
@@ -343,21 +368,21 @@ export const content: Record<Language, PortfolioContent> = {
       degree: 'S1 Teknologi Informasi',
       university: 'Universitas Muhammadiyah Yogyakarta',
       period: 'Sep 2022 – Jun 2026',
-      courseworkNote:
-        'Fokus kompetensi: Analisis data bisnis, pemodelan data relasional, dan Business Intelligence.',
-      certificationsTitle: 'Sertifikasi Terverifikasi',
+      certificationsTitle: 'Sertifikasi',
       viewCertButton: 'Lihat Sertifikat',
+      verifyLinkText: 'Verify ↗',
       certifications: [
         {
           id: 'certiport-ai',
           title: 'Artificial Intelligence',
           issuer: 'Certiport (IT Specialist)',
           field: 'Artificial Intelligence',
-          date: '18 Juni 2026',
-          validity: 'Berlaku 5 tahun (hingga 2031)',
+          date: '18 Jun 2026',
+          validity: 'berlaku 5 tahun (hingga 2031)',
           verification: {
             site: 'verify.certiport.com',
             code: 'hd9z-4wLu',
+            url: 'https://verify.certiport.com',
           },
           fileType: 'pdf',
           fileUrl: '/certificates/certiport-ai.pdf',
@@ -367,8 +392,8 @@ export const content: Record<Language, PortfolioContent> = {
           title: 'Certified Web Developer (CWDev)',
           issuer: 'BNSP (LSP Informatika)',
           field: 'Programming and Software Development',
-          date: '17 Maret 2026',
-          validity: 'Berlaku 3 tahun (hingga 2029)',
+          date: '17 Mar 2026',
+          validity: 'berlaku 3 tahun (hingga 2029)',
           fileType: 'image',
           fileUrl: '/certificates/bnsp-web-developer.jpg',
         },
@@ -464,6 +489,23 @@ export const content: Record<Language, PortfolioContent> = {
       academicBaseLabel: 'Education:',
       academicBaseValue:
         'Universitas Muhammadiyah Yogyakarta · Bachelor of Information Technology · Sep 2022 – Jun 2026',
+      metrics: [
+        {
+          value: 21350,
+          suffix: '+',
+          label: 'sales transactions processed & validated',
+        },
+        {
+          value: 238000,
+          suffix: '+',
+          label: 'data records cleaned & validated',
+        },
+        {
+          value: 3,
+          suffix: '',
+          label: 'BI & analytics projects',
+        },
+      ],
       approach: {
         label: '5-Step Analytical Approach',
         steps: [
@@ -540,24 +582,24 @@ export const content: Record<Language, PortfolioContent> = {
       items: [
         {
           title: 'SQL & Database',
-          bulletColor: '#10B981',
           description:
             'Relational data modeling and structured query extraction (JOIN, Grouping, Having, Filtering).',
           tools: ['SQL', 'MySQL'],
+          toolsText: 'SQL · MySQL (foundational: JOIN, Grouping, Having, Filtering)',
         },
         {
           title: 'Spreadsheet & Reporting',
-          bulletColor: '#2563EB',
           description:
             'Advanced spreadsheet modeling (PivotTable, XLOOKUP, INDEX/MATCH, Data Modeling) and data cleaning.',
           tools: ['Microsoft Excel', 'Data Cleaning'],
+          toolsText: 'Microsoft Excel (PivotTable, XLOOKUP, INDEX/MATCH, Data Modeling) · Data Cleaning',
         },
         {
           title: 'Dashboard & BI',
-          bulletColor: '#F59E0B',
           description:
             'Designing interactive visual dashboards, business metric visualization, and Git version control.',
           tools: ['Google Looker Studio', 'Visualisasi Data', 'Business Intelligence', 'Git'],
+          toolsText: 'Google Looker Studio · Data Visualization · Business Intelligence · Git',
         },
       ],
       softSkillsLabel: 'Soft Skills & Collaborative Strengths',
@@ -574,21 +616,21 @@ export const content: Record<Language, PortfolioContent> = {
       degree: 'Bachelor of Information Technology (S1)',
       university: 'Universitas Muhammadiyah Yogyakarta',
       period: 'Sep 2022 – Jun 2026',
-      courseworkNote:
-        'Core emphasis: Business data analytics, relational data modeling, and Business Intelligence.',
-      certificationsTitle: 'Verified Certifications',
+      certificationsTitle: 'Certifications',
       viewCertButton: 'View Certificate',
+      verifyLinkText: 'Verify ↗',
       certifications: [
         {
           id: 'certiport-ai',
           title: 'Artificial Intelligence',
           issuer: 'Certiport (IT Specialist)',
           field: 'Artificial Intelligence',
-          date: 'June 18, 2026',
+          date: 'Jun 18, 2026',
           validity: 'Valid for 5 years (until 2031)',
           verification: {
             site: 'verify.certiport.com',
             code: 'hd9z-4wLu',
+            url: 'https://verify.certiport.com',
           },
           fileType: 'pdf',
           fileUrl: '/certificates/certiport-ai.pdf',
@@ -598,7 +640,7 @@ export const content: Record<Language, PortfolioContent> = {
           title: 'Certified Web Developer (CWDev)',
           issuer: 'BNSP (LSP Informatika)',
           field: 'Programming and Software Development',
-          date: 'March 17, 2026',
+          date: 'Mar 17, 2026',
           validity: 'Valid for 3 years (until 2029)',
           fileType: 'image',
           fileUrl: '/certificates/bnsp-web-developer.jpg',

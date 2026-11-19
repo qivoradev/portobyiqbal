@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useLenis } from './hooks/useLenis';
+import { useLenis, scrollToLenis } from './hooks/useLenis';
 import { Header } from './components/Header';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { Hero } from './sections/Hero';
@@ -9,11 +9,12 @@ import { Skills } from './sections/Skills';
 import { Credentials } from './sections/Credentials';
 import { Contact } from './sections/Contact';
 import { CVModal } from './components/CVModal';
-import { AnimatePresence } from 'motion/react';
+import { AnimatePresence, motion, useScroll } from 'motion/react';
 import { content, type Language } from './data/content';
 
 export default function App() {
   useLenis();
+  const { scrollYProgress } = useScroll();
 
   // Language state with safe localStorage read
   const [lang, setLang] = useState<Language>(() => {
@@ -82,7 +83,7 @@ export default function App() {
   const handleNavigate = (sectionId: string) => {
     const target = document.getElementById(sectionId);
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
+      scrollToLenis(target, -88);
     }
   };
 
@@ -90,6 +91,13 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen selection:bg-black selection:text-white">
+      {/* 2px Scroll Progress Bar at very top (z-30: below header & modals) */}
+      <motion.div
+        style={{ scaleX: scrollYProgress }}
+        className="fixed top-0 left-0 right-0 h-[2px] bg-[#111111] origin-left z-30 pointer-events-none"
+        aria-hidden="true"
+      />
+
       {/* Sticky / Fixed Navigation Header */}
       <Header
         onNavigate={handleNavigate}
@@ -108,7 +116,7 @@ export default function App() {
           content={currentContent}
           cvTriggerRef={cvTriggerRef}
         />
-        <About content={currentContent} />
+        <About content={currentContent} lang={lang} />
         <Projects
           content={currentContent}
           onModalStateChange={setIsProjectModalOpen}

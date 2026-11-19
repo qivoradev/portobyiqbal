@@ -28,7 +28,10 @@ export function Contact({ content }: ContactProps) {
   }, [contact.email]);
 
   return (
-    <section id="contact" className="relative w-full pt-16 sm:pt-24 pb-32 sm:pb-28 px-4 sm:px-6">
+    <section
+      id="contact"
+      className="relative w-full pt-16 sm:pt-24 pb-32 sm:pb-28 px-4 sm:px-6 scroll-mt-[88px]"
+    >
       <div className="w-full max-w-[1140px] mx-auto">
         {/* Section Header */}
         <div className="flex items-center gap-2 mb-3">

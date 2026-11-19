@@ -15,7 +15,7 @@ export function Hero({ onNavigate, onOpenCV, lang, content, cvTriggerRef }: Hero
   return (
     <section
       id="hero"
-      className="relative w-full min-h-[100svh] pt-18 sm:pt-20 md:pt-22 pb-8 sm:pb-6 px-4 sm:px-6 flex flex-col items-center justify-between select-none"
+      className="relative w-full min-h-[100svh] pt-18 sm:pt-20 md:pt-22 pb-8 sm:pb-6 px-4 sm:px-6 flex flex-col items-center justify-between select-none scroll-mt-[88px]"
       aria-label="Introduction and Analytics Console"
     >
       <div className="w-full max-w-[960px] mx-auto flex-1 flex flex-col items-center justify-center text-center my-auto">

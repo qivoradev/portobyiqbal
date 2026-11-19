@@ -11,6 +11,22 @@ export function startLenis() {
   lenisInstance?.start();
 }
 
+/** Smooth-scroll to an element or selector with consistent header offset */
+export function scrollToLenis(target: string | HTMLElement, offset = -88) {
+  if (lenisInstance) {
+    lenisInstance.scrollTo(target, { offset, duration: 1.1 });
+  } else {
+    const el =
+      typeof target === 'string'
+        ? (document.querySelector(target) as HTMLElement | null)
+        : target;
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY + offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }
+}
+
 /** Initialises Lenis smooth-scroll and auto-cleans on unmount. */
 export function useLenis() {
   useEffect(() => {
