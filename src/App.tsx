@@ -119,11 +119,13 @@ export default function App() {
         <About content={currentContent} lang={lang} />
         <Projects
           content={currentContent}
+          lang={lang}
           onModalStateChange={setIsProjectModalOpen}
         />
-        <Skills content={currentContent} />
+        <Skills content={currentContent} lang={lang} />
         <Credentials
           content={currentContent}
+          lang={lang}
           onModalStateChange={setIsCertModalOpen}
         />
         <Contact content={currentContent} />

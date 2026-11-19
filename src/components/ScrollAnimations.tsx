@@ -141,6 +141,8 @@ interface CountUpProps {
   label: string;
   lang?: 'in' | 'en';
   className?: string;
+  numberClassName?: string;
+  labelClassName?: string;
 }
 
 /**
@@ -154,6 +156,8 @@ export function CountUp({
   label,
   lang = 'in',
   className = '',
+  numberClassName = '',
+  labelClassName = '',
 }: CountUpProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-10%' });
@@ -212,11 +216,27 @@ export function CountUp({
       aria-label={accessibleText}
       role="text"
     >
-      <div className="text-[34px] sm:text-[44px] lg:text-[54px] font-bold text-[#111111] tabular-nums tracking-[-0.035em] leading-none">
+      <div
+        className={`text-[34px] sm:text-[42px] font-bold tabular-nums tracking-[-0.035em] leading-none ${
+          numberClassName || 'text-[#111111]'
+        }`}
+      >
         <span>{formattedNumber}</span>
-        {suffix && <span className="font-semibold text-[#666666] ml-0.5">{suffix}</span>}
+        {suffix && (
+          <span
+            className={`font-semibold ml-0.5 ${
+              numberClassName.includes('text-white') ? 'text-white/70' : 'text-[#666666]'
+            }`}
+          >
+            {suffix}
+          </span>
+        )}
       </div>
-      <p className="text-[13px] sm:text-[14px] text-[#555555] leading-snug mt-2.5 max-w-[280px]">
+      <p
+        className={`text-[14px] leading-snug mt-2.5 ${
+          labelClassName || 'text-[#4f4f4f]'
+        }`}
+      >
         {label}
       </p>
     </div>
