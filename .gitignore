@@ -1,0 +1,40 @@
+# Dependencies
+node_modules
+
+# Production build output
+dist
+dist-ssr
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# System & OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Workfiles, captures, research notes & temporary artifacts
+shots/
+shots_*/
+shots*
+dmcg-*
+temp_*
+test_*.png
+compare_*.png
+REFERENCE-TOKENS.md
+DESIGN.md
+*.local

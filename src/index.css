@@ -1,0 +1,60 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter-tight";
+
+@theme {
+  --font-sans: "Inter Tight Variable", "Inter Tight", system-ui, -apple-system, sans-serif;
+  --color-canvas: #EFEFEF;
+  --color-ink: #111111;
+  --color-muted: #666666;
+  --color-card: #FFFFFF;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #EFEFEF;
+  color: #111111;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #EFEFEF;
+  /* Laura.io fine dot-grid pattern */
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.08) 1.2px, transparent 1.2px);
+  background-size: 20px 20px;
+  color: #111111;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Tactile Soft Drop Shadow */
+.shadow-tactile {
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.06), 0 20px 50px -20px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
