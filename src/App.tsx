@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { useLenis, scrollToLenis } from './hooks/useLenis';
+import { Preloader } from './components/Preloader';
 import { Header } from './components/Header';
 import { Hero } from './sections/Hero';
 import { Skills } from './sections/Skills';
@@ -23,6 +24,27 @@ export default function App() {
       // Ignore storage access restrictions
     }
     return 'in';
+  });
+
+  // Synchronous session check for editorial preloader (1x per browser session)
+  const [showPreloader, setShowPreloader] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    try {
+      if (
+        window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ) {
+        return false;
+      }
+      const seen = sessionStorage.getItem('iqbaldf_preloader_seen');
+      if (seen === '1') {
+        return false;
+      }
+      sessionStorage.setItem('iqbaldf_preloader_seen', '1');
+      return true;
+    } catch {
+      return false;
+    }
   });
 
   const [activeSection, setActiveSection] = useState<string>('hero');
@@ -103,6 +125,13 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen overflow-x-clip selection:bg-[#259B52] selection:text-white">
+      {/* Editorial Preloader (SessionStorage 1x per session, curtain reveal) */}
+      <AnimatePresence>
+        {showPreloader && (
+          <Preloader onComplete={() => setShowPreloader(false)} />
+        )}
+      </AnimatePresence>
+
       {/* Adaptive Floating Pill Header (Desktop & Mobile) */}
       <Header
         onNavigate={handleNavigate}
