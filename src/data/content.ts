@@ -10,10 +10,14 @@ export type Language = 'in' | 'en';
 
 export interface ProjectItem {
   id: string;
+  displayTitle: string;
   title: string;
   category: string;
   tools: string[];
+  toolsText: string;
   description: string;
+  dataMetric: string;
+  previewLabel: string;
   highlights: string[];
   dashboardUrl?: string;
 }
@@ -23,6 +27,9 @@ export interface SkillItem {
   description: string;
   tools: string[];
   toolsText: string;
+  scope: string;
+  levelOrUsageLabel: string;
+  levelOrUsageValue: string;
 }
 
 export interface MetricItem {
@@ -128,18 +135,32 @@ export interface PortfolioContent {
     headline: string;
     subtitle: string;
     viewCase: string;
+    viewDetails: string;
+    moveHelperText: string;
+    metaLabels: {
+      category: string;
+      tools: string;
+      data: string;
+    };
     modalLabels: {
+      overview: string;
       context: string;
       tools: string;
       highlights: string;
       close: string;
       openDashboard: string;
+      previous: string;
+      next: string;
     };
     items: ProjectItem[];
   };
   skills: {
     sectionLabel: string;
     headline: string;
+    metaLabels: {
+      scope: string;
+      tools: string;
+    };
     items: SkillItem[];
     softSkillsLabel: string;
     softSkills: string[];
@@ -275,24 +296,38 @@ export const content: Record<Language, PortfolioContent> = {
     },
     projects: {
       sectionLabel: 'Karya Pilihan',
-      headline: 'Studi Kasus Analisis Data Terpilih',
+      headline: 'Proyek Pilihan',
       subtitle: '3 Studi Kasus Bisnis & Data Publik',
       viewCase: 'Lihat Kasus',
+      viewDetails: 'Lihat detail →',
+      moveHelperText: 'Gerakkan kursor di atas pratinjau',
+      metaLabels: {
+        category: 'Kategori',
+        tools: 'Tools',
+        data: 'Data',
+      },
       modalLabels: {
+        overview: 'Ringkasan',
         context: 'Konteks & Lingkup',
-        tools: 'Alat Bantu',
+        tools: 'Tools',
         highlights: 'Sorotan Implementasi',
-        close: 'Tutup Detail',
+        close: 'Tutup',
         openDashboard: 'Buka Dashboard',
+        previous: '← Sebelumnya',
+        next: 'Berikutnya →',
       },
       items: [
         {
           id: 'pizza-sales',
+          displayTitle: 'Pizza Sales',
           title: 'Pizza Sales Performance & Operational Dashboard',
           category: 'Business Intelligence Project',
           tools: ['Excel', 'Looker Studio'],
+          toolsText: 'Excel · Looker Studio',
           description:
-            'Rekonsiliasi dan analisis performa penjualan tahunan serta pemetaan pola operasional restoran berbasis dashboard interaktif.',
+            'Rekonsiliasi penjualan dan analisis jam sibuk dari 21.350+ transaksi, dengan dashboard BI interaktif.',
+          dataMetric: '21.350+ transaksi',
+          previewLabel: 'Pola jam sibuk',
           highlights: [
             'Mengolah dan memvalidasi rekonsiliasi data lebih dari 21.350 transaksi penjualan tahunan ($817K+) menggunakan Microsoft Excel dan Google Looker Studio.',
             'Mengidentifikasi pola jam sibuk operasional pada 12.00–13.00 dan 17.00–18.00 untuk rekomendasi penjadwalan staf (staggered shift).',
@@ -302,11 +337,15 @@ export const content: Record<Language, PortfolioContent> = {
         },
         {
           id: 'superstore-sales',
+          displayTitle: 'Superstore',
           title: 'Superstore Sales & Profitability Analysis',
           category: 'Commercial Analytics Project',
           tools: ['Excel'],
+          toolsText: 'Excel',
           description:
-            'Evaluasi profitabilitas komersial dan analisis pengaruh diskon terhadap penurunan margin keuntungan ritel.',
+            'Analisis tren penjualan musiman dan profitabilitas wilayah, berfokus pada dampak diskon terhadap margin laba bersih.',
+          dataMetric: 'Ribuan baris data',
+          previewLabel: 'Margin per wilayah',
           highlights: [
             'Menganalisis tren penjualan ritel musiman dan profitabilitas lintas wilayah dari ribuan baris data transaksi.',
             'Membangun dashboard interaktif dengan PivotTable, Calculated Fields, dan Slicers untuk mengevaluasi dampak diskon terhadap penurunan margin laba bersih.',
@@ -315,11 +354,15 @@ export const content: Record<Language, PortfolioContent> = {
         },
         {
           id: 'nyc-traffic',
+          displayTitle: 'NYC Traffic',
           title: 'NYC Traffic Safety Analysis',
           category: 'Public Data Analytics Project',
           tools: ['Excel'],
+          toolsText: 'Excel',
           description:
-            'Pembersihan dataset skala besar serta analisis akar masalah insiden keselamatan lalu lintas perkotaan.',
+            'Pembersihan dan validasi 238.000+ catatan kecelakaan lalu lintas untuk menemukan faktor risiko utama dan pola insiden.',
+          dataMetric: '238.000+ catatan insiden',
+          previewLabel: 'Insiden per jam',
           highlights: [
             'Mengolah, membersihkan, dan memvalidasi dataset lebih dari 238.000 catatan kecelakaan lalu lintas.',
             'Merancang dashboard berbasis formula lanjutan (XLOOKUP, INDEX/MATCH) dan Pivot Charts untuk Root Cause Analysis atas faktor risiko utama dan konsentrasi waktu insiden.',
@@ -330,7 +373,11 @@ export const content: Record<Language, PortfolioContent> = {
     },
     skills: {
       sectionLabel: 'Kemampuan Inti',
-      headline: 'Spesialisasi Analisis & Pengolahan Data',
+      headline: 'Keahlian & Tools',
+      metaLabels: {
+        scope: 'Cakupan',
+        tools: 'Tools',
+      },
       items: [
         {
           title: 'SQL & Database',
@@ -338,20 +385,29 @@ export const content: Record<Language, PortfolioContent> = {
             'Dasar pemodelan relasional dan ekstraksi query terstruktur (JOIN, Grouping, Having, Filtering).',
           tools: ['SQL', 'MySQL'],
           toolsText: 'SQL · MySQL (dasar: JOIN, Grouping, Having, Filtering)',
+          scope: 'JOIN · Grouping · Having · Filtering',
+          levelOrUsageLabel: 'Tingkat',
+          levelOrUsageValue: 'Dasar',
         },
         {
           title: 'Spreadsheet & Reporting',
           description:
             'Pengolahan data tingkat lanjut (PivotTable, XLOOKUP, INDEX/MATCH, Data Modeling) serta pembersihan data.',
-          tools: ['Microsoft Excel', 'Data Cleaning'],
+          tools: ['Microsoft Excel'],
           toolsText: 'Microsoft Excel (PivotTable, XLOOKUP, INDEX/MATCH, Data Modeling) · Data Cleaning',
+          scope: 'PivotTable · XLOOKUP · INDEX/MATCH · Data Modeling · Data Cleaning',
+          levelOrUsageLabel: 'Tingkat',
+          levelOrUsageValue: 'Lanjut',
         },
         {
           title: 'Dashboard & BI',
           description:
             'Pembuatan dashboard analitis interaktif, visualisasi metrik bisnis, dan manajemen version control.',
-          tools: ['Google Looker Studio', 'Visualisasi Data', 'Business Intelligence', 'Git'],
+          tools: ['Google Looker Studio', 'Git'],
           toolsText: 'Google Looker Studio · Visualisasi Data · Business Intelligence · Git',
+          scope: 'Dashboard design · Data visualization · Business intelligence',
+          levelOrUsageLabel: 'Diterapkan di',
+          levelOrUsageValue: 'Pizza Sales Performance Dashboard',
         },
       ],
       softSkillsLabel: 'Kemampuan Interpersonal & Kolaboratif',
@@ -523,24 +579,38 @@ export const content: Record<Language, PortfolioContent> = {
     },
     projects: {
       sectionLabel: 'Featured Work',
-      headline: 'Selected Data Analytics Case Studies',
+      headline: 'Selected Work',
       subtitle: '3 Business & Public Data Case Studies',
       viewCase: 'View Case',
+      viewDetails: 'View details →',
+      moveHelperText: 'Move over the preview',
+      metaLabels: {
+        category: 'Category',
+        tools: 'Tools',
+        data: 'Data',
+      },
       modalLabels: {
+        overview: 'Overview',
         context: 'Context & Scope',
-        tools: 'Tools Used',
+        tools: 'Tools',
         highlights: 'Key Highlights',
-        close: 'Close Details',
+        close: 'Close',
         openDashboard: 'Open Dashboard',
+        previous: '← Previous',
+        next: 'Next →',
       },
       items: [
         {
           id: 'pizza-sales',
+          displayTitle: 'Pizza Sales',
           title: 'Pizza Sales Performance & Operational Dashboard',
           category: 'Business Intelligence Project',
           tools: ['Excel', 'Looker Studio'],
+          toolsText: 'Excel · Looker Studio',
           description:
-            'Annual sales performance reconciliation and operational rush hour pattern mapping built with interactive dashboards.',
+            'Sales reconciliation and rush-hour analysis of 21,350+ transactions, with an interactive BI dashboard.',
+          dataMetric: '21,350+ transactions',
+          previewLabel: 'Rush hour pattern',
           highlights: [
             'Processed and validated reconciliation data of more than 21,350 annual sales transactions ($817K+) using Microsoft Excel and Google Looker Studio.',
             'Identified operational rush hour patterns at 12:00–13:00 and 17:00–18:00 to recommend staggered staff scheduling.',
@@ -550,11 +620,15 @@ export const content: Record<Language, PortfolioContent> = {
         },
         {
           id: 'superstore-sales',
+          displayTitle: 'Superstore',
           title: 'Superstore Sales & Profitability Analysis',
           category: 'Commercial Analytics Project',
           tools: ['Excel'],
+          toolsText: 'Excel',
           description:
-            'Commercial profitability evaluation and cross-regional retail margin discount impact analysis.',
+            'Seasonal sales and regional profitability analysis, focused on how discounts affect net profit margin.',
+          dataMetric: 'Thousands of transaction rows',
+          previewLabel: 'Margin by region',
           highlights: [
             'Analyzed seasonal retail sales trends and cross-regional profitability across thousands of transaction rows.',
             'Built interactive dashboards utilizing PivotTables, Calculated Fields, and Slicers to assess discount impact on net margin decline.',
@@ -563,11 +637,15 @@ export const content: Record<Language, PortfolioContent> = {
         },
         {
           id: 'nyc-traffic',
+          displayTitle: 'NYC Traffic',
           title: 'NYC Traffic Safety Analysis',
           category: 'Public Data Analytics Project',
           tools: ['Excel'],
+          toolsText: 'Excel',
           description:
-            'Large-scale dataset cleaning and root cause analysis of urban traffic safety incidents.',
+            'Cleaning and validating 238,000+ traffic accident records to find root causes and incident patterns.',
+          dataMetric: '238,000+ accident records',
+          previewLabel: 'Incidents by hour',
           highlights: [
             'Processed, cleaned, and validated large-scale datasets exceeding 238,000 traffic collision records.',
             'Designed analytical dashboards with advanced formulas (XLOOKUP, INDEX/MATCH) and Pivot Charts for Root Cause Analysis on primary risk factors and peak incident hours.',
@@ -578,7 +656,11 @@ export const content: Record<Language, PortfolioContent> = {
     },
     skills: {
       sectionLabel: 'Core Capabilities',
-      headline: 'Analytical Specialties & Methodologies',
+      headline: 'Skills & Tools',
+      metaLabels: {
+        scope: 'Scope',
+        tools: 'Tools',
+      },
       items: [
         {
           title: 'SQL & Database',
@@ -586,20 +668,29 @@ export const content: Record<Language, PortfolioContent> = {
             'Relational data modeling and structured query extraction (JOIN, Grouping, Having, Filtering).',
           tools: ['SQL', 'MySQL'],
           toolsText: 'SQL · MySQL (foundational: JOIN, Grouping, Having, Filtering)',
+          scope: 'JOIN · Grouping · Having · Filtering',
+          levelOrUsageLabel: 'Level',
+          levelOrUsageValue: 'Basic',
         },
         {
           title: 'Spreadsheet & Reporting',
           description:
             'Advanced spreadsheet modeling (PivotTable, XLOOKUP, INDEX/MATCH, Data Modeling) and data cleaning.',
-          tools: ['Microsoft Excel', 'Data Cleaning'],
+          tools: ['Microsoft Excel'],
           toolsText: 'Microsoft Excel (PivotTable, XLOOKUP, INDEX/MATCH, Data Modeling) · Data Cleaning',
+          scope: 'PivotTable · XLOOKUP · INDEX/MATCH · Data Modeling · Data Cleaning',
+          levelOrUsageLabel: 'Level',
+          levelOrUsageValue: 'Advanced',
         },
         {
           title: 'Dashboard & BI',
           description:
             'Designing interactive visual dashboards, business metric visualization, and Git version control.',
-          tools: ['Google Looker Studio', 'Data Visualization', 'Business Intelligence', 'Git'],
+          tools: ['Google Looker Studio', 'Git'],
           toolsText: 'Google Looker Studio · Data Visualization · Business Intelligence · Git',
+          scope: 'Dashboard design · Data visualization · Business intelligence',
+          levelOrUsageLabel: 'Used in',
+          levelOrUsageValue: 'Pizza Sales Performance Dashboard',
         },
       ],
       softSkillsLabel: 'Soft Skills & Collaborative Strengths',

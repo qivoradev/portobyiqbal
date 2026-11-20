@@ -62,7 +62,7 @@ export function Contact({ content }: ContactProps) {
             <button
               type="button"
               onClick={handleCopy}
-              className="shrink-0 flex items-center gap-1.5 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#111111] text-white text-[12px] sm:text-[13px] font-medium shadow-sm hover:bg-black/85 active:scale-95 transition-all cursor-pointer"
+              className="shrink-0 flex items-center justify-center gap-1.5 px-4 h-11 min-h-[44px] min-w-[44px] rounded-full bg-[#111111] text-white text-[12.5px] sm:text-[13px] font-medium shadow-sm hover:bg-black/85 active:scale-95 transition-all cursor-pointer"
               aria-label={copied ? contact.copiedButton : contact.copyButton}
             >
               {copied ? (

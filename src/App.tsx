@@ -108,7 +108,7 @@ export default function App() {
       />
 
       {/* Main Sections: Hero → About Me → Projects → Core Skills → Credentials → Contact */}
-      <main className="relative z-10 pb-20 md:pb-0">
+      <main className="relative z-10 pb-28 md:pb-0">
         <Hero
           onNavigate={handleNavigate}
           onOpenCV={() => setIsCvOpen(true)}

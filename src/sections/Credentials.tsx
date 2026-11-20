@@ -29,12 +29,12 @@ export function Credentials({ content, lang = 'in', onModalStateChange }: Creden
     <>
       <section
         id="credentials"
-        className="relative w-full py-16 lg:py-20 scroll-mt-[88px]"
+        className="relative w-full py-12 sm:py-16 lg:py-20 scroll-mt-[88px]"
       >
         <div className="site-container">
           {/* Section Header */}
-          <div className="mb-10 sm:mb-12 text-left">
-            <div className="flex items-center gap-2 mb-3">
+          <div className="mb-8 sm:mb-10 lg:mb-12 text-left">
+            <div className="flex items-center gap-2 mb-2 sm:mb-3">
               <span className="w-2.5 h-2.5 rounded-[2px] bg-[#F59E0B] shadow-xs shrink-0" />
               <span className="text-[12.5px] font-semibold tracking-[0.08em] text-[#6b6b6b] uppercase">
                 {credentials.sectionLabel}
@@ -43,7 +43,7 @@ export function Credentials({ content, lang = 'in', onModalStateChange }: Creden
 
             <SectionTitle
               title={credentials.headline}
-              className="text-[clamp(32px,4vw,50px)] font-semibold text-[#111111] leading-[1.12] tracking-[-0.035em] max-w-[720px]"
+              className="text-[clamp(30px,6.5vw,56px)] font-semibold text-[#111111] leading-[1.08] tracking-[-0.035em] max-w-[720px]"
             />
           </div>
 
@@ -75,13 +75,13 @@ export function Credentials({ content, lang = 'in', onModalStateChange }: Creden
           </FadeUp>
 
           {/* 2. Exactly Two Certificate Cards Side-by-Side (Equal Height) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-stretch mt-8 sm:mt-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8 items-stretch mt-6 sm:mt-8">
             {/* Certificate 1: Certiport Artificial Intelligence */}
             {certiportCert && (
-              <FadeUp delay={0.1} className="bento-card p-6 sm:p-7 flex flex-col justify-between h-full group">
+              <FadeUp delay={0.1} className="bento-card p-5 sm:p-6 lg:p-8 flex flex-col justify-between h-full group">
                 <div className="space-y-4">
                   {/* Thumbnail on Top (16:10, contain, pure white canvas, light gray bg) */}
-                  <div className="w-full aspect-[16/10] bg-[#F4F4F5] rounded-[14px] p-2 flex items-center justify-center overflow-hidden border border-black/5 shadow-inner">
+                  <div className="w-full aspect-[16/10] bg-[#F4F4F5] rounded-[16px] p-2 flex items-center justify-center overflow-hidden border border-black/5 shadow-inner">
                     <img
                       src="/certificates/certiport-thumb.png"
                       alt={certiportCert.title}
@@ -102,7 +102,7 @@ export function Credentials({ content, lang = 'in', onModalStateChange }: Creden
 
                   {/* Title & Validity */}
                   <div>
-                    <h4 className="text-[20px] sm:text-[22px] font-semibold text-[#111111] leading-snug tracking-tight">
+                    <h4 className="text-[19px] sm:text-[21px] font-semibold text-[#111111] leading-snug tracking-tight">
                       {certiportCert.title}
                     </h4>
                     <p className="text-[13.5px] text-[#555555] mt-1">
@@ -112,7 +112,7 @@ export function Credentials({ content, lang = 'in', onModalStateChange }: Creden
                 </div>
 
                 {/* Actions Row */}
-                <div className="flex flex-wrap items-center gap-3 pt-6 mt-4 border-t border-black/5">
+                <div className="flex flex-wrap items-center gap-3 pt-5 mt-4 border-t border-black/5">
                   <button
                     type="button"
                     onClick={() => setActiveCert(certiportCert)}
@@ -138,10 +138,10 @@ export function Credentials({ content, lang = 'in', onModalStateChange }: Creden
 
             {/* Certificate 2: BNSP Certified Web Developer (CWDev) */}
             {bnspCert && (
-              <FadeUp delay={0.15} className="bento-card p-6 sm:p-7 flex flex-col justify-between h-full group">
+              <FadeUp delay={0.15} className="bento-card p-5 sm:p-6 lg:p-8 flex flex-col justify-between h-full group">
                 <div className="space-y-4">
                   {/* Thumbnail on Top (16:10, contain, light gray bg) */}
-                  <div className="w-full aspect-[16/10] bg-[#F4F4F5] rounded-[14px] p-2 flex items-center justify-center overflow-hidden border border-black/5 shadow-inner">
+                  <div className="w-full aspect-[16/10] bg-[#F4F4F5] rounded-[16px] p-2 flex items-center justify-center overflow-hidden border border-black/5 shadow-inner">
                     <img
                       src="/certificates/bnsp-web-developer.jpg"
                       alt={bnspCert.title}
@@ -162,7 +162,7 @@ export function Credentials({ content, lang = 'in', onModalStateChange }: Creden
 
                   {/* Title & Validity */}
                   <div>
-                    <h4 className="text-[20px] sm:text-[22px] font-semibold text-[#111111] leading-snug tracking-tight">
+                    <h4 className="text-[19px] sm:text-[21px] font-semibold text-[#111111] leading-snug tracking-tight">
                       {bnspCert.title}
                     </h4>
                     <p className="text-[13.5px] text-[#555555] mt-1">
@@ -172,7 +172,7 @@ export function Credentials({ content, lang = 'in', onModalStateChange }: Creden
                 </div>
 
                 {/* Actions Row */}
-                <div className="flex flex-wrap items-center gap-3 pt-6 mt-4 border-t border-black/5">
+                <div className="flex flex-wrap items-center gap-3 pt-5 mt-4 border-t border-black/5">
                   <button
                     type="button"
                     onClick={() => setActiveCert(bnspCert)}

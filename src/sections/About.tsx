@@ -21,12 +21,12 @@ export function About({ content, lang = 'in' }: AboutProps) {
   return (
     <section
       id="about"
-      className="relative w-full py-16 lg:py-20 scroll-mt-[88px]"
+      className="relative w-full py-12 sm:py-16 lg:py-20 scroll-mt-[88px]"
     >
       <div className="site-container">
-        {/* Uniform Section Header (Distance to content: 48px / mb-12) */}
-        <div className="mb-12 text-left">
-          <div className="flex items-center gap-2 mb-3">
+        {/* Uniform Section Header (mb-8 sm:mb-10 lg:mb-12) */}
+        <div className="mb-8 sm:mb-10 lg:mb-12 text-left">
+          <div className="flex items-center gap-2 mb-2 sm:mb-3">
             <span className="w-2.5 h-2.5 rounded-[2px] bg-[#10B981] shadow-xs shrink-0" />
             <span className="text-[12.5px] font-semibold tracking-[0.08em] text-[#6b6b6b] uppercase">
               {about.sectionLabel}
@@ -34,22 +34,22 @@ export function About({ content, lang = 'in' }: AboutProps) {
           </div>
           <SectionTitle
             title={about.headline}
-            className="text-[clamp(32px,4vw,50px)] font-semibold text-[#111111] leading-[1.12] tracking-[-0.035em] max-w-[780px]"
+            className="text-[clamp(30px,6.5vw,56px)] font-semibold text-[#111111] leading-[1.08] tracking-[-0.035em] max-w-[780px]"
           />
         </div>
 
         {/* Row 1: About text + education direct on background (Span 7) | Stepper Card (Span 5) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
           {/* Left: About Text & Academic Degree DIRECT on page background (NO Card) */}
           <FadeUp className="lg:col-span-7 flex flex-col justify-between space-y-6">
-            <div className="space-y-5 max-w-[620px]">
-              <p className="text-[16px] sm:text-[17px] text-[#3f3f3f] leading-[1.65]">
+            <div className="space-y-4 max-w-[620px]">
+              <p className="text-[15.5px] sm:text-[16.5px] text-[#3f3f3f] leading-[1.65]">
                 {about.story}
               </p>
             </div>
 
             {/* Academic Base Footer */}
-            <div className="pt-5 border-t border-black/10 flex items-baseline gap-2 text-[14.5px] text-[#555555]">
+            <div className="pt-4 border-t border-black/10 flex items-baseline gap-2 text-[14px] sm:text-[14.5px] text-[#555555]">
               <span className="font-semibold text-black shrink-0">
                 {about.academicBaseLabel}
               </span>
@@ -60,7 +60,7 @@ export function About({ content, lang = 'in' }: AboutProps) {
           </FadeUp>
 
           {/* Right: Exactly ONE Card — 5-Step Analytical Approach Stepper Card (Span 5) */}
-          <FadeUp delay={0.1} className="lg:col-span-5 bento-card p-6 sm:p-7 h-full flex flex-col justify-between">
+          <FadeUp delay={0.1} className="lg:col-span-5 bento-card p-5 sm:p-6 lg:p-8 h-full flex flex-col justify-between">
             <div>
               {/* Stepper Card Header */}
               <div className="flex items-center gap-3 mb-6">
