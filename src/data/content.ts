@@ -95,12 +95,10 @@ export interface PortfolioContent {
     items: ProjectItem[];
   };
   about: {
-    heading: string;
+    headingLine1: string;
+    headingLine2: string;
     paragraphLead: string;
-    paragraphMuted1: string;
-    paragraphHighlight1: string;
-    paragraphMuted2: string;
-    paragraphHighlight2: string;
+    paragraphBody: string;
     paragraphClosing: string;
     stats: StatItem[];
     education: {
@@ -292,13 +290,13 @@ export const content: Record<Language, PortfolioContent> = {
       ],
     },
     about: {
-      heading: 'Tentang Saya.',
+      headingLine1: 'Sedikit',
+      headingLine2: 'tentang saya',
       paragraphLead: 'Halo, saya Iqbal Dwi Fathonah,',
-      paragraphMuted1: ' seorang ',
-      paragraphHighlight1: 'fresh graduate S1 Teknologi Informasi Universitas Muhammadiyah Yogyakarta (2026)',
-      paragraphMuted2: ' yang berdedikasi mengubah kumpulan data mentah menjadi insight bisnis yang rapi dan terukur. Sebagai ',
-      paragraphHighlight2: 'Data Analyst yang berfokus pada SQL, MySQL, Excel, dan Looker Studio,',
-      paragraphClosing: ' saya terbiasa membersihkan dan memvalidasi puluhan ribu baris data transaksi untuk mendukung keputusan operasional.',
+      paragraphBody:
+        ' fresh graduate S1 Teknologi Informasi Universitas Muhammadiyah Yogyakarta (2026) yang berdedikasi mengolah data mentah menjadi insight bisnis yang rapi dan terukur. ',
+      paragraphClosing:
+        'Saya berfokus sebagai Data Analyst menggunakan SQL, MySQL, Excel, dan Looker Studio untuk mendukung keputusan operasional.',
       stats: [
         { value: '21,350+', label: 'Transaksi Diolah' },
         { value: '238,000+', label: 'Catatan Dibersihkan' },
@@ -529,13 +527,13 @@ export const content: Record<Language, PortfolioContent> = {
       ],
     },
     about: {
-      heading: 'A little bit about me.',
+      headingLine1: 'A little bit',
+      headingLine2: 'about me',
       paragraphLead: "Hi, I'm Iqbal Dwi Fathonah,",
-      paragraphMuted1: ' an ',
-      paragraphHighlight1: 'Information Technology fresh graduate from Universitas Muhammadiyah Yogyakarta (2026)',
-      paragraphMuted2: ' focused on turning messy transactional records into clear, actionable business insights. As a ',
-      paragraphHighlight2: 'Data Analyst working with SQL, MySQL, Excel, and Looker Studio,',
-      paragraphClosing: ' I clean and validate tens of thousands of transactional records to support reliable operational decisions.',
+      paragraphBody:
+        ' an Information Technology graduate from Universitas Muhammadiyah Yogyakarta (2026) dedicated to transforming raw datasets into clear, measurable business insights. ',
+      paragraphClosing:
+        'I specialize as a Data Analyst using SQL, MySQL, Excel, and Looker Studio to support operational decisions.',
       stats: [
         { value: '21,350+', label: 'Transactions Analyzed' },
         { value: '238,000+', label: 'Records Cleaned' },

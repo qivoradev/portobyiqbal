@@ -27,12 +27,12 @@ export function About({ content, onModalStateChange }: AboutProps) {
         className="relative w-full bg-[#050505] text-[#FAFAFA] py-16 md:py-24 scroll-mt-16"
       >
         <div className="site-container max-w-5xl">
-          {/* Part 1: Profile Avatar + Editorial Contrast Paragraph */}
+          {/* Part 1: Profile Avatar, 2-Line Heading & Editorial Contrast Paragraph */}
           <FadeUp>
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-7 md:gap-10 items-center text-left">
-              {/* Left (Desktop col-span-5): Circular Avatar stays horizontally beside heading even on mobile */}
-              <div className="md:col-span-5 flex items-center gap-4 md:gap-6">
-                <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 border border-neutral-700 overflow-hidden flex items-center justify-center select-none">
+            <div className="max-w-[320px] md:max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-12 items-center gap-0 md:gap-8 lg:gap-12 text-left">
+              {/* Left (Desktop col-span-5): Circular Avatar + Tight 2-Line Heading */}
+              <div className="md:col-span-5 flex items-center gap-4 md:gap-5">
+                <div className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 shrink-0 rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 border border-neutral-700 overflow-hidden flex items-center justify-center select-none">
                   {ABOUT_AVATAR_URL ? (
                     <img
                       src={ABOUT_AVATAR_URL}
@@ -46,50 +46,46 @@ export function About({ content, onModalStateChange }: AboutProps) {
                   )}
                 </div>
 
-                <h2 className="text-[28px] sm:text-[34px] md:text-[38px] font-bold tracking-[-0.03em] leading-[1.08] text-white">
-                  {about.heading}
+                <h2 className="text-[28px] md:text-3xl lg:text-[34px] font-bold tracking-tight leading-[1.08] text-white whitespace-nowrap">
+                  {about.headingLine1}
+                  <br />
+                  {about.headingLine2}
                 </h2>
               </div>
 
-              {/* Right (Desktop col-span-7): High-Contrast Dimmed vs Bold Editorial Paragraph */}
-              <div className="md:col-span-7">
-                <p className="text-[16px] md:text-[17.5px] leading-[1.7] text-neutral-500">
-                  <span className="text-white font-medium">{about.paragraphLead}</span>
-                  <span>{about.paragraphMuted1}</span>
-                  <span className="text-white font-medium">{about.paragraphHighlight1}</span>
-                  <span>{about.paragraphMuted2}</span>
-                  <span className="text-white font-medium">{about.paragraphHighlight2}</span>
-                  <span>{about.paragraphClosing}</span>
+              {/* Right (Desktop col-span-7): White ONLY on opening name & closing specialization sentence */}
+              <div className="md:col-span-7 mt-4 md:mt-0">
+                <p className="text-[13.5px] md:text-[15px] leading-[1.68] md:leading-[1.7] md:max-w-md text-left text-neutral-500">
+                  <span className="text-white font-semibold">{about.paragraphLead}</span>
+                  {about.paragraphBody}
+                  <span className="text-white font-semibold">{about.paragraphClosing}</span>
                 </p>
               </div>
             </div>
           </FadeUp>
 
-          {/* Part 2: Anti-Overlap Stats Bar */}
-          {/* Mobile (<640px): grid-cols-2 with 3rd item full-width below separated by border-t; >=640px: 3 equal columns */}
+          {/* Part 2: 3-Column Single-Row Stats Bar (Desktop & Mobile) with Subtle Radial Emerald Glow */}
           <FadeUp delay={0.08}>
-            <div className="bg-neutral-900/70 border border-neutral-800 rounded-2xl p-6 md:p-8 mt-10">
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 sm:gap-6 text-left">
-                {about.stats.map((stat, idx) => {
-                  const isThird = idx === 2;
-                  return (
-                    <div
-                      key={stat.label}
-                      className={
-                        isThird
-                          ? 'col-span-2 pt-3 border-t border-neutral-800/80 sm:col-span-1 sm:pt-0 sm:border-t-0'
-                          : ''
-                      }
-                    >
-                      <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight tabular-nums leading-none">
-                        {stat.value}
-                      </div>
-                      <p className="mt-2 text-[13px] sm:text-[14px] text-neutral-400 font-medium">
-                        {stat.label}
-                      </p>
+            <div className="max-w-3xl mx-auto mt-10 md:mt-14 rounded-2xl bg-[#0B0D0C] border border-white/[0.06] px-4 py-5 sm:px-8 sm:py-7 relative overflow-hidden">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    'radial-gradient(ellipse 70% 100% at 50% 50%, rgba(37, 155, 82, 0.07) 0%, transparent 72%)',
+                }}
+              />
+              <div className="relative z-10 grid grid-cols-[1.1fr_1.3fr_0.75fr] gap-2.5 sm:grid-cols-3 sm:gap-8 items-start text-left">
+                {about.stats.map((stat) => (
+                  <div key={stat.label} className="min-w-0">
+                    <div className="text-[19px] sm:text-3xl md:text-4xl font-semibold tracking-tight text-white tabular-nums whitespace-nowrap leading-none">
+                      {stat.value}
                     </div>
-                  );
-                })}
+                    <p className="text-[11px] sm:text-sm text-neutral-400 leading-snug mt-1">
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </FadeUp>
