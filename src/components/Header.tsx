@@ -13,67 +13,76 @@ interface HeaderProps {
   isDarkTheme: boolean;
 }
 
-interface LangSegmentedToggleProps {
-  lang: Language;
-  onSelectLang: (nextLang: Language) => void;
-  isDarkTheme: boolean;
-  layoutId: string;
+/**
+ * Geometric Monogram SVG `IDF`:
+ * - Uniform stroke weight
+ * - Sharp / subtle beveled terminal cuts on I, D, and F
+ * - currentColor for automatic adaptability across light & dark themes
+ */
+function IDFMonogram({ className = 'h-5 w-auto' }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 46 20"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+    >
+      {/* Letter I: crisp vertical stem with subtle 45deg beveled top-left endpoint */}
+      <path d="M1.5 0H5V20H0V1.5L1.5 0Z" />
+      {/* Letter D: geometric stem + clean angled/chamfered outer loop & counter */}
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M9 0H20.5L25 4.5V15.5L20.5 20H9V0ZM13.5 4.5H19.5L20.5 5.5V14.5L19.5 15.5H13.5V4.5Z"
+      />
+      {/* Letter F: vertical stem with beveled top/middle bars */}
+      <path d="M29 0H43.5L45 1.5V4.5H33.5V8H41.5L42.5 9V12H33.5V20H29V0Z" />
+    </svg>
+  );
 }
 
-function LangSegmentedToggle({
-  lang,
-  onSelectLang,
-  isDarkTheme,
-  layoutId,
-}: LangSegmentedToggleProps) {
-  const options: { value: Language; code: string; ariaLabel: string }[] = [
-    { value: 'in', code: 'ID', ariaLabel: 'Bahasa Indonesia' },
-    { value: 'en', code: 'EN', ariaLabel: 'English' },
-  ];
+/**
+ * 1-Slot Language Toggle Button:
+ * Compact single button displaying active code (ID / EN) with slide animation on switch
+ */
+interface SingleSlotLangButtonProps {
+  lang: Language;
+  onToggle: () => void;
+  isDarkTheme: boolean;
+}
+
+function SingleSlotLangButton({ lang, onToggle, isDarkTheme }: SingleSlotLangButtonProps) {
+  const code = lang === 'in' ? 'ID' : 'EN';
+  const ariaLabel =
+    lang === 'in'
+      ? 'Bahasa Indonesia aktif, klik untuk beralih ke English'
+      : 'English active, click to switch to Bahasa Indonesia';
 
   return (
-    <div
-      role="group"
-      aria-label="Language switcher"
-      className={`inline-flex items-center p-0.5 rounded-lg border transition-colors duration-300 ${
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-label={ariaLabel}
+      className={`relative h-8 min-w-[38px] px-2.5 rounded-lg inline-flex items-center justify-center overflow-hidden border transition-colors cursor-pointer select-none ${
         isDarkTheme
-          ? 'bg-white/[0.07] border-white/[0.08]'
-          : 'bg-black/[0.06] border-black/[0.06]'
+          ? 'bg-white/[0.08] hover:bg-white/[0.15] border-white/[0.12] text-white'
+          : 'bg-black/[0.06] hover:bg-black/[0.11] border-black/[0.08] text-neutral-950'
       }`}
     >
-      {options.map((opt) => {
-        const isActive = lang === opt.value;
-        return (
-          <button
-            key={opt.value}
-            type="button"
-            onClick={() => onSelectLang(opt.value)}
-            aria-label={opt.ariaLabel}
-            aria-pressed={isActive}
-            className={`relative px-2 py-1 text-[11px] font-semibold tracking-wide rounded-md transition-colors duration-200 cursor-pointer leading-none ${
-              isActive
-                ? isDarkTheme
-                  ? 'text-neutral-950'
-                  : 'text-white'
-                : isDarkTheme
-                  ? 'text-neutral-400 hover:text-white'
-                  : 'text-neutral-500 hover:text-neutral-900'
-            }`}
-          >
-            {isActive && (
-              <motion.span
-                layoutId={layoutId}
-                transition={{ type: 'spring', stiffness: 420, damping: 32 }}
-                className={`absolute inset-0 rounded-md shadow-xs ${
-                  isDarkTheme ? 'bg-white' : 'bg-neutral-950'
-                }`}
-              />
-            )}
-            <span className="relative z-10">{opt.code}</span>
-          </button>
-        );
-      })}
-    </div>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={code}
+          initial={{ x: 12, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -12, opacity: 0 }}
+          transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          className="text-[11px] font-bold tracking-wider leading-none uppercase"
+        >
+          {code}
+        </motion.span>
+      </AnimatePresence>
+    </button>
   );
 }
 
@@ -120,7 +129,6 @@ export function Header({
     ? 'bg-neutral-900/85 text-white border-neutral-800 shadow-[0_8px_28px_rgba(0,0,0,0.45)]'
     : 'bg-neutral-200/80 text-neutral-900 border-neutral-300/80 shadow-[0_4px_20px_rgba(0,0,0,0.05)]';
 
-  const brandDividerClass = isDarkTheme ? 'bg-neutral-700' : 'bg-neutral-400/70';
   const toggleDividerClass = isDarkTheme ? 'bg-white/15' : 'bg-neutral-300/90';
 
   return (
@@ -130,19 +138,22 @@ export function Header({
         <div
           className={`pointer-events-auto flex items-center gap-4 lg:gap-6 px-3.5 py-2 rounded-2xl border backdrop-blur-md transition-colors duration-300 ${pillSurfaceClass}`}
         >
-          {/* Left: Monogram ID | iqbaldf */}
+          {/* Left: Geometric Logo Lockup IDF | IQBALDF */}
           <button
             type="button"
             onClick={() => handleNavClick('hero')}
             className="flex items-center gap-2.5 pl-1 pr-1 cursor-pointer group focus-visible:outline-2"
-            aria-label="iqbaldf home"
+            aria-label="IQBALDF home"
           >
-            <span className="text-[19px] font-extrabold tracking-tighter leading-none">
-              {content.monogram}
-            </span>
-            <span className={`w-px h-5 transition-colors duration-300 ${brandDividerClass}`} />
-            <span className="text-[13px] font-bold tracking-tight leading-none">
-              {content.brand}
+            <IDFMonogram className="h-[18px] md:h-[20px] w-auto transition-colors duration-300" />
+            <span
+              aria-hidden="true"
+              className={`w-[1.5px] h-5 transition-colors duration-300 ${
+                isDarkTheme ? 'bg-white/80' : 'bg-neutral-900/80'
+              }`}
+            />
+            <span className="font-bold uppercase tracking-[0.06em] text-[13px] leading-none transition-colors duration-300">
+              IQBALDF
             </span>
           </button>
 
@@ -180,17 +191,16 @@ export function Header({
             })}
           </nav>
 
-          {/* Right: Thin Adaptive Divider + Compact Segmented ID / EN Pill Toggle */}
-          <div className="flex items-center gap-3.5">
+          {/* Right: Thin Adaptive Divider + Single Slot Language Toggle */}
+          <div className="flex items-center gap-3">
             <span
               aria-hidden="true"
               className={`h-4 w-px transition-colors duration-300 ${toggleDividerClass}`}
             />
-            <LangSegmentedToggle
+            <SingleSlotLangButton
               lang={lang}
-              onSelectLang={onSelectLang}
+              onToggle={() => onSelectLang(lang === 'in' ? 'en' : 'in')}
               isDarkTheme={isDarkTheme}
-              layoutId="lang-pill"
             />
           </div>
         </div>
@@ -201,29 +211,31 @@ export function Header({
         <div
           className={`pointer-events-auto rounded-2xl px-4 py-3 border backdrop-blur-md flex items-center justify-between transition-colors duration-300 ${pillSurfaceClass}`}
         >
-          {/* Left: Monogram ID | iqbaldf */}
+          {/* Left: Geometric Logo Lockup IDF | IQBALDF */}
           <button
             type="button"
             onClick={() => handleNavClick('hero')}
-            className="flex items-center gap-2.5 cursor-pointer"
-            aria-label="iqbaldf home"
+            className="flex items-center gap-2 cursor-pointer"
+            aria-label="IQBALDF home"
           >
-            <span className="text-[19px] font-extrabold tracking-tighter leading-none">
-              {content.monogram}
-            </span>
-            <span className={`w-px h-5 transition-colors duration-300 ${brandDividerClass}`} />
-            <span className="text-[13.5px] font-bold tracking-tight leading-none">
-              {content.brand}
+            <IDFMonogram className="h-[16px] sm:h-[18px] w-auto transition-colors duration-300" />
+            <span
+              aria-hidden="true"
+              className={`w-[1.5px] h-4.5 transition-colors duration-300 ${
+                isDarkTheme ? 'bg-white/80' : 'bg-neutral-900/80'
+              }`}
+            />
+            <span className="font-bold uppercase tracking-[0.06em] text-[12.5px] sm:text-[13px] leading-none transition-colors duration-300">
+              IQBALDF
             </span>
           </button>
 
-          {/* Right: Compact Segmented ID / EN Toggle + Hamburger Menu */}
-          <div className="flex items-center gap-2.5">
-            <LangSegmentedToggle
+          {/* Right: Single Slot Language Toggle + Hamburger Menu */}
+          <div className="flex items-center gap-2">
+            <SingleSlotLangButton
               lang={lang}
-              onSelectLang={onSelectLang}
+              onToggle={() => onSelectLang(lang === 'in' ? 'en' : 'in')}
               isDarkTheme={isDarkTheme}
-              layoutId="mobile-lang-pill"
             />
 
             <button

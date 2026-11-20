@@ -9,9 +9,8 @@ export const PROFILE_PHOTO_URL: string | null = '/images/removpasfoto.png';
 export const ABOUT_AVATAR_URL: string | null = '/images/removpasfoto.png';
 
 export const PROJECT_PREVIEW_IMAGES: Record<string, string | null> = {
-  'pizza-sales': null,
-  'superstore-sales': null,
-  'nyc-traffic': null,
+  'pizza-sales': '/images/projects/pizza-dashboard.png',
+  'nyc-traffic': '/images/projects/nyc-traffic-dashboard.png',
 };
 
 export const CERTIFICATE_THUMBNAILS = {

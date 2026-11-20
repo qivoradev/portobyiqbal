@@ -9,6 +9,12 @@
 
 export type Language = 'in' | 'en';
 
+export interface ProjectMetric {
+  label: string;
+  value: string;
+  subtext?: string;
+}
+
 export interface ProjectItem {
   id: string;
   index: string;
@@ -19,7 +25,38 @@ export interface ProjectItem {
   description: string;
   previewSubtitle: string;
   highlights: string[];
-  dashboardUrl?: string;
+  image: string;
+  liveDashboardUrl?: string;
+  datasetUrl?: string;
+  workbookInfo?: string;
+  metrics?: ProjectMetric[];
+  businessContext?: {
+    heading: string;
+    body: string;
+  };
+  keyFindings?: {
+    heading: string;
+    items: string[];
+  };
+  recommendations?: {
+    heading: string;
+    items: string[];
+  };
+  parFramework?: {
+    heading: string;
+    problem: string;
+    action: string;
+    result: string;
+  };
+  actionFramework?: {
+    heading: string;
+    items: {
+      title: string;
+      what: string;
+      soWhat: string;
+      nowWhat: string;
+    }[];
+  };
 }
 
 export interface SkillCardItem {
@@ -89,6 +126,15 @@ export interface PortfolioContent {
       highlights: string;
       close: string;
       openDashboard: string;
+      openLiveDashboard: string;
+      viewDataset: string;
+      workbookFile: string;
+      metricsHeading: string;
+      businessContextHeading: string;
+      keyFindingsHeading: string;
+      recommendationsHeading: string;
+      parHeading: string;
+      whatSoWhatHeading: string;
       previous: string;
       next: string;
     };
@@ -231,6 +277,15 @@ export const content: Record<Language, PortfolioContent> = {
         highlights: 'Temuan & Implementasi',
         close: 'Tutup',
         openDashboard: 'Buka Dashboard',
+        openLiveDashboard: 'Buka Dashboard Interaktif',
+        viewDataset: 'Lihat Dataset',
+        workbookFile: 'Info File',
+        metricsHeading: '4 Metrik Kunci',
+        businessContextHeading: 'Latar Belakang Bisnis',
+        keyFindingsHeading: 'Temuan Utama',
+        recommendationsHeading: 'Rekomendasi Strategis',
+        parHeading: 'Kerangka PAR (Problem – Action – Result)',
+        whatSoWhatHeading: 'Kerangka What – So What – Now What',
         previous: 'Sebelumnya',
         next: 'Berikutnya',
       },
@@ -238,53 +293,106 @@ export const content: Record<Language, PortfolioContent> = {
         {
           id: 'pizza-sales',
           index: '01',
-          title: 'Pizza Sales Performance & Operational Dashboard',
-          category: 'Business Intelligence Project',
+          title: 'Pizza Sales Performance & Operational Analytics Dashboard',
+          category: 'Business Intelligence',
           tools: ['Excel', 'Looker Studio'],
+          image: '/images/projects/pizza-dashboard.png',
+          liveDashboardUrl: 'https://datastudio.google.com/reporting/81574dad-5d2d-4a15-aafb-eefb54548a3e',
+          datasetUrl: 'https://docs.google.com/spreadsheets/d/1lT0tvBmZi7sswTzVoYQziJopoOdlBn5c/edit?usp=sharing&ouid=103313291434112811548&rtpof=true&sd=true',
           shortSummary:
-            'Rekonsiliasi 21,350+ transaksi ($817K+ revenue), pola jam sibuk 12–13 & 17–18, kategori menu, serta Top 5 SKU dalam dashboard BI interaktif.',
+            'Evaluasi penjualan tahunan ($817.860,05 dari 21.350 transaksi), pola jam sibuk operasional, distribusi kategori menu, dan Top 5 SKU dalam dashboard BI interaktif.',
           description:
-            'Analisis rekonsiliasi penjualan dan efisiensi operasional dari 21,350+ transaksi dengan total revenue $817K+. Memetakan pola jam sibuk (12–13 dan 17–18), kontribusi kategori menu, serta Top 5 SKU ke dalam dashboard BI interaktif.',
+            'Evaluasi menyeluruh penjualan tahunan ($817.860,05 dari 21.350 transaksi), pola jam sibuk operasional (lunch rush 12.00–13.00 & dinner rush 17.00–18.00), distribusi kategori menu, dan Top 5 SKU dalam dashboard BI interaktif.',
           previewSubtitle: 'Excel · Looker Studio',
-          highlights: [
-            'Memvalidasi dan merekonsiliasi lebih dari 21,350+ transaksi penjualan dengan total revenue $817K+ menggunakan Microsoft Excel dan Google Looker Studio.',
-            'Mengidentifikasi pola jam sibuk operasional pada pukul 12–13 dan 17–18 sebagai dasar rekomendasi penjadwalan staf (staggered shift).',
-            'Menganalisis performa empat kategori menu (Classic, Supreme, Chicken, Veggie) dan memetakan Top 5 SKU untuk mendukung kontrol inventaris.',
-            'Merancang dashboard BI interaktif untuk memantau kinerja produk dan tren pesanan secara berkala.',
+          metrics: [
+            { label: 'Total Revenue', value: '$817.860,05', subtext: 'Penjualan kotor tahunan' },
+            { label: 'Total Pizzas Sold', value: '49.574', subtext: 'Loyang pizza terjual' },
+            { label: 'Total Orders', value: '21.350', subtext: 'Pesanan unik terproses' },
+            { label: 'Average Order Value', value: '$38,31', subtext: '~2,3 loyang/pesanan' },
           ],
-        },
-        {
-          id: 'superstore-sales',
-          index: '02',
-          title: 'Superstore Sales & Profitability Analysis',
-          category: 'Commercial Analytics Project',
-          tools: ['Excel'],
-          shortSummary:
-            'Analisis tren penjualan, profitabilitas lintas wilayah, dan dampak diskon terhadap margin laba dengan ringkasan kerangka PAR.',
-          description:
-            'Evaluasi menyeluruh atas tren penjualan musiman dan profitabilitas lintas wilayah. Berfokus pada pengukuran dampak diskon terhadap margin laba bersih yang dirangkum menggunakan kerangka PAR (Problem, Action, Result).',
-          previewSubtitle: 'Microsoft Excel',
+          businessContext: {
+            heading: 'Latar Belakang Bisnis',
+            body: 'Menjawab kebutuhan visibilitas efisiensi operasional jam sibuk, menu penggerak omzet & keseimbangan kategori, serta optimasi AOV dan jam sepi.',
+          },
+          keyFindings: {
+            heading: 'Temuan Utama',
+            items: [
+              'Pola Jam Sibuk: Lunch Rush mulai 11.00 dan memuncak 12.00–13.00 (~2.500 pesanan/jam); Afternoon Dip 14.00–16.00 (~1.400 pesanan/jam); Dinner Rush memuncak 17.00–18.00 hingga tutup pukul 23.00.',
+              'Distribusi Kategori (seimbang): Classic 26,9%, Supreme 25,5%, Chicken 24,0%, Veggie 23,7%.',
+              'Top 5 SKU by Revenue: (1) The Thai Chicken Pizza $43.434,25, (2) The Barbecue Chicken Pizza $42.768,00, (3) The California Chicken Pizza $41.409,50, (4) The Classic Deluxe Pizza $38.180,50, (5) The Spicy Italian Pizza $34.831,25.',
+            ],
+          },
+          recommendations: {
+            heading: 'Rekomendasi Strategis',
+            items: [
+              'Penjadwalan staf bertahap (Staggered Shift) di jam 11.30–13.30 dan 16.30–18.30 untuk merespons lonjakan pesanan.',
+              'Promo paket hemat personal / slice & minuman di jam sepi 14.00–16.00 untuk mendongkrak utilisasi dapur.',
+              'Pengamanan stok (safety stock) bahan baku fillet ayam serta saus Thai & BBQ demi mencegah risiko kekurangan stok.',
+            ],
+          },
           highlights: [
-            'Menganalisis tren penjualan musiman serta perbandingan profitabilitas lintas wilayah pada dataset transaksi ritel.',
-            'Membangun pelaporan interaktif menggunakan PivotTable, Calculated Fields, dan Slicers untuk menelusuri dampak diskon terhadap margin laba.',
-            'Menyusun ringkasan analisis terstruktur berbasis kerangka PAR (Problem, Action, Result) guna mendukung evaluasi strategi harga.',
+            'Memvalidasi dan merekonsiliasi 21.350 transaksi penjualan ($817.860,05) menggunakan Microsoft Excel dan Google Looker Studio.',
+            'Mengidentifikasi jam sibuk operasional (12.00–13.00 dan 17.00–18.00) sebagai landasan jadwal kerja bergiliran (staggered shift).',
+            'Menganalisis 4 kategori menu berimbang (Classic 26,9%, Supreme 25,5%, Chicken 24,0%, Veggie 23,7%) dan memetakan Top 5 SKU.',
+            'Merancang dashboard interaktif Looker Studio dengan filter kategori dan rentang tanggal untuk pemantauan KPI.',
           ],
         },
         {
           id: 'nyc-traffic',
-          index: '03',
+          index: '02',
           title: 'NYC Traffic Safety Analysis',
-          category: 'Public Data Analytics Project',
+          category: 'Public Data Analytics',
           tools: ['Excel'],
+          image: '/images/projects/nyc-traffic-dashboard.png',
+          workbookInfo: 'Workbook: NYC_Collisions_Analysis_Dashboard_v1.xlsx',
           shortSummary:
-            'Pembersihan dan validasi 238,000+ catatan kecelakaan lalu lintas untuk root cause analysis serta pemetaan pola insiden.',
+            'Analisis 238.421 catatan kecelakaan lalu lintas NYC (2021–2023) untuk memetakan wilayah rawan, jam puncak, dan akar penyebab utama berbasis kerangka PAR.',
           description:
-            'Pembersihan, normalisasi, dan validasi dataset publik berskala besar mencakup 238,000+ catatan kecelakaan lalu lintas untuk melakukan root cause analysis terhadap faktor risiko utama dan pola kejadian.',
+            'Analisis 238.421 catatan kecelakaan lalu lintas NYC (2021–2023) untuk memetakan wilayah rawan, jam puncak, dan akar penyebab utama berbasis kerangka PAR.',
           previewSubtitle: 'Microsoft Excel',
+          metrics: [
+            { label: 'Total Kecelakaan', value: '238.421', subtext: 'Catatan insiden terverifikasi' },
+            { label: 'Korban Luka', value: '116.227', subtext: 'Pengemudi, pejalan, pesepeda' },
+            { label: 'Korban Meninggal', value: '268', subtext: 'Total fatalitas kota' },
+            { label: 'Rasio Cedera', value: '48,7%', subtext: '487 cedera per 1.000 kecelakaan' },
+          ],
+          parFramework: {
+            heading: 'Kerangka PAR (Problem – Action – Result)',
+            problem:
+              'Tingginya kecelakaan di NYC membutuhkan pemetaan lokasi rawan, waktu puncak, dan penyebab utama agar alokasi patroli & intervensi keselamatan tepat sasaran.',
+            action:
+              'Pembersihan nilai kosong & standarisasi nama borough, ekstraksi jam/bulan & rasio keparahan di Excel (PivotTable, PivotChart, Data Modeling), lalu membangun 4 sudut pandang analisis (Di Mana, Kapan Musiman, Kapan Jam, Kenapa).',
+            result:
+              'Brooklyn (76.416 / 32%) & Queens (63.751) menyumbang ±59% insiden; puncak musiman di bulan Maret (25.099 kasus); puncak harian sore 16.00–17.00; akar masalah dominan Driver Inattention/Distraction (58.308 kasus / ±25%), disusul Failure to Yield Right-of-Way dan Following Too Closely.',
+          },
+          actionFramework: {
+            heading: 'Kerangka What – So What – Now What',
+            items: [
+              {
+                title: '1. Faktor Manusia (Distraksi)',
+                what: '1 dari 4 kecelakaan disebabkan oleh kelalaian atau distraksi pengemudi (58.308 kasus / ±25%).',
+                soWhat: 'Faktor perilaku pengemudi jauh lebih mematikan dan dominan dibandingkan faktor kerusakan teknis kendaraan.',
+                nowWhat: 'Prioritaskan kampanye edukasi anti-distraksi serta penegakan tilang elektronik di titik padat.',
+              },
+              {
+                title: '2. Konsentrasi Wilayah (Brooklyn & Queens)',
+                what: '±59% dari total insiden terkonsentrasi di 2 borough: Brooklyn (76.416) dan Queens (63.751).',
+                soWhat: 'Intervensi keselamatan kota yang terfokus pada kedua wilayah ini menyelesaikan lebih dari separuh masalah.',
+                nowWhat: 'Perkuat rambu peringatan, pos pantau, dan patroli aktif di persimpangan rawan kedua area.',
+              },
+              {
+                title: '3. Waktu Sibuk Sore (14.00–18.00)',
+                what: 'Lonjakan stabil sore hari yang memuncak pada jam 16.00–17.00 akibat arus komuter pulang kerja.',
+                soWhat: 'Kombinasi volume kendaraan tinggi dan akumulasi kelelahan pengendara meningkatkan risiko tabrakan.',
+                nowWhat: 'Perketat rekayasa lalu lintas dan siagakan unit patroli aktif pada jam 14.00–18.00.',
+              },
+            ],
+          },
           highlights: [
-            'Membersihkan dan memvalidasi lebih dari 238,000+ catatan kecelakaan lalu lintas guna menjaga konsistensi analisis.',
-            'Melakukan root cause analysis menggunakan XLOOKUP, INDEX/MATCH, dan PivotTable untuk memetakan faktor risiko utama serta pola waktu insiden.',
-            'Menyajikan ringkasan temuan terstruktur sebagai landasan rekomendasi peningkatan keselamatan operasional.',
+            'Membersihkan dan memvalidasi 238.421 catatan kecelakaan lalu lintas NYC (2021–2023) menggunakan Microsoft Excel.',
+            'Menemukan konsentrasi 59% insiden kota berpusat di Brooklyn (76.416) dan Queens (63.751).',
+            'Mengidentifikasi Driver Inattention/Distraction sebagai faktor akar masalah terbesar (58.308 kasus / 24,5%).',
+            'Membangun kerangka aksi What – So What – Now What untuk rekomendasi mitigasi risiko lalu lintas.',
           ],
         },
       ],
@@ -300,7 +408,7 @@ export const content: Record<Language, PortfolioContent> = {
       stats: [
         { value: '21,350+', label: 'Transaksi Diolah' },
         { value: '238,000+', label: 'Catatan Dibersihkan' },
-        { value: '3', label: 'Proyek Analisis & BI' },
+        { value: '2', label: 'Proyek Analisis & BI' },
       ],
       education: {
         degree: 'S1 Teknologi Informasi',
@@ -468,6 +576,15 @@ export const content: Record<Language, PortfolioContent> = {
         highlights: 'Key Findings & Implementation',
         close: 'Close',
         openDashboard: 'Open Dashboard',
+        openLiveDashboard: 'Open Live Dashboard',
+        viewDataset: 'View Dataset',
+        workbookFile: 'File Info',
+        metricsHeading: '4 Key Metrics',
+        businessContextHeading: 'Business Context',
+        keyFindingsHeading: 'Key Findings',
+        recommendationsHeading: 'Strategic Recommendations',
+        parHeading: 'PAR Framework (Problem – Action – Result)',
+        whatSoWhatHeading: 'What – So What – Now What Framework',
         previous: 'Previous',
         next: 'Next',
       },
@@ -475,53 +592,106 @@ export const content: Record<Language, PortfolioContent> = {
         {
           id: 'pizza-sales',
           index: '01',
-          title: 'Pizza Sales Performance & Operational Dashboard',
-          category: 'Business Intelligence Project',
+          title: 'Pizza Sales Performance & Operational Analytics Dashboard',
+          category: 'Business Intelligence',
           tools: ['Excel', 'Looker Studio'],
+          image: '/images/projects/pizza-dashboard.png',
+          liveDashboardUrl: 'https://datastudio.google.com/reporting/81574dad-5d2d-4a15-aafb-eefb54548a3e',
+          datasetUrl: 'https://docs.google.com/spreadsheets/d/1lT0tvBmZi7sswTzVoYQziJopoOdlBn5c/edit?usp=sharing&ouid=103313291434112811548&rtpof=true&sd=true',
           shortSummary:
-            'Reconciliation of 21,350+ transactions ($817K+ revenue), peak hours 12–13 & 17–18, menu categories, and Top 5 SKUs in an interactive BI dashboard.',
+            'Annual sales evaluation ($817,860.05 across 21,350 orders), operational peak-hour patterns, menu category mix, and Top 5 SKUs in an interactive BI dashboard.',
           description:
-            'Sales reconciliation and operational efficiency analysis across 21,350+ transactions generating $817K+ in revenue. Mapped rush-hour demand (12–13 and 17–18), menu category contribution, and Top 5 SKUs in an interactive BI dashboard.',
+            'Comprehensive annual sales evaluation ($817,860.05 across 21,350 orders), operational rush-hour mapping (lunch rush 12:00–13:00 & dinner rush 17:00–18:00), menu category mix, and Top 5 SKUs in an interactive BI dashboard.',
           previewSubtitle: 'Excel · Looker Studio',
-          highlights: [
-            'Validated and reconciled 21,350+ sales transactions totaling $817K+ in revenue using Microsoft Excel and Google Looker Studio.',
-            'Identified peak operational hours at 12–13 and 17–18 to guide staggered staff scheduling recommendations.',
-            'Evaluated four menu categories (Classic, Supreme, Chicken, Veggie) and identified Top 5 SKUs to support inventory control.',
-            'Built an interactive BI dashboard to monitor product performance and order patterns continuously.',
+          metrics: [
+            { label: 'Total Revenue', value: '$817,860.05', subtext: 'Annual gross revenue' },
+            { label: 'Total Pizzas Sold', value: '49,574', subtext: 'Units sold citywide' },
+            { label: 'Total Orders', value: '21,350', subtext: 'Unique processed orders' },
+            { label: 'Average Order Value', value: '$38.31', subtext: '~2.3 pizzas per order' },
           ],
-        },
-        {
-          id: 'superstore-sales',
-          index: '02',
-          title: 'Superstore Sales & Profitability Analysis',
-          category: 'Commercial Analytics Project',
-          tools: ['Excel'],
-          shortSummary:
-            'Sales trend evaluation, cross-regional profitability, and discount impact on net margin summarized with the PAR framework.',
-          description:
-            'Comprehensive review of seasonal sales trends and cross-regional profitability. Focused on measuring how discount policies impact net profit margins, summarized through the PAR (Problem, Action, Result) framework.',
-          previewSubtitle: 'Microsoft Excel',
+          businessContext: {
+            heading: 'Business Context',
+            body: 'Addressing the need for operational peak-hour visibility, revenue-driving menu items & category balance, and optimizing AOV during off-peak hours.',
+          },
+          keyFindings: {
+            heading: 'Key Findings',
+            items: [
+              'Peak Ordering Patterns: Lunch Rush begins at 11:00 peaking at 12:00–13:00 (~2,500 orders/hr); Afternoon Dip at 14:00–16:00 (~1,400 orders/hr); Dinner Rush peaks at 17:00–18:00 until closing at 23:00.',
+              'Category Distribution (Balanced Mix): Classic 26.9%, Supreme 25.5%, Chicken 24.0%, Veggie 23.7%.',
+              'Top 5 SKUs by Revenue: (1) The Thai Chicken Pizza $43,434.25, (2) The Barbecue Chicken Pizza $42,768.00, (3) The California Chicken Pizza $41,409.50, (4) The Classic Deluxe Pizza $38,180.50, (5) The Spicy Italian Pizza $34,831.25.',
+            ],
+          },
+          recommendations: {
+            heading: 'Strategic Recommendations',
+            items: [
+              'Staggered staff scheduling during peak windows (11:30–13:30 and 16:30–18:30) to absorb volume spikes without labor overhead.',
+              'Targeted off-peak bundle promotions (single slice combo + drink) during 14:00–16:00 to lift kitchen utilization.',
+              'Safety stock procurement buffers for chicken fillets and proprietary Thai & BBQ sauces to prevent revenue stockouts on top performers.',
+            ],
+          },
           highlights: [
-            'Analyzed seasonal retail sales trends and profitability differences across regions.',
-            'Built interactive reporting with PivotTables, Calculated Fields, and Slicers to evaluate discount impact on net profit margin.',
-            'Structured executive findings using the PAR (Problem, Action, Result) framework to inform pricing strategy reviews.',
+            'Validated and reconciled 21,350 sales transactions ($817,860.05) using Microsoft Excel and Google Looker Studio.',
+            'Pinpointed operational peak hours (12:00–13:00 and 17:00–18:00) to optimize staggered shift workforce allocations.',
+            'Analyzed four balanced menu categories (Classic 26.9%, Supreme 25.5%, Chicken 24.0%, Veggie 23.7%) and identified Top 5 SKUs.',
+            'Designed an interactive Looker Studio dashboard with category and date-range filters for active KPI monitoring.',
           ],
         },
         {
           id: 'nyc-traffic',
-          index: '03',
+          index: '02',
           title: 'NYC Traffic Safety Analysis',
-          category: 'Public Data Analytics Project',
+          category: 'Public Data Analytics',
           tools: ['Excel'],
+          image: '/images/projects/nyc-traffic-dashboard.png',
+          workbookInfo: 'Workbook: NYC_Collisions_Analysis_Dashboard_v1.xlsx',
           shortSummary:
-            'Cleaning and validation of 238,000+ traffic accident records for root cause analysis and incident pattern mapping.',
+            'Analysis of 238,421 NYC motor vehicle collision records (2021–2023) mapping high-risk boroughs, peak hours, and root causes using the PAR framework.',
           description:
-            'Large-scale data cleaning, normalization, and validation covering 238,000+ traffic accident records to perform root cause analysis on primary risk factors and incident patterns.',
+            'Analysis of 238,421 NYC motor vehicle collision records (2021–2023) mapping high-risk boroughs, peak hours, and root causes using the PAR framework.',
           previewSubtitle: 'Microsoft Excel',
+          metrics: [
+            { label: 'Total Collisions', value: '238,421', subtext: 'Verified collision records' },
+            { label: 'Total Injuries', value: '116,227', subtext: 'Motorists, pedestrians, cyclists' },
+            { label: 'Fatalities', value: '268', subtext: 'Citywide fatal outcomes' },
+            { label: 'Injury Rate', value: '48.7%', subtext: '487 injuries per 1,000 crashes' },
+          ],
+          parFramework: {
+            heading: 'PAR Framework (Problem – Action – Result)',
+            problem:
+              'High frequency of traffic collisions in NYC required spatial, temporal, and root-cause mapping to prioritize patrol allocations and safety interventions effectively.',
+            action:
+              'Data cleaning of missing values and borough name standardization, temporal extraction (hour/month) and severity ratio modeling in Excel (PivotTables, PivotCharts, Data Modeling) across 4 dimensions (Where, When Seasonally, When Hourly, Why).',
+            result:
+              'Brooklyn (76,416 / 32%) & Queens (63,751) account for ~59% of incidents; seasonal peak in March (25,099 cases); daily peak during evening rush 16:00–17:00; dominant root cause is Driver Inattention/Distraction (58,308 cases / ~25%), followed by Failure to Yield Right-of-Way and Following Too Closely.',
+          },
+          actionFramework: {
+            heading: 'What – So What – Now What Framework',
+            items: [
+              {
+                title: '1. Human Factors (Distraction)',
+                what: '1 in 4 accidents stem from driver inattention or distraction (58,308 cases / ~25%).',
+                soWhat: 'Behavioral negligence is drastically more lethal and prevalent than mechanical vehicle failure.',
+                nowWhat: 'Prioritize targeted anti-distraction public campaigns and automated camera enforcement at dense corridors.',
+              },
+              {
+                title: '2. Geographic Concentration (Brooklyn & Queens)',
+                what: '~59% of all collisions occur in just two boroughs: Brooklyn (76,416) and Queens (63,751).',
+                soWhat: 'Targeted municipal intervention resolves over half the citywide issue.',
+                nowWhat: 'Reinforce signage, monitoring posts, and patrol visibility at critical intersections in both boroughs.',
+              },
+              {
+                title: '3. Evening Rush Peak (14:00–18:00)',
+                what: 'Steady afternoon surge peaking between 16:00–17:00 driven by commuter volume and driver fatigue.',
+                soWhat: 'High traffic volume compounded by operator fatigue sharply increases collision probability.',
+                nowWhat: 'Optimize signal timing and deploy active traffic safety patrols between 14:00 and 18:00.',
+              },
+            ],
+          },
           highlights: [
-            'Cleaned and validated 238,000+ public traffic accident records to ensure analytical consistency.',
-            'Performed root cause analysis using XLOOKUP, INDEX/MATCH, and PivotTables to pinpoint primary risk factors and peak incident windows.',
-            'Delivered structured summaries of incident patterns to support operational safety recommendations.',
+            'Cleaned and validated 238,421 NYC collision records (2021–2023) using Microsoft Excel.',
+            'Pinpointed that 59% of incidents are concentrated in Brooklyn (76,416) and Queens (63,751).',
+            'Identified Driver Inattention/Distraction as the leading root cause (58,308 cases / 24.5%).',
+            'Structured actionable What – So What – Now What takeaways for municipal traffic mitigation.',
           ],
         },
       ],
@@ -537,7 +707,7 @@ export const content: Record<Language, PortfolioContent> = {
       stats: [
         { value: '21,350+', label: 'Transactions Analyzed' },
         { value: '238,000+', label: 'Records Cleaned' },
-        { value: '3', label: 'Analytics & BI Projects' },
+        { value: '2', label: 'Analytics & BI Projects' },
       ],
       education: {
         degree: 'Bachelor of Information Technology (S1)',
