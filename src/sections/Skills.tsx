@@ -1,20 +1,9 @@
-import { Database, Table2, BarChart3 } from 'lucide-react';
-import type { PortfolioContent, Language, SkillCardItem } from '../data/content';
+import type { PortfolioContent, Language } from '../data/content';
 import { FadeUp } from '../components/ScrollAnimations';
 
 interface SkillsProps {
   content: PortfolioContent;
   lang?: Language;
-}
-
-function SkillIcon({ id }: { id: SkillCardItem['id'] }) {
-  if (id === 'sql') {
-    return <Database className="w-5 h-5 text-neutral-700 shrink-0" strokeWidth={1.75} aria-hidden="true" />;
-  }
-  if (id === 'excel') {
-    return <Table2 className="w-5 h-5 text-neutral-700 shrink-0" strokeWidth={1.75} aria-hidden="true" />;
-  }
-  return <BarChart3 className="w-5 h-5 text-neutral-700 shrink-0" strokeWidth={1.75} aria-hidden="true" />;
 }
 
 export function Skills({ content }: SkillsProps) {
@@ -25,57 +14,56 @@ export function Skills({ content }: SkillsProps) {
       id="skills"
       className="relative w-full bg-[#F5F5F5] text-[#111111] pt-6 pb-20 md:pt-10 md:pb-28 scroll-mt-24"
     >
-      <div className="site-container">
+      <div className="site-container max-w-5xl mx-auto">
         {/* Section Header */}
-        <FadeUp className="mb-10 md:mb-12 text-left md:text-center max-w-2xl md:mx-auto">
+        <FadeUp className="mb-10 md:mb-12 text-left max-w-2xl">
           <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#525252] mb-2">
             {skills.sectionLabel}
           </p>
-          <h2 className="text-[28px] sm:text-[34px] md:text-[42px] font-bold tracking-[-0.03em] leading-[1.12] text-[#111111]">
+          <h2 className="text-[28px] sm:text-[34px] md:text-[40px] font-bold tracking-[-0.03em] leading-[1.12] text-[#111111]">
             {skills.headline}
           </h2>
-          <p className="mt-3 text-[15px] md:text-[16px] text-[#525252] leading-relaxed">
+          <p className="mt-2.5 text-[15px] md:text-[16px] text-[#525252] leading-relaxed">
             {skills.subtitle}
           </p>
         </FadeUp>
 
-        {/* 3 Clean Editorial Typography Cards (No Images / Wireframes) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* Editorial Spec-List: 3 Horizontal Rows without Card Containers */}
+        <div className="border-t border-neutral-300/80 divide-y divide-neutral-300/80 border-b">
           {skills.items.map((item, idx) => {
             const indexLabel = `0${idx + 1}`;
             return (
-              <FadeUp key={item.id} delay={idx * 0.08} className="h-full">
-                <article className="h-full bg-white rounded-2xl border border-neutral-200 p-5 md:p-6 flex flex-col justify-between transition-colors duration-200 hover:border-neutral-400 text-left">
-                  <div>
-                    {/* Top Row: Thin Mono Index (Left) + Minimalist Monochrome Icon (Right) */}
-                    <div className="flex items-center justify-between">
-                      <span className="text-neutral-400 text-xs font-mono font-medium tracking-wider select-none">
-                        {indexLabel}
-                      </span>
-                      <SkillIcon id={item.id} />
-                    </div>
-
-                    {/* Middle Content: Bold Title + Compact 2-Line Description */}
-                    <h3 className="text-lg md:text-xl font-bold text-neutral-950 tracking-tight mt-5">
+              <FadeUp key={item.id} delay={idx * 0.06}>
+                <div className="py-6 md:py-7 px-1 md:px-3 grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-6 items-start md:items-center transition-colors hover:bg-black/[0.025]">
+                  {/* Left Column (col-span-4): Monospace Index + Bold Pillar Title */}
+                  <div className="md:col-span-4 flex items-baseline gap-3.5 text-left">
+                    <span className="text-xs font-mono font-medium text-neutral-400 select-none">
+                      {indexLabel}
+                    </span>
+                    <h3 className="text-lg md:text-xl font-semibold tracking-tight text-neutral-950">
                       {item.title}
                     </h3>
-                    <p className="text-sm text-neutral-600 mt-2 leading-relaxed">
+                  </div>
+
+                  {/* Center Column (col-span-4): Dense 2-Line Description */}
+                  <div className="md:col-span-4 text-left">
+                    <p className="text-sm text-neutral-600 leading-relaxed">
                       {item.description}
                     </p>
                   </div>
 
-                  {/* Bottom Row: Thin Hairline Divider + Pill Tags */}
-                  <div className="border-t border-neutral-100 mt-5 pt-4 flex flex-wrap gap-2">
+                  {/* Right Column (col-span-4): Flat Minimalist Square-Rounded Tool Tags */}
+                  <div className="md:col-span-4 flex flex-wrap md:justify-end gap-1.5 pt-1 md:pt-0">
                     {item.pills.map((pill) => (
                       <span
                         key={pill}
-                        className="rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700 font-medium"
+                        className="rounded-md bg-neutral-200/80 border border-neutral-300/70 px-2.5 py-1 text-xs font-medium text-neutral-800 select-none"
                       >
                         {pill}
                       </span>
                     ))}
                   </div>
-                </article>
+                </div>
               </FadeUp>
             );
           })}

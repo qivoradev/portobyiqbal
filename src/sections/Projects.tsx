@@ -430,74 +430,72 @@ export function Projects({ content, onModalStateChange }: ProjectsProps) {
             </p>
           </FadeUp>
 
-          {/* 2 High-Contrast Light-Gray Cards Stacked Vertically */}
-          <div className="space-y-8 max-w-5xl mx-auto">
+          {/* 2 High-Contrast Light-Gray Cards Stacked Vertically (max-w-4xl, fits viewport comfortably) */}
+          <div className="space-y-6 md:space-y-8 max-w-4xl mx-auto">
             {projects.items.map((project, idx) => {
               const previewImg = PROJECT_PREVIEW_IMAGES[project.id] || project.image;
 
               return (
                 <FadeUp key={project.id} delay={idx * 0.08}>
                   <article className="group relative bg-[#DFE1E4] text-neutral-950 rounded-2xl overflow-hidden flex flex-col transition-transform duration-300">
-                    {/* Top Row: Title + Category Pill (Left) & Large Mono Index (Top-Right) */}
-                    <div className="px-5 pt-5 pb-4 sm:px-7 sm:pt-7 md:px-9 md:pt-8 flex items-start justify-between gap-4">
+                    {/* Top Row: Title + Category Pill (Left) & Mono Index (Right) */}
+                    <div className="px-5 pt-4 pb-3 md:px-6 md:pt-5 md:pb-3 flex items-start justify-between gap-4">
                       <div className="min-w-0 text-left">
-                        <h3 className="text-[20px] sm:text-[26px] md:text-[31px] font-bold tracking-[-0.025em] leading-[1.15] text-neutral-950">
+                        <h3 className="text-lg sm:text-xl md:text-[22px] font-semibold tracking-tight leading-snug text-neutral-950">
                           {project.title}
                         </h3>
-                        <span className="mt-2.5 inline-flex items-center rounded-full border border-neutral-500/60 px-3.5 py-1 text-[12px] md:text-[13px] font-medium text-neutral-800">
+                        <span className="mt-1.5 inline-flex items-center rounded-full border border-neutral-500/60 px-2.5 py-0.5 text-[11px] font-medium text-neutral-800">
                           {project.category}
                         </span>
                       </div>
 
                       <span
                         aria-hidden="true"
-                        className="font-mono text-[26px] sm:text-[32px] md:text-[40px] font-bold tracking-tight leading-none text-neutral-950/25 shrink-0 select-none"
+                        className="font-mono text-2xl md:text-3xl font-semibold tracking-tight leading-none text-neutral-400 shrink-0 select-none"
                       >
                         {project.index}
                       </span>
                     </div>
 
-                    {/* Middle Area: Dashboard Preview Screen Frame (WAJIB UTUH, ANTI-TERPOTONG) */}
-                    <div className="px-5 sm:px-7 md:px-9">
-                      <div className="w-full aspect-[16/10] rounded-xl bg-white border border-black/10 shadow-sm overflow-hidden p-1.5 sm:p-2 flex items-center justify-center">
-                        <img
-                          src={previewImg}
-                          alt={project.title}
-                          loading="lazy"
-                          className="w-full h-full object-contain rounded-lg select-none"
-                        />
-                      </div>
+                    {/* Middle Area: Dashboard Preview Screen Frame (Locked Height, Utuh & Anti-Terpotong) */}
+                    <div className="mx-5 md:mx-6 rounded-xl bg-white border border-black/10 p-1.5 md:p-2 flex items-center justify-center h-[210px] sm:h-[290px] md:h-[340px] lg:h-[370px] overflow-hidden">
+                      <img
+                        src={previewImg}
+                        alt={project.title}
+                        loading="lazy"
+                        className="w-full h-full object-contain rounded-lg select-none"
+                      />
                     </div>
 
                     {/* Bottom Row: Left Tool Badges & Summary + Bottom-Right Cutout Notch CTA */}
-                    <div className="pt-5 md:pt-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div className="px-5 pt-3 pb-4 md:pl-6 md:pt-3.5 md:pb-4 flex flex-col md:flex-row md:items-end justify-between gap-3">
                       {/* Left: Solid Black Tool Badges + Concise Verified Metric Summary */}
-                      <div className="px-5 pb-1 sm:px-7 md:px-9 md:pb-8 flex-1 min-w-0 text-left">
-                        <div className="flex flex-wrap items-center gap-2 mb-2.5">
+                      <div className="flex-1 min-w-0 text-left">
+                        <div className="flex flex-wrap items-center gap-1.5 mb-2">
                           {project.tools.map((tool) => (
                             <span
                               key={tool}
-                              className="bg-neutral-950 text-white rounded-md px-3 py-1.5 text-xs font-medium tracking-wide"
+                              className="bg-neutral-950 text-white rounded-md px-2.5 py-1 text-[11.5px] font-medium tracking-wide"
                             >
                               {tool}
                             </span>
                           ))}
                         </div>
-                        <p className="text-[13.5px] sm:text-[14.5px] md:text-[15px] text-neutral-800 leading-relaxed line-clamp-2 md:line-clamp-3 max-w-[56ch]">
+                        <p className="text-[13px] sm:text-[13.5px] md:text-[14px] text-neutral-800 leading-relaxed line-clamp-2 max-w-[62ch]">
                           {project.shortSummary}
                         </p>
                       </div>
 
-                      {/* Bottom-Right Cutout Notch: Cleanly flush to card bottom-right edge */}
-                      <div className="flex justify-end shrink-0">
-                        <div className="bg-[#050505] rounded-tl-2xl pt-3 pl-3">
+                      {/* Bottom-Right Cutout Notch CTA */}
+                      <div className="flex justify-end shrink-0 -mr-5 -mb-4 md:-mr-6 md:-mb-4">
+                        <div className="bg-[#050505] rounded-tl-2xl pt-2.5 pl-3">
                           <button
                             ref={(el) => {
                               triggerRefs.current[idx] = el;
                             }}
                             type="button"
                             onClick={() => openModal(idx)}
-                            className="border border-neutral-600 hover:bg-white hover:text-black hover:border-white active:scale-[0.98] text-white bg-[#050505] rounded-lg px-5 py-2.5 md:px-6 md:py-3 text-sm font-medium transition-all duration-200 cursor-pointer whitespace-nowrap"
+                            className="border border-neutral-600 hover:bg-white hover:text-black hover:border-white active:scale-[0.98] text-white bg-[#050505] rounded-lg px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer whitespace-nowrap"
                           >
                             {projects.viewCaseButton}
                           </button>

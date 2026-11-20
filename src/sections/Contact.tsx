@@ -1,5 +1,5 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { Check, Copy, Loader2, AlertCircle, ArrowUp } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Check, Loader2, AlertCircle, ArrowUp } from 'lucide-react';
 import type { PortfolioContent, Language } from '../data/content';
 import { FadeUp } from '../components/ScrollAnimations';
 import { scrollToLenis } from '../hooks/useLenis';
@@ -10,7 +10,6 @@ interface ContactProps {
 }
 
 export function Contact({ content }: ContactProps) {
-  const [copied, setCopied] = useState(false);
   const { contact } = content;
   const formContent = contact.form;
 
@@ -45,23 +44,6 @@ export function Contact({ content }: ContactProps) {
     }, 1000);
     return () => clearInterval(timer);
   }, [resendCooldown]);
-
-  const handleCopy = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(contact.email);
-    } catch {
-      const textarea = document.createElement('textarea');
-      textarea.value = contact.email;
-      textarea.style.position = 'fixed';
-      textarea.style.opacity = '0';
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-    }
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }, [contact.email]);
 
   const validate = () => {
     const newErrors: {
@@ -186,9 +168,8 @@ export function Contact({ content }: ContactProps) {
             {contact.subheading}
           </p>
 
-          {/* 2 Status Pills: Available for Work + Copy Email */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            {/* Dark Pill with Glowing Emerald Indicator */}
+          {/* Status Badge: Available for Work */}
+          <div className="mt-6 flex justify-center">
             <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-neutral-900 border border-neutral-800 text-[13px] font-medium text-neutral-200">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#259B52] opacity-75" />
@@ -196,29 +177,6 @@ export function Contact({ content }: ContactProps) {
               </span>
               <span>{contact.availablePill}</span>
             </div>
-
-            {/* Contrasting White Pill: Copy Email */}
-            <button
-              type="button"
-              onClick={handleCopy}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white hover:bg-neutral-200 active:scale-[0.98] text-[#111111] text-[13px] font-semibold transition-all cursor-pointer"
-              aria-label={`${contact.copyButton} ${contact.email}`}
-            >
-              {copied ? (
-                <>
-                  <Check size={14} className="text-[#259B52] shrink-0" strokeWidth={2.5} />
-                  <span>{contact.copiedButton}</span>
-                </>
-              ) : (
-                <>
-                  <Copy size={14} className="text-neutral-600 shrink-0" />
-                  <span>{contact.copyButton}</span>
-                  <span className="hidden sm:inline text-neutral-500 font-normal">
-                    · {contact.email}
-                  </span>
-                </>
-              )}
-            </button>
           </div>
         </FadeUp>
 
