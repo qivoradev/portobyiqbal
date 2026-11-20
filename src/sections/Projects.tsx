@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, ExternalLink, ChevronLeft, ChevronRight, FileSpreadsheet } from 'lucide-react';
 import type { PortfolioContent, ProjectItem, Language } from '../data/content';
 import { PROJECT_PREVIEW_IMAGES } from '../config/assets';
-import { usePrefersReducedMotion, FadeUp, EDITORIAL_EASE } from '../components/ScrollAnimations';
+import { usePrefersReducedMotion, FadeUp } from '../components/ScrollAnimations';
 import { stopLenis, startLenis } from '../hooks/useLenis';
 
 interface ProjectDetailModalProps {
@@ -15,6 +15,26 @@ interface ProjectDetailModalProps {
   onNavigateProject: (newIndex: number) => void;
 }
 
+function useIsDesktop(breakpoint = 768) {
+  const [isDesktop, setIsDesktop] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    return window.innerWidth >= breakpoint;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mql = window.matchMedia(`(min-width: ${breakpoint}px)`);
+    const update = (e: MediaQueryListEvent | MediaQueryList) => {
+      setIsDesktop(e.matches);
+    };
+    update(mql);
+    mql.addEventListener('change', update);
+    return () => mql.removeEventListener('change', update);
+  }, [breakpoint]);
+
+  return isDesktop;
+}
+
 function ProjectDetailModal({
   project,
   currentIndex,
@@ -23,7 +43,9 @@ function ProjectDetailModal({
   onClose,
   onNavigateProject,
 }: ProjectDetailModalProps) {
+  const isDesktop = useIsDesktop(768);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const contentScrollRef = useRef<HTMLDivElement | null>(null);
   const reducedMotion = usePrefersReducedMotion();
 
   const onCloseRef = useRef(onClose);
@@ -35,6 +57,7 @@ function ProjectDetailModal({
   const totalRef = useRef(totalProjects);
   totalRef.current = totalProjects;
 
+  // Lock body scroll and stop Lenis while drawer is open
   useEffect(() => {
     stopLenis();
     const origOverflow = document.body.style.overflow;
@@ -66,45 +89,111 @@ function ProjectDetailModal({
     };
   }, []);
 
+  // Reset scrollTop = 0 whenever a new project is opened or switched
+  useEffect(() => {
+    if (contentScrollRef.current) {
+      contentScrollRef.current.scrollTop = 0;
+    }
+  }, [project.id]);
+
   const previewImg = PROJECT_PREVIEW_IMAGES[project.id] || project.image;
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: reducedMotion ? 0.01 : 0.2 }}
-      className="fixed inset-0 z-[70] bg-black/85 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 lg:p-6"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="project-modal-title"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
+      exit={{ opacity: 1 }}
+      transition={{ duration: reducedMotion ? 0.01 : isDesktop ? 0.38 : 0.36 }}
+      className="fixed inset-0 z-50 overflow-hidden pointer-events-none"
     >
+      {/* 1. Backdrop */}
       <motion.div
-        initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 18, scale: 0.98 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 14, scale: 0.98 }}
-        transition={{ duration: reducedMotion ? 0.01 : 0.24, ease: EDITORIAL_EASE }}
-        className="relative max-w-4xl w-[95vw] max-h-[90vh] flex flex-col overflow-hidden bg-[#0E1012] text-white border border-white/10 rounded-t-2xl sm:rounded-2xl shadow-2xl"
+        key="project-backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: reducedMotion ? 0.01 : 0.25 }}
+        onClick={onClose}
+        className="fixed inset-0 z-50 bg-black/70 backdrop-blur-[2px] pointer-events-auto"
+        aria-hidden="true"
+      />
+
+      {/* 2. Responsive Panel: Wide Side Drawer (>= 768px) / Bottom Sheet (< 768px) */}
+      <motion.div
+        key={isDesktop ? 'desktop-drawer' : 'mobile-sheet'}
+        initial={
+          reducedMotion
+            ? { opacity: 0 }
+            : isDesktop
+            ? { x: '100%' }
+            : { y: '100%' }
+        }
+        animate={
+          reducedMotion
+            ? { opacity: 1 }
+            : isDesktop
+            ? { x: 0 }
+            : { y: 0 }
+        }
+        exit={
+          reducedMotion
+            ? { opacity: 0 }
+            : isDesktop
+            ? { x: '100%' }
+            : { y: '100%' }
+        }
+        transition={{
+          duration: reducedMotion ? 0.01 : isDesktop ? 0.38 : 0.36,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className={
+          isDesktop
+            ? "fixed inset-y-0 right-0 z-50 h-dvh w-full max-w-[820px] bg-[#0B0D0F] text-white border-l border-white/10 rounded-l-2xl shadow-2xl flex flex-col overflow-hidden pointer-events-auto"
+            : "fixed inset-x-0 bottom-0 z-50 max-h-[92dvh] w-full bg-[#0B0D0F] text-white border-t border-white/10 rounded-t-3xl shadow-2xl flex flex-col overflow-hidden pointer-events-auto"
+        }
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="project-modal-title"
       >
-        {/* 1. Header Sticky */}
-        <div className="flex items-center justify-between px-5 sm:px-7 py-4 border-b border-white/10 bg-[#0E1012]/95 backdrop-blur-md shrink-0">
-          <div className="flex items-center gap-3 min-w-0 pr-3">
-            <span className="font-mono text-xs font-bold text-[#4ADE80] bg-[#259B52]/15 border border-[#259B52]/30 px-2 py-0.5 rounded-md">
-              {project.index}
-            </span>
-            <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider truncate">
-              {project.category}
-            </span>
+        {/* Mobile Grabber / Handle Bar */}
+        <div className="md:hidden pt-3 pb-1 flex justify-center shrink-0 bg-[#0B0D0F]/95">
+          <div className="w-10 h-1 rounded-full bg-white/20" />
+        </div>
+
+        {/* Sticky Header */}
+        <div className="shrink-0 border-b border-white/10 px-5 py-4 md:px-7 md:py-5 flex items-start justify-between gap-4 bg-[#0B0D0F]/95 backdrop-blur-md">
+          <div className="min-w-0 space-y-1.5 flex-1">
+            <div className="flex items-center gap-2.5">
+              <span className="font-mono text-xs font-bold text-[#4ADE80] bg-[#259B52]/15 border border-[#259B52]/30 px-2 py-0.5 rounded-md shrink-0">
+                {project.index}
+              </span>
+              <span className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider truncate">
+                {project.category}
+              </span>
+            </div>
+            <h2
+              id="project-modal-title"
+              className="text-lg md:text-xl lg:text-[22px] font-bold text-white leading-snug tracking-tight"
+            >
+              {project.title}
+            </h2>
+            <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+              {project.tools.map((tool) => (
+                <span
+                  key={tool}
+                  className="px-2.5 py-0.5 rounded-md bg-white/[0.07] border border-white/10 text-[11px] font-medium text-neutral-300"
+                >
+                  {tool}
+                </span>
+              ))}
+            </div>
           </div>
 
           <button
             ref={closeButtonRef}
             type="button"
             onClick={onClose}
-            className="w-10 h-10 rounded-xl bg-neutral-900 border border-neutral-800 hover:bg-neutral-800 text-neutral-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+            className="min-w-[36px] min-h-[36px] w-9 h-9 rounded-xl bg-neutral-900 border border-neutral-800 hover:bg-neutral-800 text-neutral-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0 mt-0.5"
             aria-label={labels.close}
           >
             <X size={18} strokeWidth={2} />
@@ -113,31 +202,11 @@ function ProjectDetailModal({
 
         {/* Scrollable Content Body with data-lenis-prevent */}
         <div
+          ref={contentScrollRef}
           data-lenis-prevent
-          className="overflow-y-auto thin-scrollbar p-5 sm:p-7 space-y-7 flex-1 text-left"
+          className="flex-1 overflow-y-auto overscroll-contain px-5 py-5 md:px-7 md:py-6 space-y-6 text-left"
         >
-          {/* Title & Tools Badge */}
-          <div className="space-y-3">
-            <h2
-              id="project-modal-title"
-              className="text-[22px] sm:text-[28px] font-bold text-white leading-tight tracking-tight"
-            >
-              {project.title}
-            </h2>
-
-            <div className="flex flex-wrap items-center gap-2">
-              {project.tools.map((tool) => (
-                <span
-                  key={tool}
-                  className="px-3 py-1 rounded-md bg-white/[0.07] border border-white/10 text-xs font-medium text-neutral-200"
-                >
-                  {tool}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* 2. Preview Dashboard Penuh & Action Row */}
+          {/* Dashboard Preview & Action Row */}
           <div className="space-y-3.5">
             <div className="w-full aspect-[16/10] rounded-xl bg-white p-2 sm:p-3 border border-white/10 flex items-center justify-center overflow-hidden shadow-md">
               <img
@@ -183,7 +252,7 @@ function ProjectDetailModal({
             )}
           </div>
 
-          {/* 3. Grid 4 Metrik Kunci */}
+          {/* Grid 4 Metrik Kunci */}
           {project.metrics && project.metrics.length > 0 && (
             <div className="space-y-3">
               <h3 className="text-[12px] font-bold text-neutral-400 uppercase tracking-[0.12em]">
@@ -212,7 +281,7 @@ function ProjectDetailModal({
             </div>
           )}
 
-          {/* 4. Narasi Analisis Terstruktur */}
+          {/* Narasi Analisis Terstruktur */}
           {/* Latar Belakang Bisnis (Project 01) */}
           {project.businessContext && (
             <div className="space-y-2">
@@ -352,7 +421,7 @@ function ProjectDetailModal({
           )}
         </div>
 
-        {/* 5. Modal Footer Sticky */}
+        {/* Modal Footer Sticky */}
         <div className="px-5 sm:px-7 py-3.5 border-t border-white/10 bg-[#0A0C0E] flex items-center justify-between shrink-0">
           <button
             type="button"
