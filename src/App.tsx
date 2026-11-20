@@ -59,10 +59,7 @@ export default function App() {
       // Ignore storage errors
     }
     document.documentElement.lang = lang === 'in' ? 'id' : 'en';
-    document.title =
-      lang === 'in'
-        ? 'iqbaldf — Iqbal Dwi Fathonah | Data Analyst'
-        : 'iqbaldf — Iqbal Dwi Fathonah | Data Analyst Portfolio';
+    document.title = 'portobyiqbaldf.vercel.app';
   }, [lang]);
 
   // Adaptive Theme & Active Section Tracking
