@@ -73,13 +73,13 @@ export function Hero({
         >
           {/* Portrait Wrapper: 72% max-w-[260px] on mobile, max-w-[320px] md:max-w-[340px] on desktop */}
           <div className="relative w-[72%] max-w-[260px] sm:max-w-[320px] md:w-full md:max-w-[340px]">
-            {/* Portrait Card: 3:4 aspect ratio, studio gray gradient, breathing room at top */}
-            <div className="relative w-full aspect-[3/4] rounded-2xl bg-gradient-to-b from-[#E4E6E8] via-[#D8DADC] to-[#CACDD0] border border-neutral-300/80 overflow-hidden pt-6 md:pt-7 px-2 flex items-end justify-center">
+            {/* Portrait Card: 3:4.2 aspect ratio, full-bleed suit to edges */}
+            <div className="relative w-full aspect-[3/4.2] rounded-2xl bg-gradient-to-b from-[#E4E6E8] via-[#D8DADC] to-[#CACDD0] border border-neutral-300/80 overflow-hidden flex items-end justify-center p-0">
               {PROFILE_PHOTO_URL ? (
                 <img
                   src={PROFILE_PHOTO_URL}
                   alt="Iqbal Dwi Fathonah"
-                  className="w-full h-full object-contain object-bottom select-none pointer-events-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.08)]"
+                  className="w-full h-auto block object-bottom scale-[1.01] origin-bottom select-none pointer-events-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.08)]"
                 />
               ) : (
                 /* Clean Minimalist Portrait Placeholder (Swap via PROFILE_PHOTO_URL in src/config/assets.ts) */
