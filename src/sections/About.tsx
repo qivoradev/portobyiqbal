@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'motion/react';
-import { Eye, ExternalLink, GraduationCap } from 'lucide-react';
+import { Eye, GraduationCap } from 'lucide-react';
 import type { CertificationItem, PortfolioContent, Language } from '../data/content';
 import { ABOUT_AVATAR_URL } from '../config/assets';
 import { CertificateModal } from '../components/CertificateModal';
@@ -165,18 +165,6 @@ export function About({ content, onModalStateChange }: AboutProps) {
                           <Eye size={13} />
                           <span>{about.credentials.viewCertButton}</span>
                         </button>
-
-                        {cert.verification?.url && (
-                          <a
-                            href={cert.verification.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-xs font-semibold text-[#4ADE80] hover:underline"
-                          >
-                            <span>{about.credentials.verifyLinkText}</span>
-                            <ExternalLink size={12} />
-                          </a>
-                        )}
                       </div>
                     </div>
                   </article>
