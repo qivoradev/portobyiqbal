@@ -10,13 +10,12 @@ export type Language = 'in' | 'en';
 
 export interface ProjectItem {
   id: string;
-  displayTitle: string;
   title: string;
   category: string;
   tools: string[];
   toolsText: string;
   description: string;
-  dataMetric: string;
+  fact: string;
   previewLabel: string;
   highlights: string[];
   dashboardUrl?: string;
@@ -118,16 +117,10 @@ export interface PortfolioContent {
     sectionLabel: string;
     headline: string;
     story: string;
-    academicBaseLabel: string;
-    academicBaseValue: string;
     metrics: MetricItem[];
     approach: {
       label: string;
       steps: string[];
-    };
-    toolkit: {
-      label: string;
-      tools: string[];
     };
   };
   projects: {
@@ -136,12 +129,6 @@ export interface PortfolioContent {
     subtitle: string;
     viewCase: string;
     viewDetails: string;
-    moveHelperText: string;
-    metaLabels: {
-      category: string;
-      tools: string;
-      data: string;
-    };
     modalLabels: {
       overview: string;
       context: string;
@@ -188,6 +175,28 @@ export interface PortfolioContent {
       label: string;
       url: string;
     }[];
+    form: {
+      nameLabel: string;
+      namePlaceholder: string;
+      nameError: string;
+      emailLabel: string;
+      emailPlaceholder: string;
+      emailError: string;
+      subjectLabel: string;
+      subjectPlaceholder: string;
+      subjectError: string;
+      messageLabel: string;
+      messagePlaceholder: string;
+      messageError: string;
+      sendButton: string;
+      sendingButton: string;
+      successTitle: string;
+      successMessage: string;
+      sendAnotherButton: string;
+      fallbackNotice: string;
+      errorMessage: string;
+      emailDirectly: string;
+    };
     footerCopy: string;
     footerLocation: string;
   };
@@ -259,24 +268,21 @@ export const content: Record<Language, PortfolioContent> = {
       headline: 'Mengolah data menjadi keputusan bisnis yang jelas.',
       story:
         'Fresh graduate Teknologi Informasi UMY dengan fokus pada analisis data bisnis, pemodelan data relasional, dan Business Intelligence. Menggunakan Microsoft Excel tingkat lanjut (PivotTable, XLOOKUP, Data Modeling) dan Google Looker Studio untuk dashboard interaktif. Memiliki pemahaman di bidang Artificial Intelligence (Certiport) dan Web Development (BNSP). Terbiasa mengolah dan memvalidasi puluhan ribu baris data transaksi untuk mengidentifikasi tren, mengevaluasi performa produk, dan mendukung keputusan bisnis.',
-      academicBaseLabel: 'Pendidikan:',
-      academicBaseValue:
-        'Universitas Muhammadiyah Yogyakarta · S1 Teknologi Informasi · Sep 2022 – Jun 2026',
       metrics: [
         {
           value: 21350,
           suffix: '+',
-          label: 'transaksi penjualan diolah dan divalidasi',
+          label: 'transaksi diolah',
         },
         {
           value: 238000,
           suffix: '+',
-          label: 'catatan data dibersihkan dan divalidasi',
+          label: 'data dibersihkan',
         },
         {
           value: 3,
           suffix: '',
-          label: 'project BI & analytics',
+          label: 'proyek BI',
         },
       ],
       approach: {
@@ -289,10 +295,6 @@ export const content: Record<Language, PortfolioContent> = {
           'Menyampaikan insight rekomendasi yang aplikatif',
         ],
       },
-      toolkit: {
-        label: 'Core Stack & Toolkit',
-        tools: ['SQL', 'MySQL', 'Excel', 'Looker Studio', 'Git'],
-      },
     },
     projects: {
       sectionLabel: 'Karya Pilihan',
@@ -300,12 +302,6 @@ export const content: Record<Language, PortfolioContent> = {
       subtitle: '3 Studi Kasus Bisnis & Data Publik',
       viewCase: 'Lihat Kasus',
       viewDetails: 'Lihat detail →',
-      moveHelperText: 'Gerakkan kursor di atas pratinjau',
-      metaLabels: {
-        category: 'Kategori',
-        tools: 'Tools',
-        data: 'Data',
-      },
       modalLabels: {
         overview: 'Ringkasan',
         context: 'Konteks & Lingkup',
@@ -319,14 +315,13 @@ export const content: Record<Language, PortfolioContent> = {
       items: [
         {
           id: 'pizza-sales',
-          displayTitle: 'Pizza Sales',
           title: 'Pizza Sales Performance & Operational Dashboard',
           category: 'Business Intelligence Project',
           tools: ['Excel', 'Looker Studio'],
           toolsText: 'Excel · Looker Studio',
           description:
             'Rekonsiliasi penjualan dan analisis jam sibuk dari 21.350+ transaksi, dengan dashboard BI interaktif.',
-          dataMetric: '21.350+ transaksi',
+          fact: '21.350+ transaksi · pendapatan $817K+',
           previewLabel: 'Pola jam sibuk',
           highlights: [
             'Mengolah dan memvalidasi rekonsiliasi data lebih dari 21.350 transaksi penjualan tahunan ($817K+) menggunakan Microsoft Excel dan Google Looker Studio.',
@@ -337,14 +332,13 @@ export const content: Record<Language, PortfolioContent> = {
         },
         {
           id: 'superstore-sales',
-          displayTitle: 'Superstore',
           title: 'Superstore Sales & Profitability Analysis',
           category: 'Commercial Analytics Project',
           tools: ['Excel'],
           toolsText: 'Excel',
           description:
             'Analisis tren penjualan musiman dan profitabilitas wilayah, berfokus pada dampak diskon terhadap margin laba bersih.',
-          dataMetric: 'Ribuan baris data',
+          fact: 'Ribuan baris data transaksi',
           previewLabel: 'Margin per wilayah',
           highlights: [
             'Menganalisis tren penjualan ritel musiman dan profitabilitas lintas wilayah dari ribuan baris data transaksi.',
@@ -354,14 +348,13 @@ export const content: Record<Language, PortfolioContent> = {
         },
         {
           id: 'nyc-traffic',
-          displayTitle: 'NYC Traffic',
           title: 'NYC Traffic Safety Analysis',
           category: 'Public Data Analytics Project',
           tools: ['Excel'],
           toolsText: 'Excel',
           description:
             'Pembersihan dan validasi 238.000+ catatan kecelakaan lalu lintas untuk menemukan faktor risiko utama dan pola insiden.',
-          dataMetric: '238.000+ catatan insiden',
+          fact: '238.000+ catatan insiden lalu lintas',
           previewLabel: 'Insiden per jam',
           highlights: [
             'Mengolah, membersihkan, dan memvalidasi dataset lebih dari 238.000 catatan kecelakaan lalu lintas.',
@@ -465,6 +458,10 @@ export const content: Record<Language, PortfolioContent> = {
       copiedButton: 'Tersalin ✓',
       socials: [
         {
+          label: 'WhatsApp',
+          url: 'https://wa.me/6285726168917',
+        },
+        {
           label: 'LinkedIn',
           url: 'https://www.linkedin.com/in/iqbal-dwi-fathonah-56ba2a3b0',
         },
@@ -473,6 +470,28 @@ export const content: Record<Language, PortfolioContent> = {
           url: 'https://github.com/qivoradev',
         },
       ],
+      form: {
+        nameLabel: 'Nama Lengkap',
+        namePlaceholder: 'Nama Anda',
+        nameError: 'Nama wajib diisi',
+        emailLabel: 'Email',
+        emailPlaceholder: 'nama@perusahaan.com',
+        emailError: 'Alamat email tidak valid',
+        subjectLabel: 'Subjek',
+        subjectPlaceholder: 'Peluang Kerja / Proyek Analisis Data',
+        subjectError: 'Subjek wajib diisi',
+        messageLabel: 'Pesan',
+        messagePlaceholder: 'Ceritakan kebutuhan analisis data atau peran yang tersedia...',
+        messageError: 'Pesan minimal 10 karakter',
+        sendButton: 'Kirim pesan',
+        sendingButton: 'Mengirim...',
+        successTitle: 'Pesan terkirim. Terima kasih.',
+        successMessage: 'Pesan Anda telah berhasil dikirim. Saya akan segera menghubungi Anda kembali.',
+        sendAnotherButton: 'Kirim pesan lain',
+        fallbackNotice: 'Kunci API belum diatur. Mengalihkan ke email langsung...',
+        errorMessage: 'Gagal mengirim pesan. Silakan coba lagi atau kirim via email.',
+        emailDirectly: 'Kirim email langsung',
+      },
       footerCopy: `© ${new Date().getFullYear()} iqbaldf · Iqbal Dwi Fathonah. Data Analyst.`,
       footerLocation: 'Universitas Muhammadiyah Yogyakarta · Yogyakarta, Indonesia',
     },
@@ -542,24 +561,21 @@ export const content: Record<Language, PortfolioContent> = {
       headline: 'Turning data into clear business decisions.',
       story:
         'Information Technology fresh graduate from UMY focused on business data analytics, relational data modeling, and Business Intelligence. Proficient in advanced Microsoft Excel (PivotTable, XLOOKUP, Data Modeling) and Google Looker Studio for interactive dashboards. Possessing foundational literacy in Artificial Intelligence (Certiport) and Web Development (BNSP). Adept at processing and validating tens of thousands of transaction records to identify trends, evaluate product performance, and support business decisions.',
-      academicBaseLabel: 'Education:',
-      academicBaseValue:
-        'Universitas Muhammadiyah Yogyakarta · Bachelor of Information Technology · Sep 2022 – Jun 2026',
       metrics: [
         {
           value: 21350,
           suffix: '+',
-          label: 'sales transactions processed & validated',
+          label: 'transactions processed',
         },
         {
           value: 238000,
           suffix: '+',
-          label: 'data records cleaned & validated',
+          label: 'records cleaned',
         },
         {
           value: 3,
           suffix: '',
-          label: 'BI & analytics projects',
+          label: 'BI projects',
         },
       ],
       approach: {
@@ -572,10 +588,6 @@ export const content: Record<Language, PortfolioContent> = {
           'Deliver actionable and practical recommendations',
         ],
       },
-      toolkit: {
-        label: 'Core Stack & Toolkit',
-        tools: ['SQL', 'MySQL', 'Excel', 'Looker Studio', 'Git'],
-      },
     },
     projects: {
       sectionLabel: 'Featured Work',
@@ -583,12 +595,6 @@ export const content: Record<Language, PortfolioContent> = {
       subtitle: '3 Business & Public Data Case Studies',
       viewCase: 'View Case',
       viewDetails: 'View details →',
-      moveHelperText: 'Move over the preview',
-      metaLabels: {
-        category: 'Category',
-        tools: 'Tools',
-        data: 'Data',
-      },
       modalLabels: {
         overview: 'Overview',
         context: 'Context & Scope',
@@ -602,14 +608,13 @@ export const content: Record<Language, PortfolioContent> = {
       items: [
         {
           id: 'pizza-sales',
-          displayTitle: 'Pizza Sales',
           title: 'Pizza Sales Performance & Operational Dashboard',
           category: 'Business Intelligence Project',
           tools: ['Excel', 'Looker Studio'],
           toolsText: 'Excel · Looker Studio',
           description:
             'Sales reconciliation and rush-hour analysis of 21,350+ transactions, with an interactive BI dashboard.',
-          dataMetric: '21,350+ transactions',
+          fact: '21,350+ transactions · $817K+ revenue',
           previewLabel: 'Rush hour pattern',
           highlights: [
             'Processed and validated reconciliation data of more than 21,350 annual sales transactions ($817K+) using Microsoft Excel and Google Looker Studio.',
@@ -620,14 +625,13 @@ export const content: Record<Language, PortfolioContent> = {
         },
         {
           id: 'superstore-sales',
-          displayTitle: 'Superstore',
           title: 'Superstore Sales & Profitability Analysis',
           category: 'Commercial Analytics Project',
           tools: ['Excel'],
           toolsText: 'Excel',
           description:
             'Seasonal sales and regional profitability analysis, focused on how discounts affect net profit margin.',
-          dataMetric: 'Thousands of transaction rows',
+          fact: 'Thousands of transaction rows',
           previewLabel: 'Margin by region',
           highlights: [
             'Analyzed seasonal retail sales trends and cross-regional profitability across thousands of transaction rows.',
@@ -637,14 +641,13 @@ export const content: Record<Language, PortfolioContent> = {
         },
         {
           id: 'nyc-traffic',
-          displayTitle: 'NYC Traffic',
           title: 'NYC Traffic Safety Analysis',
           category: 'Public Data Analytics Project',
           tools: ['Excel'],
           toolsText: 'Excel',
           description:
             'Cleaning and validating 238,000+ traffic accident records to find root causes and incident patterns.',
-          dataMetric: '238,000+ accident records',
+          fact: '238,000+ accident records',
           previewLabel: 'Incidents by hour',
           highlights: [
             'Processed, cleaned, and validated large-scale datasets exceeding 238,000 traffic collision records.',
@@ -740,13 +743,17 @@ export const content: Record<Language, PortfolioContent> = {
     },
     contact: {
       sectionLabel: 'Contact',
-      heading: 'Let’s work with your data.',
+      heading: "Let's work with your data.",
       subheading:
         'Open for full-time Data Analyst opportunities, data processing projects, and Business Intelligence visualization.',
       email: 'iqbalfathonah10@gmail.com',
       copyButton: 'Copy Email',
       copiedButton: 'Copied ✓',
       socials: [
+        {
+          label: 'WhatsApp',
+          url: 'https://wa.me/6285726168917',
+        },
         {
           label: 'LinkedIn',
           url: 'https://www.linkedin.com/in/iqbal-dwi-fathonah-56ba2a3b0',
@@ -756,6 +763,28 @@ export const content: Record<Language, PortfolioContent> = {
           url: 'https://github.com/qivoradev',
         },
       ],
+      form: {
+        nameLabel: 'Full Name',
+        namePlaceholder: 'Your name',
+        nameError: 'Name is required',
+        emailLabel: 'Email',
+        emailPlaceholder: 'name@company.com',
+        emailError: 'Valid email is required',
+        subjectLabel: 'Subject',
+        subjectPlaceholder: 'Job Opportunity / Data Analytics Project',
+        subjectError: 'Subject is required',
+        messageLabel: 'Message',
+        messagePlaceholder: 'Describe your data analytics needs or open opportunity...',
+        messageError: 'Message must be at least 10 characters',
+        sendButton: 'Send message',
+        sendingButton: 'Sending...',
+        successTitle: 'Message sent. Thank you.',
+        successMessage: 'Your message has been sent successfully. I will get back to you shortly.',
+        sendAnotherButton: 'Send another',
+        fallbackNotice: 'API key not configured. Redirecting to direct email...',
+        errorMessage: 'Failed to send message. Please try again or email directly.',
+        emailDirectly: 'Email me directly',
+      },
       footerCopy: `© ${new Date().getFullYear()} iqbaldf · Iqbal Dwi Fathonah. Data Analyst.`,
       footerLocation: 'Universitas Muhammadiyah Yogyakarta · Yogyakarta, Indonesia',
     },

@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { ProjectCardVisual } from '../components/ProjectCardVisual';
-import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
-import { X, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { X, ExternalLink, ChevronLeft, ChevronRight, Database, ArrowRight } from 'lucide-react';
 import type { PortfolioContent, ProjectItem, Language } from '../data/content';
-import { SectionTitle, usePrefersReducedMotion } from '../components/ScrollAnimations';
+import { SectionTitle, usePrefersReducedMotion, FadeUp } from '../components/ScrollAnimations';
 
 interface ProjectDetailModalProps {
   project: ProjectItem;
@@ -42,10 +42,8 @@ function ProjectDetailModal({
     const origOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
-    // Focus close button on mount
     closeButtonRef.current?.focus();
 
-    // Push state for mobile hardware back button
     let popped = false;
     window.history.pushState({ projectModal: true }, '');
 
@@ -118,7 +116,7 @@ function ProjectDetailModal({
         transition={{ duration: reducedMotion ? 0.01 : 0.24, ease: [0.22, 1, 0.36, 1] }}
         className="relative w-full max-w-[880px] h-[92dvh] sm:h-auto sm:max-h-[88dvh] flex flex-col bg-white rounded-t-[24px] sm:rounded-[28px] border border-black/10 shadow-2xl overflow-hidden"
       >
-        {/* Sticky Header (Title, Category, Close Button ≥ 44px) */}
+        {/* Sticky Header */}
         <div className="flex items-center justify-between px-5 sm:px-8 py-3.5 sm:py-4 border-b border-[#F0F0F0] bg-[#FAFAFA] shrink-0">
           <div className="flex items-center gap-2.5 min-w-0 pr-3">
             <span className="w-2.5 h-2.5 rounded-[2px] bg-[#10B981] shrink-0" />
@@ -138,9 +136,8 @@ function ProjectDetailModal({
           </button>
         </div>
 
-        {/* Scrollable Content Body (Vertical Only, Thin Scrollbar) */}
+        {/* Scrollable Content Body */}
         <div className="overflow-y-auto thin-scrollbar p-5 sm:p-8 space-y-6 flex-1">
-          {/* Main Title */}
           <h2
             id="project-modal-title"
             className="text-[22px] sm:text-[28px] font-semibold text-[#111111] leading-tight tracking-tight"
@@ -148,14 +145,12 @@ function ProjectDetailModal({
             {project.title}
           </h2>
 
-          {/* Clean 16:9 Preview Container (Max Height 280px on desktop) */}
           <div className="w-full aspect-[16/9] max-h-[280px] bg-white rounded-2xl border border-black/10 shadow-inner overflow-hidden">
             <ProjectCardVisual id={project.id} lang={lang} />
           </div>
 
-          {/* Overview Section */}
           <div className="space-y-1.5">
-            <h3 className="text-[15px] font-semibold text-black uppercase tracking-wider text-[12px]">
+            <h3 className="text-[12px] font-semibold text-black uppercase tracking-wider">
               {overviewTitle}
             </h3>
             <p className="text-[15px] sm:text-[16px] text-[#444444] leading-relaxed max-w-[65ch]">
@@ -163,9 +158,8 @@ function ProjectDetailModal({
             </p>
           </div>
 
-          {/* Tools Section (Keycaps) */}
           <div className="space-y-2">
-            <h3 className="text-[15px] font-semibold text-black uppercase tracking-wider text-[12px]">
+            <h3 className="text-[12px] font-semibold text-black uppercase tracking-wider">
               {toolsTitle}
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -177,9 +171,8 @@ function ProjectDetailModal({
             </div>
           </div>
 
-          {/* Highlights Section (ALL Bullet Points from CV) */}
           <div className="space-y-3">
-            <h3 className="text-[15px] font-semibold text-black uppercase tracking-wider text-[12px]">
+            <h3 className="text-[12px] font-semibold text-black uppercase tracking-wider">
               {highlightsTitle}
             </h3>
             <ul className="space-y-3 text-[14.5px] sm:text-[15px] text-[#333333] leading-relaxed">
@@ -192,7 +185,6 @@ function ProjectDetailModal({
             </ul>
           </div>
 
-          {/* External Dashboard Link */}
           {project.dashboardUrl && (
             <div className="pt-2">
               <a
@@ -208,7 +200,7 @@ function ProjectDetailModal({
           )}
         </div>
 
-        {/* Sticky Footer: Previous / Next Navigation Buttons (Touch Target ≥ 44px, Safe-Area Padded) */}
+        {/* Sticky Footer */}
         <div className="px-5 sm:px-8 py-3.5 sm:py-4 border-t border-[#F0F0F0] bg-[#FAFAFA] flex items-center justify-between shrink-0 pb-[max(14px,env(safe-area-inset-bottom,14px))]">
           <button
             type="button"
@@ -239,327 +231,6 @@ function ProjectDetailModal({
   );
 }
 
-function DesktopPreviewWithParallax({
-  project,
-  lang,
-  indexStr,
-  moveHelperText,
-}: {
-  project: ProjectItem;
-  lang: Language;
-  indexStr: string;
-  moveHelperText: string;
-}) {
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [hasInteracted, setHasInteracted] = useState(false);
-  const frameRef = useRef<HTMLDivElement>(null);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!frameRef.current) return;
-    const rect = frameRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const deltaX = (e.clientX - centerX) / (rect.width / 2);
-    const deltaY = (e.clientY - centerY) / (rect.height / 2);
-    setOffset({
-      x: Math.max(-8, Math.min(8, deltaX * 8)),
-      y: Math.max(-8, Math.min(8, deltaY * 8)),
-    });
-    if (!hasInteracted) setHasInteracted(true);
-  };
-
-  const handleMouseLeave = () => {
-    setOffset({ x: 0, y: 0 });
-  };
-
-  return (
-    <div className="flex flex-col justify-center h-full w-full">
-      <div
-        ref={frameRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        className="w-full h-full min-h-[260px] sm:min-h-[280px] lg:min-h-[340px] transition-transform duration-100 ease-out"
-        style={{
-          transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
-        }}
-      >
-        <ProjectCardVisual
-          id={project.id}
-          lang={lang}
-          indexStr={indexStr}
-          previewLabel={project.previewLabel}
-        />
-      </div>
-      {!hasInteracted && (
-        <p className="text-[11px] font-mono text-[#777777] text-center mt-2.5 transition-opacity">
-          {moveHelperText}
-        </p>
-      )}
-    </div>
-  );
-}
-
-interface StickyProjectCardProps {
-  project: ProjectItem;
-  idx: number;
-  total: number;
-  lang: Language;
-  projectsContent: PortfolioContent['projects'];
-  isStickyFallback: boolean;
-  isMobile: boolean;
-  reducedMotion: boolean;
-  onOpenModal: (idx: number) => void;
-  cardTriggerRef: (el: HTMLDivElement | null) => void;
-}
-
-function StickyProjectCard({
-  project,
-  idx,
-  total,
-  lang,
-  projectsContent,
-  isStickyFallback,
-  isMobile,
-  reducedMotion,
-  onOpenModal,
-  cardTriggerRef,
-}: StickyProjectCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ['start start', 'end start'],
-  });
-
-  const isLast = idx === total - 1;
-  const scale = useTransform(scrollYProgress, [0, 1], [1, isLast || reducedMotion ? 1 : 0.95]);
-  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0, isLast || reducedMotion ? 0 : 0.08]);
-
-  const accentColors = [
-    {
-      bg: 'color-mix(in oklab, #10B981 10%, #FFFFFF)',
-      border: 'color-mix(in oklab, #10B981 22%, #E5E7EB)',
-      badge: 'tactile-badge-green',
-    },
-    {
-      bg: 'color-mix(in oklab, #2563EB 10%, #FFFFFF)',
-      border: 'color-mix(in oklab, #2563EB 22%, #E5E7EB)',
-      badge: 'tactile-badge-blue',
-    },
-    {
-      bg: 'color-mix(in oklab, #F59E0B 10%, #FFFFFF)',
-      border: 'color-mix(in oklab, #F59E0B 22%, #E5E7EB)',
-      badge: 'tactile-badge-yellow',
-    },
-  ];
-  const accent = accentColors[idx] || accentColors[0];
-  const indexStr = `(0${idx + 1})`;
-
-  // Desktop top: 88px + idx * 14px; Mobile top: 64px + idx * 8px
-  const stickyTopDesktop = 88 + idx * 14;
-  const stickyTopMobile = 64 + idx * 8;
-  const activeStickyTop = isMobile ? stickyTopMobile : stickyTopDesktop;
-
-  return (
-    <div
-      ref={(el) => {
-        (cardRef as any).current = el;
-        cardTriggerRef(el);
-      }}
-      style={{
-        position: isStickyFallback ? 'relative' : 'sticky',
-        top: isStickyFallback ? 'auto' : `${activeStickyTop}px`,
-        zIndex: (idx + 1) * 10,
-        marginBottom: isStickyFallback || isLast ? '0px' : '12vh',
-      }}
-      className="w-full focus:outline-hidden"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onOpenModal(idx);
-        }
-      }}
-    >
-      <motion.div
-        style={{
-          scale,
-          transformOrigin: 'top center',
-          backgroundColor: accent.bg,
-          borderColor: accent.border,
-        }}
-        className="relative w-full rounded-[28px] lg:rounded-[36px] border border-solid overflow-hidden shadow-[0_-12px_40px_-12px_rgba(0,0,0,0.12),0_12px_32px_-8px_rgba(0,0,0,0.08)] p-5 sm:p-8 lg:p-12 xl:p-14 min-h-0 lg:min-h-[min(640px,calc(100dvh-120px))]"
-      >
-        {/* Darkening Overlay when covered */}
-        <motion.div
-          style={{ opacity: overlayOpacity }}
-          className="absolute inset-0 bg-black pointer-events-none z-30"
-        />
-
-        {/* 1. Desktop Layout (≥1024px): 12-Column Grid (Span 5 Left, Span 7 Right) */}
-        <div className="hidden lg:grid grid-cols-12 gap-8 lg:gap-12 items-stretch h-full">
-          {/* Left Column (Span 5): Flex column with bottom pinned CTA */}
-          <div className="lg:col-span-5 flex flex-col justify-between py-1 text-left">
-            <div>
-              {/* Badge + Category */}
-              <div className="flex items-center gap-2.5 mb-3">
-                <div className={`tactile-badge ${accent.badge} w-7 h-7 text-white text-[12px] font-bold shrink-0`}>
-                  0{idx + 1}
-                </div>
-                <span className="text-[13px] font-semibold tracking-wider text-[#555555] uppercase">
-                  {project.category}
-                </span>
-              </div>
-
-              {/* Big Display Title */}
-              <h3 className="text-[clamp(48px,7vw,96px)] font-bold text-[#111111] tracking-[-0.04em] leading-[0.95] mb-2">
-                {project.displayTitle}
-              </h3>
-
-              {/* Full Project Title */}
-              <h4 className="text-[20px] lg:text-[22px] font-medium text-[#111111] leading-snug mb-3">
-                {project.title}
-              </h4>
-
-              {/* 1-Sentence Summary (Max 3 lines) */}
-              <p className="text-[16px] lg:text-[17px] text-[#444444] leading-[1.55] line-clamp-3 mb-6">
-                {project.description}
-              </p>
-            </div>
-
-            {/* Hairline Meta Table */}
-            <div className="border-t border-black/8 divide-y divide-black/8 text-[13.5px] mb-6 mt-auto">
-              <div className="py-2.5 flex items-center justify-between">
-                <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider">
-                  {projectsContent.metaLabels?.category || 'Category'}
-                </span>
-                <span className="font-medium text-[#222222]">{project.category}</span>
-              </div>
-              <div className="py-2.5 flex items-center justify-between">
-                <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider">
-                  {projectsContent.metaLabels?.tools || 'Tools'}
-                </span>
-                <span className="font-medium text-[#222222]">{project.toolsText}</span>
-              </div>
-              <div className="py-2.5 flex items-center justify-between">
-                <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider">
-                  {projectsContent.metaLabels?.data || 'Data'}
-                </span>
-                <span className="font-medium text-[#222222]">{project.dataMetric}</span>
-              </div>
-            </div>
-
-            {/* Bottom Pinned CTA Pill */}
-            <div>
-              <button
-                type="button"
-                onClick={() => onOpenModal(idx)}
-                className="min-h-[44px] px-6 rounded-full bg-[#111111] text-white text-[13.5px] font-medium hover:bg-[#222222] active:scale-95 transition-all inline-flex items-center gap-2 cursor-pointer shadow-xs w-fit"
-              >
-                <span>{projectsContent.viewDetails}</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Right Column (Span 7): Preview Frame with Parallax */}
-          <div className="lg:col-span-7 flex flex-col justify-center h-full">
-            <DesktopPreviewWithParallax
-              project={project}
-              lang={lang}
-              indexStr={indexStr}
-              moveHelperText={projectsContent.moveHelperText}
-            />
-          </div>
-        </div>
-
-        {/* 2. Mobile & Tablet Layout (<1024px): 1-Column Stacked */}
-        <div
-          onClick={() => onOpenModal(idx)}
-          className="lg:hidden flex flex-col gap-4 text-left cursor-pointer"
-        >
-          {/* Top: Preview Frame */}
-          <div className="w-full min-h-[200px] aspect-[16/10] sm:aspect-auto sm:min-h-[250px]">
-            <ProjectCardVisual
-              id={project.id}
-              lang={lang}
-              indexStr={indexStr}
-              previewLabel={project.previewLabel}
-            />
-          </div>
-
-          {/* Badge + Category */}
-          <div className="flex items-center gap-2 mt-1">
-            <div className={`tactile-badge ${accent.badge} w-6 h-6 text-white text-[11px] font-bold shrink-0`}>
-              0{idx + 1}
-            </div>
-            <span className="text-[12px] font-semibold tracking-wider text-[#555555] uppercase">
-              {project.category}
-            </span>
-          </div>
-
-          {/* Big Display Title */}
-          <h3 className="text-[clamp(36px,11vw,48px)] font-bold text-[#111111] tracking-tight leading-[0.95]">
-            {project.displayTitle}
-          </h3>
-
-          {/* Full Project Title */}
-          <h4 className="text-[16px] sm:text-[17px] font-medium text-[#111111] leading-snug">
-            {project.title}
-          </h4>
-
-          {/* Summary (Max 3 lines) */}
-          <p className="text-[15px] sm:text-[16px] text-[#444444] leading-[1.55] line-clamp-3">
-            {project.description}
-          </p>
-
-          {/* Tablet Meta Table (768–1023px) */}
-          <div className="hidden md:block border-t border-black/8 divide-y divide-black/8 text-[13px] my-1">
-            <div className="py-2 flex items-center justify-between">
-              <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider">
-                {projectsContent.metaLabels?.category || 'Category'}
-              </span>
-              <span className="font-medium text-[#222222]">{project.category}</span>
-            </div>
-            <div className="py-2 flex items-center justify-between">
-              <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider">
-                {projectsContent.metaLabels?.tools || 'Tools'}
-              </span>
-              <span className="font-medium text-[#222222]">{project.toolsText}</span>
-            </div>
-            <div className="py-2 flex items-center justify-between">
-              <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider">
-                {projectsContent.metaLabels?.data || 'Data'}
-              </span>
-              <span className="font-medium text-[#222222]">{project.dataMetric}</span>
-            </div>
-          </div>
-
-          {/* Mobile Tools as Keycaps (<768px) */}
-          <div className="flex md:hidden flex-wrap gap-1.5 pt-0.5">
-            {project.tools.map((t) => (
-              <span key={t} className="keycap px-2.5 py-1 text-[12px]">
-                {t}
-              </span>
-            ))}
-          </div>
-
-          {/* Full-Width Button (Touch Target ≥ 48px) */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onOpenModal(idx);
-            }}
-            className="w-full min-h-[48px] px-6 rounded-full bg-[#111111] text-white text-[14px] font-medium hover:bg-[#222222] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs mt-2"
-          >
-            <span>{projectsContent.viewDetails}</span>
-          </button>
-        </div>
-      </motion.div>
-    </div>
-  );
-}
-
 interface ProjectsProps {
   content: PortfolioContent;
   lang?: Language;
@@ -570,26 +241,6 @@ export function Projects({ content, lang = 'in', onModalStateChange }: ProjectsP
   const [activeProjectIndex, setActiveProjectIndex] = useState<number | null>(null);
   const cardTriggerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const { projects } = content;
-  const reducedMotion = usePrefersReducedMotion();
-
-  const [viewportHeight, setViewportHeight] = useState<number>(
-    typeof window !== 'undefined' ? window.innerHeight : 900
-  );
-  const [isMobile, setIsMobile] = useState<boolean>(
-    typeof window !== 'undefined' ? window.innerWidth < 768 : false
-  );
-
-  useEffect(() => {
-    const handleResize = () => {
-      setViewportHeight(window.innerHeight);
-      setIsMobile(window.innerWidth < 768);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Fallback: If viewport height < 700px, disable sticky
-  const isStickyFallback = viewportHeight < 700;
 
   const openModal = useCallback((index: number) => {
     setActiveProjectIndex(index);
@@ -616,6 +267,30 @@ export function Projects({ content, lang = 'in', onModalStateChange }: ProjectsP
   const activeProject =
     activeProjectIndex !== null ? projects.items[activeProjectIndex] : null;
 
+  const accentStyles = [
+    {
+      bg: 'bg-[color-mix(in_oklab,#10B981_7%,#FFFFFF)]',
+      border: 'border-[color-mix(in_oklab,#10B981_20%,#E5E7EB)]',
+      badge: 'tactile-badge-green',
+      iconColor: 'text-[#10B981]',
+    },
+    {
+      bg: 'bg-[color-mix(in_oklab,#2563EB_7%,#FFFFFF)]',
+      border: 'border-[color-mix(in_oklab,#2563EB_20%,#E5E7EB)]',
+      badge: 'tactile-badge-blue',
+      iconColor: 'text-[#2563EB]',
+    },
+    {
+      bg: 'bg-[color-mix(in_oklab,#F59E0B_7%,#FFFFFF)]',
+      border: 'border-[color-mix(in_oklab,#F59E0B_20%,#E5E7EB)]',
+      badge: 'tactile-badge-yellow',
+      iconColor: 'text-[#F59E0B]',
+    },
+  ];
+
+  const featuredProject = projects.items[0];
+  const secondaryProjects = projects.items.slice(1);
+
   return (
     <>
       <section
@@ -623,7 +298,7 @@ export function Projects({ content, lang = 'in', onModalStateChange }: ProjectsP
         className="relative w-full py-12 sm:py-16 lg:py-20 scroll-mt-[88px]"
       >
         <div className="site-container">
-          {/* Section Header (Uniform: Eyebrow + Headline) */}
+          {/* Section Header: Eyebrow + Single Line Headline */}
           <div className="mb-8 sm:mb-10 lg:mb-12 text-left">
             <div className="flex items-center gap-2 mb-2 sm:mb-3">
               <span className="w-2.5 h-2.5 rounded-[2px] bg-[#10B981] shadow-xs shrink-0" />
@@ -637,25 +312,253 @@ export function Projects({ content, lang = 'in', onModalStateChange }: ProjectsP
             />
           </div>
 
-          {/* Single-Column Stack of 3 Sticky Project Cards */}
-          <div className={`w-full flex flex-col ${isStickyFallback ? 'gap-6' : ''}`}>
-            {projects.items.map((project, idx) => (
-              <StickyProjectCard
-                key={project.id}
-                project={project}
-                idx={idx}
-                total={projects.items.length}
-                lang={lang}
-                projectsContent={projects}
-                isStickyFallback={isStickyFallback}
-                isMobile={isMobile}
-                reducedMotion={reducedMotion}
-                onOpenModal={openModal}
-                cardTriggerRef={(el) => {
-                  cardTriggerRefs.current[idx] = el;
-                }}
-              />
-            ))}
+          {/* Normal Responsive Grid (ZERO Sticky) */}
+          <div className="flex flex-col gap-6">
+            {/* ROW 1: Featured Project (Pizza Sales) */}
+            {/* Desktop: Horizontal layout (Preview 55%, Text 45%, min-height 360px). Mobile/Tablet: Vertical */}
+            {featuredProject && (
+              <FadeUp>
+                <div
+                  ref={(el) => {
+                    cardTriggerRefs.current[0] = el;
+                  }}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`${featuredProject.title} — ${projects.viewDetails}`}
+                  onClick={() => openModal(0)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      openModal(0);
+                    }
+                  }}
+                  className={`group relative w-full rounded-[28px] border ${accentStyles[0].bg} ${accentStyles[0].border} p-5 sm:p-7 lg:p-8 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.06)] hover:-translate-y-1 active:scale-[0.99] transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-black/20 focus-visible:outline-hidden`}
+                >
+                  {/* Desktop Layout (≥1024px): Horizontal 2-col (Preview ~55% / Text ~45%) */}
+                  <div className="hidden lg:grid grid-cols-12 gap-8 items-stretch min-h-[360px]">
+                    {/* Left: Preview Frame (~55%) */}
+                    <div className="col-span-7 rounded-[22px] overflow-hidden bg-white/50 border border-black/5 shadow-inner flex flex-col h-full min-h-[340px]">
+                      <div className="w-full h-full transform transition-transform duration-300 group-hover:scale-[1.03]">
+                        <ProjectCardVisual
+                          id={featuredProject.id}
+                          lang={lang}
+                          previewLabel={featuredProject.previewLabel}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Right: Text Column (~45%) */}
+                    <div className="col-span-5 flex flex-col justify-between py-1 text-left">
+                      <div>
+                        {/* Tactile Badge + Category */}
+                        <div className="flex items-center gap-2.5 mb-3">
+                          <div className={`tactile-badge ${accentStyles[0].badge} w-7 h-7 text-white text-[12px] font-bold shrink-0`}>
+                            01
+                          </div>
+                          <span className="text-[13px] font-semibold tracking-wider text-[#555555] uppercase">
+                            {featuredProject.category}
+                          </span>
+                        </div>
+
+                        {/* Full Project Title: 28-32px */}
+                        <h3 className="text-[28px] xl:text-[32px] font-bold text-[#111111] leading-tight tracking-tight mb-3">
+                          {featuredProject.title}
+                        </h3>
+
+                        {/* Summary: 1-2 Sentences, max 3 lines */}
+                        <p className="text-[15.5px] xl:text-[16px] text-[#444444] leading-[1.6] line-clamp-3 mb-4">
+                          {featuredProject.description}
+                        </p>
+
+                        {/* Fact Line with Database Icon */}
+                        <div className="flex items-center gap-2 text-[14px] font-medium text-[#222222]">
+                          <Database size={15} className={`${accentStyles[0].iconColor} shrink-0`} />
+                          <span>{featuredProject.fact}</span>
+                        </div>
+                      </div>
+
+                      {/* Hairline + Bottom Action Row */}
+                      <div className="pt-4 mt-4 border-t border-black/10 flex items-center justify-between gap-3">
+                        <div className="flex flex-wrap gap-1.5">
+                          {featuredProject.tools.map((t) => (
+                            <span key={t} className="keycap px-2.5 py-1 text-[12px]">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+
+                        <span className="shrink-0 text-[13.5px] font-semibold text-[#111111] group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                          {projects.viewDetails}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Tablet & Mobile Layout (<1024px): 1-Column Vertical */}
+                  <div className="lg:hidden flex flex-col gap-4 text-left">
+                    {/* Preview (16:10 ratio) */}
+                    <div className="w-full aspect-[16/10] min-h-[200px] sm:min-h-[240px] rounded-[20px] overflow-hidden bg-white/50 border border-black/5 shadow-inner">
+                      <div className="w-full h-full transform transition-transform duration-300 group-hover:scale-[1.03]">
+                        <ProjectCardVisual
+                          id={featuredProject.id}
+                          lang={lang}
+                          previewLabel={featuredProject.previewLabel}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Badge + Category */}
+                    <div className="flex items-center gap-2 mt-1">
+                      <div className={`tactile-badge ${accentStyles[0].badge} w-6 h-6 text-white text-[11px] font-bold shrink-0`}>
+                        01
+                      </div>
+                      <span className="text-[12.5px] font-semibold tracking-wider text-[#555555] uppercase">
+                        {featuredProject.category}
+                      </span>
+                    </div>
+
+                    {/* Full Project Title: 24-28px */}
+                    <h3 className="text-[22px] sm:text-[26px] font-bold text-[#111111] leading-tight tracking-tight">
+                      {featuredProject.title}
+                    </h3>
+
+                    {/* Summary */}
+                    <p className="text-[15px] sm:text-[16px] text-[#444444] leading-relaxed line-clamp-3">
+                      {featuredProject.description}
+                    </p>
+
+                    {/* Fact Line with Database Icon */}
+                    <div className="flex items-center gap-2 text-[13.5px] font-medium text-[#222222]">
+                      <Database size={15} className={`${accentStyles[0].iconColor} shrink-0`} />
+                      <span>{featuredProject.fact}</span>
+                    </div>
+
+                    {/* Hairline + Action Row */}
+                    <div className="pt-3.5 border-t border-black/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                      <div className="flex flex-wrap gap-1.5">
+                        {featuredProject.tools.map((t) => (
+                          <span key={t} className="keycap px-2.5 py-1 text-[12px]">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Full-width touch target button on mobile */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openModal(0);
+                        }}
+                        className="w-full sm:w-auto min-h-[48px] px-6 rounded-full bg-[#111111] text-white text-[13.5px] font-medium hover:bg-black/85 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                      >
+                        <span>{projects.viewDetails}</span>
+                        <ArrowRight size={14} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </FadeUp>
+            )}
+
+            {/* ROW 2: Superstore & NYC Traffic */}
+            {/* Desktop: 2 Equal Columns (grid-cols-2), Equal Height (items-stretch), Vertical Layout */}
+            {/* Tablet & Mobile: 1 Column */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+              {secondaryProjects.map((project, sIdx) => {
+                const idx = sIdx + 1;
+                const accent = accentStyles[idx] || accentStyles[1];
+
+                return (
+                  <FadeUp key={project.id} delay={0.1 * idx}>
+                    <div
+                      ref={(el) => {
+                        cardTriggerRefs.current[idx] = el;
+                      }}
+                      tabIndex={0}
+                      role="button"
+                      aria-label={`${project.title} — ${projects.viewDetails}`}
+                      onClick={() => openModal(idx)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          openModal(idx);
+                        }
+                      }}
+                      className={`group relative w-full h-full rounded-[28px] border ${accent.bg} ${accent.border} p-5 sm:p-7 lg:p-8 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.06)] hover:-translate-y-1 active:scale-[0.99] transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-black/20 focus-visible:outline-hidden flex flex-col justify-between`}
+                    >
+                      <div className="flex flex-col text-left">
+                        {/* Preview: Aspect 16:10 */}
+                        <div className="w-full aspect-[16/10] min-h-[200px] sm:min-h-[220px] rounded-[20px] overflow-hidden bg-white/50 border border-black/5 shadow-inner mb-4">
+                          <div className="w-full h-full transform transition-transform duration-300 group-hover:scale-[1.03]">
+                            <ProjectCardVisual
+                              id={project.id}
+                              lang={lang}
+                              previewLabel={project.previewLabel}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Badge + Category */}
+                        <div className="flex items-center gap-2 mb-2.5">
+                          <div className={`tactile-badge ${accent.badge} w-6 h-6 sm:w-7 sm:h-7 text-white text-[11px] sm:text-[12px] font-bold shrink-0`}>
+                            0{idx + 1}
+                          </div>
+                          <span className="text-[12.5px] sm:text-[13px] font-semibold tracking-wider text-[#555555] uppercase">
+                            {project.category}
+                          </span>
+                        </div>
+
+                        {/* Full Project Title: 24-28px */}
+                        <h3 className="text-[22px] sm:text-[25px] font-bold text-[#111111] leading-tight tracking-tight mb-2.5">
+                          {project.title}
+                        </h3>
+
+                        {/* Summary: 1-2 Sentences, max 3 lines */}
+                        <p className="text-[15px] sm:text-[15.5px] text-[#444444] leading-[1.6] line-clamp-3 mb-4">
+                          {project.description}
+                        </p>
+
+                        {/* Fact Line with Database Icon */}
+                        <div className="flex items-center gap-2 text-[13.5px] font-medium text-[#222222] mb-4">
+                          <Database size={15} className={`${accent.iconColor} shrink-0`} />
+                          <span>{project.fact}</span>
+                        </div>
+                      </div>
+
+                      {/* Hairline + Bottom Action Row */}
+                      <div className="pt-4 border-t border-black/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-auto">
+                        <div className="flex flex-wrap gap-1.5">
+                          {project.tools.map((t) => (
+                            <span key={t} className="keycap px-2.5 py-1 text-[12px]">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* Desktop & Tablet: inline link text. Mobile (<640px): full width button */}
+                        <div className="hidden sm:block">
+                          <span className="shrink-0 text-[13.5px] font-semibold text-[#111111] group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                            {projects.viewDetails}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openModal(idx);
+                          }}
+                          className="sm:hidden w-full min-h-[48px] px-6 rounded-full bg-[#111111] text-white text-[13.5px] font-medium hover:bg-black/85 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                        >
+                          <span>{projects.viewDetails}</span>
+                          <ArrowRight size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  </FadeUp>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>

@@ -28,6 +28,7 @@ Thumbs.db
 .idea
 
 # Workfiles, captures, research notes & temporary artifacts
+scratch/
 shots/
 shots_*/
 shots*

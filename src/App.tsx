@@ -128,7 +128,7 @@ export default function App() {
           lang={lang}
           onModalStateChange={setIsCertModalOpen}
         />
-        <Contact content={currentContent} />
+        <Contact content={currentContent} lang={lang} />
       </main>
 
       {/* Floating Bottom Nav for Mobile Only */}
