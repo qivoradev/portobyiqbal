@@ -8,6 +8,7 @@ import { Projects } from './sections/Projects';
 import { About } from './sections/About';
 import { Contact } from './sections/Contact';
 import { CVModal } from './components/CVModal';
+import { ENABLE_CV_MODAL } from './config/features';
 import { content, type Language } from './data/content';
 
 export default function App() {
@@ -86,8 +87,8 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleToggleLang = useCallback(() => {
-    setLang((prev) => (prev === 'in' ? 'en' : 'in'));
+  const handleSelectLang = useCallback((nextLang: Language) => {
+    setLang(nextLang);
   }, []);
 
   const handleNavigate = useCallback((sectionId: string) => {
@@ -106,7 +107,7 @@ export default function App() {
       <Header
         onNavigate={handleNavigate}
         lang={lang}
-        onToggleLang={handleToggleLang}
+        onSelectLang={handleSelectLang}
         content={currentContent}
         activeSection={activeSection}
         isDarkTheme={isDarkNav}
@@ -116,7 +117,9 @@ export default function App() {
       <main className="relative">
         <Hero
           onNavigate={handleNavigate}
-          onOpenCV={() => setIsCvOpen(true)}
+          onOpenCV={() => {
+            if (ENABLE_CV_MODAL) setIsCvOpen(true);
+          }}
           lang={lang}
           content={currentContent}
           cvTriggerRef={cvTriggerRef}
@@ -127,16 +130,18 @@ export default function App() {
         <Contact content={currentContent} lang={lang} />
       </main>
 
-      {/* Preserved CV Preview Modal */}
-      <AnimatePresence>
-        {isCvOpen && (
-          <CVModal
-            content={currentContent.cvModal}
-            onClose={() => setIsCvOpen(false)}
-            triggerRef={cvTriggerRef}
-          />
-        )}
-      </AnimatePresence>
+      {/* Preserved CV Preview Modal (Controlled by ENABLE_CV_MODAL feature flag) */}
+      {ENABLE_CV_MODAL && (
+        <AnimatePresence>
+          {isCvOpen && (
+            <CVModal
+              content={currentContent.cvModal}
+              onClose={() => setIsCvOpen(false)}
+              triggerRef={cvTriggerRef}
+            />
+          )}
+        </AnimatePresence>
+      )}
     </div>
   );
 }

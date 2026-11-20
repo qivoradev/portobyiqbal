@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { MapPin, FileText } from 'lucide-react';
 import type { PortfolioContent, Language } from '../data/content';
 import { PROFILE_PHOTO_URL } from '../config/assets';
+import { ENABLE_CV_MODAL } from '../config/features';
 import { EDITORIAL_EASE, usePrefersReducedMotion } from '../components/ScrollAnimations';
 
 interface HeroProps {
@@ -53,15 +54,17 @@ export function Hero({
             {hero.ctaProjects}
           </button>
 
-          <button
-            ref={cvTriggerRef}
-            type="button"
-            onClick={onOpenCV}
-            className="px-5 py-3.5 rounded-xl bg-white/80 hover:bg-white border border-neutral-300 hover:border-neutral-400 active:scale-[0.98] text-[#111111] text-[15px] font-medium transition-all duration-200 inline-flex items-center gap-2 cursor-pointer"
-          >
-            <FileText size={16} strokeWidth={1.9} className="text-[#525252]" />
-            <span>{hero.ctaCv}</span>
-          </button>
+          {ENABLE_CV_MODAL && (
+            <button
+              ref={cvTriggerRef}
+              type="button"
+              onClick={onOpenCV}
+              className="px-5 py-3.5 rounded-xl bg-white/80 hover:bg-white border border-neutral-300 hover:border-neutral-400 active:scale-[0.98] text-[#111111] text-[15px] font-medium transition-all duration-200 inline-flex items-center gap-2 cursor-pointer"
+            >
+              <FileText size={16} strokeWidth={1.9} className="text-[#525252]" />
+              <span>{hero.ctaCv}</span>
+            </button>
+          )}
         </motion.div>
 
         {/* Portrait Frame Placeholder + Rotating Circular Text Badge */}

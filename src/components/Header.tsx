@@ -7,16 +7,80 @@ import { EDITORIAL_EASE } from './ScrollAnimations';
 interface HeaderProps {
   onNavigate: (sectionId: string) => void;
   lang: Language;
-  onToggleLang: () => void;
+  onSelectLang: (nextLang: Language) => void;
   content: PortfolioContent;
   activeSection: string;
   isDarkTheme: boolean;
 }
 
+interface LangSegmentedToggleProps {
+  lang: Language;
+  onSelectLang: (nextLang: Language) => void;
+  isDarkTheme: boolean;
+  layoutId: string;
+}
+
+function LangSegmentedToggle({
+  lang,
+  onSelectLang,
+  isDarkTheme,
+  layoutId,
+}: LangSegmentedToggleProps) {
+  const options: { value: Language; code: string; ariaLabel: string }[] = [
+    { value: 'in', code: 'ID', ariaLabel: 'Bahasa Indonesia' },
+    { value: 'en', code: 'EN', ariaLabel: 'English' },
+  ];
+
+  return (
+    <div
+      role="group"
+      aria-label="Language switcher"
+      className={`inline-flex items-center p-0.5 rounded-lg border transition-colors duration-300 ${
+        isDarkTheme
+          ? 'bg-white/[0.07] border-white/[0.08]'
+          : 'bg-black/[0.06] border-black/[0.06]'
+      }`}
+    >
+      {options.map((opt) => {
+        const isActive = lang === opt.value;
+        return (
+          <button
+            key={opt.value}
+            type="button"
+            onClick={() => onSelectLang(opt.value)}
+            aria-label={opt.ariaLabel}
+            aria-pressed={isActive}
+            className={`relative px-2 py-1 text-[11px] font-semibold tracking-wide rounded-md transition-colors duration-200 cursor-pointer leading-none ${
+              isActive
+                ? isDarkTheme
+                  ? 'text-neutral-950'
+                  : 'text-white'
+                : isDarkTheme
+                  ? 'text-neutral-400 hover:text-white'
+                  : 'text-neutral-500 hover:text-neutral-900'
+            }`}
+          >
+            {isActive && (
+              <motion.span
+                layoutId={layoutId}
+                transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                className={`absolute inset-0 rounded-md shadow-xs ${
+                  isDarkTheme ? 'bg-white' : 'bg-neutral-950'
+                }`}
+              />
+            )}
+            <span className="relative z-10">{opt.code}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export function Header({
   onNavigate,
   lang,
-  onToggleLang,
+  onSelectLang,
   content,
   activeSection,
   isDarkTheme,
@@ -56,14 +120,15 @@ export function Header({
     ? 'bg-neutral-900/85 text-white border-neutral-800 shadow-[0_8px_28px_rgba(0,0,0,0.45)]'
     : 'bg-neutral-200/80 text-neutral-900 border-neutral-300/80 shadow-[0_4px_20px_rgba(0,0,0,0.05)]';
 
-  const dividerClass = isDarkTheme ? 'bg-neutral-700' : 'bg-neutral-400/70';
+  const brandDividerClass = isDarkTheme ? 'bg-neutral-700' : 'bg-neutral-400/70';
+  const toggleDividerClass = isDarkTheme ? 'bg-white/15' : 'bg-neutral-300/90';
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none select-none">
       {/* Desktop Floating Pill Header (≥ 768px) */}
       <div className="hidden md:flex justify-center pt-4 px-4">
         <div
-          className={`pointer-events-auto flex items-center gap-5 lg:gap-7 px-3.5 py-2 rounded-2xl border backdrop-blur-md transition-colors duration-300 ${pillSurfaceClass}`}
+          className={`pointer-events-auto flex items-center gap-4 lg:gap-6 px-3.5 py-2 rounded-2xl border backdrop-blur-md transition-colors duration-300 ${pillSurfaceClass}`}
         >
           {/* Left: Monogram ID | iqbaldf */}
           <button
@@ -75,7 +140,7 @@ export function Header({
             <span className="text-[19px] font-extrabold tracking-tighter leading-none">
               {content.monogram}
             </span>
-            <span className={`w-px h-5 transition-colors duration-300 ${dividerClass}`} />
+            <span className={`w-px h-5 transition-colors duration-300 ${brandDividerClass}`} />
             <span className="text-[13px] font-bold tracking-tight leading-none">
               {content.brand}
             </span>
@@ -115,20 +180,19 @@ export function Header({
             })}
           </nav>
 
-          {/* Right: Compact Language Toggle IN / EN */}
-          <button
-            type="button"
-            onClick={onToggleLang}
-            aria-label={content.nav.toggleLangLabel}
-            title={content.nav.toggleLangLabel}
-            className={`px-2.5 py-1.5 rounded-lg text-[12px] font-bold tracking-wide border transition-colors duration-200 cursor-pointer ${
-              isDarkTheme
-                ? 'bg-neutral-800/90 border-neutral-700 text-neutral-100 hover:bg-neutral-800'
-                : 'bg-white/80 border-neutral-300 text-neutral-900 hover:bg-white'
-            }`}
-          >
-            {lang === 'in' ? 'IN' : 'EN'}
-          </button>
+          {/* Right: Thin Adaptive Divider + Compact Segmented ID / EN Pill Toggle */}
+          <div className="flex items-center gap-3.5">
+            <span
+              aria-hidden="true"
+              className={`h-4 w-px transition-colors duration-300 ${toggleDividerClass}`}
+            />
+            <LangSegmentedToggle
+              lang={lang}
+              onSelectLang={onSelectLang}
+              isDarkTheme={isDarkTheme}
+              layoutId="lang-pill"
+            />
+          </div>
         </div>
       </div>
 
@@ -147,27 +211,20 @@ export function Header({
             <span className="text-[19px] font-extrabold tracking-tighter leading-none">
               {content.monogram}
             </span>
-            <span className={`w-px h-5 transition-colors duration-300 ${dividerClass}`} />
+            <span className={`w-px h-5 transition-colors duration-300 ${brandDividerClass}`} />
             <span className="text-[13.5px] font-bold tracking-tight leading-none">
               {content.brand}
             </span>
           </button>
 
-          {/* Right: Compact IN/EN Toggle + Hamburger Menu */}
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={onToggleLang}
-              aria-label={content.nav.toggleLangLabel}
-              title={content.nav.toggleLangLabel}
-              className={`min-w-[40px] h-9 px-2.5 rounded-lg text-[12px] font-bold tracking-wide border flex items-center justify-center transition-colors duration-200 cursor-pointer ${
-                isDarkTheme
-                  ? 'bg-neutral-800/90 border-neutral-700 text-neutral-100'
-                  : 'bg-white/85 border-neutral-300 text-neutral-900'
-              }`}
-            >
-              {lang === 'in' ? 'IN' : 'EN'}
-            </button>
+          {/* Right: Compact Segmented ID / EN Toggle + Hamburger Menu */}
+          <div className="flex items-center gap-2.5">
+            <LangSegmentedToggle
+              lang={lang}
+              onSelectLang={onSelectLang}
+              isDarkTheme={isDarkTheme}
+              layoutId="mobile-lang-pill"
+            />
 
             <button
               type="button"
