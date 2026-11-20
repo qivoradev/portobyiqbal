@@ -1,126 +1,202 @@
-import type { PortfolioContent, Language } from '../data/content';
-import { SectionTitle, CountUp, FadeUp } from '../components/ScrollAnimations';
-import { Layers } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { AnimatePresence } from 'motion/react';
+import { Eye, ExternalLink, GraduationCap } from 'lucide-react';
+import type { CertificationItem, PortfolioContent, Language } from '../data/content';
+import { ABOUT_AVATAR_URL } from '../config/assets';
+import { CertificateModal } from '../components/CertificateModal';
+import { FadeUp } from '../components/ScrollAnimations';
 
 interface AboutProps {
   content: PortfolioContent;
   lang?: Language;
+  onModalStateChange?: (open: boolean) => void;
 }
 
-export function About({ content, lang = 'in' }: AboutProps) {
-  const { about } = content;
+export function About({ content, onModalStateChange }: AboutProps) {
+  const [activeCert, setActiveCert] = useState<CertificationItem | null>(null);
+  const { about, certModal } = content;
 
-  const approachBadgeColors = [
-    'tactile-badge-green',
-    'tactile-badge-blue',
-    'tactile-badge-yellow',
-    'tactile-badge-red',
-    'tactile-badge-purple',
-  ];
+  useEffect(() => {
+    onModalStateChange?.(Boolean(activeCert));
+  }, [activeCert, onModalStateChange]);
 
   return (
-    <section
-      id="about"
-      className="relative w-full py-12 sm:py-16 lg:py-20 scroll-mt-[88px]"
-    >
-      <div className="site-container">
-        {/* Desktop (≥1024px): 2 Columns with items-start (Span 7 Left, Span 5 Right) */}
-        {/* Mobile & Tablet (<1024px): 1 Column in exact sequence */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-          {/* Left Column (Span 7 on desktop): Eyebrow → Headline → Paragraph → Stat Strip */}
-          <div className="lg:col-span-7 flex flex-col text-left">
-            {/* Eyebrow */}
-            <div className="flex items-center gap-2 mb-2 sm:mb-3">
-              <span className="w-2.5 h-2.5 rounded-[2px] bg-[#10B981] shadow-xs shrink-0" />
-              <span className="text-[12.5px] font-semibold tracking-[0.08em] text-[#6b6b6b] uppercase">
-                {about.sectionLabel}
-              </span>
-            </div>
-
-            {/* Headline */}
-            <SectionTitle
-              title={about.headline}
-              className="text-[clamp(30px,6.5vw,54px)] font-semibold text-[#111111] leading-[1.08] tracking-[-0.035em] max-w-[740px] mb-4 sm:mb-5"
-            />
-
-            {/* Story Paragraph (±60 char/line) */}
-            <FadeUp>
-              <p className="text-[15.5px] sm:text-[16.5px] text-[#3f3f3f] leading-[1.68] max-w-[62ch]">
-                {about.story}
-              </p>
-            </FadeUp>
-
-            {/* Stat Strip directly below paragraph with 40px gap (mt-10) */}
-            {/* Desktop: 3 Numbers with vertical hairline dividers */}
-            {/* Mobile: 3 equal width columns */}
-            <FadeUp delay={0.1} className="mt-10 pt-6 border-t border-black/10">
-              <div className="grid grid-cols-3 divide-x divide-black/15">
-                {about.metrics.map((metric, idx) => (
-                  <div
-                    key={metric.label}
-                    className={`flex flex-col justify-between ${
-                      idx === 0
-                        ? 'pr-3 sm:pr-6'
-                        : idx === 1
-                          ? 'px-3 sm:px-6'
-                          : 'pl-3 sm:pl-6'
-                    }`}
-                  >
-                    <CountUp
-                      target={metric.value}
-                      suffix={metric.suffix}
-                      label={metric.label}
-                      lang={lang}
-                      numberClassName="text-[#111111] text-[clamp(22px,7vw,30px)] lg:text-[clamp(36px,4vw,52px)] font-bold tracking-tight leading-none"
-                      labelClassName="text-[#555555] text-[12px] sm:text-[13px] lg:text-[14px] leading-snug mt-2 line-clamp-2"
+    <>
+      <section
+        id="about"
+        className="relative w-full bg-[#050505] text-[#FAFAFA] py-16 md:py-24 scroll-mt-16"
+      >
+        <div className="site-container max-w-5xl">
+          {/* Part 1: Profile Avatar + Editorial Contrast Paragraph */}
+          <FadeUp>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-7 md:gap-10 items-center text-left">
+              {/* Left (Desktop col-span-5): Circular Avatar stays horizontally beside heading even on mobile */}
+              <div className="md:col-span-5 flex items-center gap-4 md:gap-6">
+                <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 border border-neutral-700 overflow-hidden flex items-center justify-center select-none">
+                  {ABOUT_AVATAR_URL ? (
+                    <img
+                      src={ABOUT_AVATAR_URL}
+                      alt="Iqbal Dwi Fathonah"
+                      className="w-full h-full object-cover object-top scale-105 select-none pointer-events-none"
                     />
-                  </div>
-                ))}
-              </div>
-            </FadeUp>
-          </div>
-
-          {/* Right Column (Span 5 on desktop): 5-Step Analytical Approach Stepper Card */}
-          {/* Mobile: compact stepper card (badge 28px, text 15px, padding 20px) */}
-          <FadeUp delay={0.15} className="lg:col-span-5 w-full">
-            <div className="bento-card p-5 sm:p-6 lg:p-8 rounded-[28px] w-full text-left">
-              {/* Stepper Card Header */}
-              <div className="flex items-center gap-3 mb-5 sm:mb-6">
-                <div className="tactile-badge tactile-badge-blue w-8 h-8 sm:w-9 sm:h-9">
-                  <Layers size={17} strokeWidth={2.2} />
+                  ) : (
+                    <span className="font-mono text-lg md:text-xl font-bold tracking-tight text-neutral-300">
+                      {content.monogram}
+                    </span>
+                  )}
                 </div>
-                <h3 className="text-[18px] sm:text-[20px] font-semibold text-[#111111] tracking-tight">
-                  {about.approach.label}
-                </h3>
+
+                <h2 className="text-[28px] sm:text-[34px] md:text-[38px] font-bold tracking-[-0.03em] leading-[1.08] text-white">
+                  {about.heading}
+                </h2>
               </div>
 
-              {/* Stepper Nodes */}
-              <div className="relative pl-0.5">
-                {about.approach.steps.map((step, idx) => {
-                  const isLast = idx === about.approach.steps.length - 1;
+              {/* Right (Desktop col-span-7): High-Contrast Dimmed vs Bold Editorial Paragraph */}
+              <div className="md:col-span-7">
+                <p className="text-[16px] md:text-[17.5px] leading-[1.7] text-neutral-500">
+                  <span className="text-white font-medium">{about.paragraphLead}</span>
+                  <span>{about.paragraphMuted1}</span>
+                  <span className="text-white font-medium">{about.paragraphHighlight1}</span>
+                  <span>{about.paragraphMuted2}</span>
+                  <span className="text-white font-medium">{about.paragraphHighlight2}</span>
+                  <span>{about.paragraphClosing}</span>
+                </p>
+              </div>
+            </div>
+          </FadeUp>
+
+          {/* Part 2: Anti-Overlap Stats Bar */}
+          {/* Mobile (<640px): grid-cols-2 with 3rd item full-width below separated by border-t; >=640px: 3 equal columns */}
+          <FadeUp delay={0.08}>
+            <div className="bg-neutral-900/70 border border-neutral-800 rounded-2xl p-6 md:p-8 mt-10">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 sm:gap-6 text-left">
+                {about.stats.map((stat, idx) => {
+                  const isThird = idx === 2;
                   return (
-                    <div key={idx} className="relative flex items-start gap-3 sm:gap-3.5 pb-3.5 sm:pb-4 last:pb-1">
-                      {!isLast && (
-                        <div className="absolute left-[14px] top-7 bottom-0 w-[1.5px] bg-black/10 -translate-x-1/2" />
-                      )}
-                      <div
-                        className={`tactile-badge ${
-                          approachBadgeColors[idx % approachBadgeColors.length]
-                        } w-7 h-7 sm:w-7 sm:h-7 text-[12px] font-bold z-10 shrink-0`}
-                      >
-                        {idx + 1}
+                    <div
+                      key={stat.label}
+                      className={
+                        isThird
+                          ? 'col-span-2 pt-3 border-t border-neutral-800/80 sm:col-span-1 sm:pt-0 sm:border-t-0'
+                          : ''
+                      }
+                    >
+                      <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight tabular-nums leading-none">
+                        {stat.value}
                       </div>
-                      <div className="text-[14px] sm:text-[15px] text-[#333333] leading-snug pt-0.5 font-normal">
-                        {step}
-                      </div>
+                      <p className="mt-2 text-[13px] sm:text-[14px] text-neutral-400 font-medium">
+                        {stat.label}
+                      </p>
                     </div>
                   );
                 })}
               </div>
             </div>
           </FadeUp>
+
+          {/* Part 3: Education & Credentials (Compact Dark Theme) */}
+          <div id="credentials" className="scroll-mt-24">
+            {/* Education Hairline Row */}
+            <FadeUp delay={0.12}>
+              <div className="border-y border-neutral-800 py-5 mt-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-left">
+                <div className="flex items-start sm:items-center gap-3.5">
+                  <div className="w-10 h-10 rounded-xl bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-300 shrink-0">
+                    <GraduationCap size={19} strokeWidth={1.8} />
+                  </div>
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <h3 className="text-[16px] sm:text-[17px] font-semibold text-white tracking-tight">
+                        {about.education.degree}
+                      </h3>
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#259B52]/15 text-[#4ADE80] border border-[#259B52]/30 text-[11.5px] font-semibold">
+                        {about.education.badge}
+                      </span>
+                    </div>
+                    <p className="text-[13.5px] sm:text-[14px] text-neutral-400 mt-0.5">
+                      {about.education.university}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="font-mono text-[13px] text-neutral-400 sm:text-right shrink-0 pl-[54px] sm:pl-0 tabular-nums">
+                  {about.education.period}
+                </div>
+              </div>
+            </FadeUp>
+
+            {/* 2 Side-by-Side Dark Certificate Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+              {about.credentials.items.map((cert, idx) => (
+                <FadeUp key={cert.id} delay={0.14 + idx * 0.06}>
+                  <article className="h-full bg-neutral-900/60 border border-neutral-800 hover:border-neutral-700 rounded-xl p-4 flex items-center gap-4 transition-colors duration-200 text-left">
+                    {/* Compact Certificate Thumbnail */}
+                    <div className="w-[82px] h-[60px] sm:w-[96px] sm:h-[70px] rounded-lg bg-neutral-800 border border-neutral-700/80 overflow-hidden shrink-0 flex items-center justify-center">
+                      <img
+                        src={cert.thumbnailUrl}
+                        alt={cert.title}
+                        loading="lazy"
+                        className={`w-full h-full ${
+                          cert.fileType === 'image' ? 'object-cover object-top' : 'object-contain bg-neutral-100 p-0.5'
+                        }`}
+                      />
+                    </div>
+
+                    {/* Certificate Details & Actions */}
+                    <div className="flex-1 min-w-0 flex flex-col justify-between gap-2">
+                      <div>
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11.5px]">
+                          <span className="font-semibold text-neutral-300 uppercase tracking-wider">
+                            {cert.issuer}
+                          </span>
+                          <span className="font-mono text-neutral-400 tabular-nums">{cert.date}</span>
+                        </div>
+                        <h4 className="text-[15.5px] sm:text-[16.5px] font-semibold text-white leading-snug mt-0.5 truncate">
+                          {cert.title}
+                        </h4>
+                        <p className="text-[12.5px] text-neutral-500 mt-0.5">{cert.validity}</p>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-3 pt-1">
+                        <button
+                          type="button"
+                          onClick={() => setActiveCert(cert)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-xs font-medium text-white transition-colors cursor-pointer"
+                        >
+                          <Eye size={13} />
+                          <span>{about.credentials.viewCertButton}</span>
+                        </button>
+
+                        {cert.verification?.url && (
+                          <a
+                            href={cert.verification.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-xs font-semibold text-[#4ADE80] hover:underline"
+                          >
+                            <span>{about.credentials.verifyLinkText}</span>
+                            <ExternalLink size={12} />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </article>
+                </FadeUp>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Preserved Certificate Preview Modal */}
+      <AnimatePresence>
+        {activeCert && (
+          <CertificateModal
+            cert={activeCert}
+            content={certModal}
+            onClose={() => setActiveCert(null)}
+          />
+        )}
+      </AnimatePresence>
+    </>
   );
 }

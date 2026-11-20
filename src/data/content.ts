@@ -3,37 +3,34 @@
  * Owner: Iqbal Dwi Fathonah
  * Role: Data Analyst (Fresh Graduate)
  *
- * Stack mastered strictly limited to: SQL, MySQL, Excel, Looker Studio, Git.
+ * Strictly permitted stack: SQL, MySQL, Excel, Looker Studio, Git.
+ * Verified metrics only: 21,350+, $817K+, 238,000+, 12–13 & 17–18, Top 5 SKU, 3 projects.
  */
 
 export type Language = 'in' | 'en';
 
 export interface ProjectItem {
   id: string;
+  index: string;
   title: string;
   category: string;
   tools: string[];
-  toolsText: string;
+  shortSummary: string;
   description: string;
-  fact: string;
-  previewLabel: string;
+  previewSubtitle: string;
   highlights: string[];
   dashboardUrl?: string;
 }
 
-export interface SkillItem {
+export interface SkillCardItem {
+  id: 'sql' | 'excel' | 'bi';
   title: string;
   description: string;
-  tools: string[];
-  toolsText: string;
-  scope: string;
-  levelOrUsageLabel: string;
-  levelOrUsageValue: string;
+  pills: string[];
 }
 
-export interface MetricItem {
-  value: number;
-  suffix: string;
+export interface StatItem {
+  value: string;
   label: string;
 }
 
@@ -51,87 +48,43 @@ export interface CertificationItem {
   };
   fileType: 'pdf' | 'image';
   fileUrl: string;
+  thumbnailUrl: string;
 }
 
 export interface PortfolioContent {
   brand: string;
+  monogram: string;
   nav: {
     home: string;
-    about: string;
-    projects: string;
     skills: string;
-    credentials: string;
+    projects: string;
+    about: string;
     contact: string;
+    menuLabel: string;
+    closeMenuLabel: string;
+    toggleLangLabel: string;
   };
   hero: {
-    eyebrow: string;
-    headlineLine1: string;
-    headlineLine2: string;
+    headline: string;
     ctaProjects: string;
     ctaCv: string;
-    cursorLeft: string;
-    cursorRight: string;
-    bottomLinks: {
-      projects: string;
-      skills: string;
-      credentials: string;
-      contact: string;
-    };
+    location: string;
+    circularBadgeText: string;
+    photoPlaceholderLabel: string;
   };
-  console: {
-    sampleData: string;
-    modeLabel: string;
-    modes: {
-      sql: string;
-      excel: string;
-      dashboard: string;
-    };
-    metrics: {
-      sales: string;
-      orders: string;
-      customers: string;
-      growth: string;
-    };
-  };
-  cvModal: {
-    title: string;
-    subtitle: string;
-    downloadButton: string;
-    closeButton: string;
-    zoomIn: string;
-    zoomOut: string;
-    openNewTab: string;
-    fallbackText: string;
-  };
-  certModal: {
-    closeButton: string;
-    downloadButton: string;
-    zoomIn: string;
-    zoomOut: string;
-    openNewTab: string;
-    verification: string;
-    code: string;
-    fallbackText: string;
-  };
-  about: {
+  skills: {
     sectionLabel: string;
     headline: string;
-    story: string;
-    metrics: MetricItem[];
-    approach: {
-      label: string;
-      steps: string[];
-    };
+    subtitle: string;
+    items: SkillCardItem[];
   };
   projects: {
-    sectionLabel: string;
     headline: string;
     subtitle: string;
-    viewCase: string;
-    viewDetails: string;
+    viewCaseButton: string;
+    previewLabel: string;
     modalLabels: {
       overview: string;
-      context: string;
       tools: string;
       highlights: string;
       close: string;
@@ -141,40 +94,42 @@ export interface PortfolioContent {
     };
     items: ProjectItem[];
   };
-  skills: {
-    sectionLabel: string;
-    headline: string;
-    metaLabels: {
-      scope: string;
-      tools: string;
+  about: {
+    heading: string;
+    paragraphLead: string;
+    paragraphMuted1: string;
+    paragraphHighlight1: string;
+    paragraphMuted2: string;
+    paragraphHighlight2: string;
+    paragraphClosing: string;
+    stats: StatItem[];
+    education: {
+      degree: string;
+      university: string;
+      badge: string;
+      period: string;
     };
-    items: SkillItem[];
-    softSkillsLabel: string;
-    softSkills: string[];
-  };
-  credentials: {
-    sectionLabel: string;
-    headline: string;
-    educationTitle: string;
-    degree: string;
-    university: string;
-    period: string;
-    certificationsTitle: string;
-    viewCertButton: string;
-    verifyLinkText: string;
-    certifications: CertificationItem[];
+    credentials: {
+      viewCertButton: string;
+      verifyLinkText: string;
+      items: CertificationItem[];
+    };
   };
   contact: {
-    sectionLabel: string;
-    heading: string;
+    headline: string;
     subheading: string;
+    availablePill: string;
     email: string;
     copyButton: string;
     copiedButton: string;
+    connectLabel: string;
+    backToTop: string;
+    footerCopy: string;
     socials: {
-      label: string;
-      url: string;
-    }[];
+      whatsapp: { label: string; url: string };
+      linkedin: { label: string; url: string };
+      github: { label: string; url: string };
+    };
     form: {
       nameLabel: string;
       namePlaceholder: string;
@@ -197,55 +152,249 @@ export interface PortfolioContent {
       errorMessage: string;
       emailDirectly: string;
     };
-    footerCopy: string;
-    footerLocation: string;
+  };
+  cvModal: {
+    title: string;
+    subtitle: string;
+    downloadButton: string;
+    closeButton: string;
+    zoomIn: string;
+    zoomOut: string;
+    openNewTab: string;
+    fallbackText: string;
+  };
+  certModal: {
+    closeButton: string;
+    downloadButton: string;
+    zoomIn: string;
+    zoomOut: string;
+    openNewTab: string;
+    verification: string;
+    code: string;
+    fallbackText: string;
   };
 }
 
 export const content: Record<Language, PortfolioContent> = {
   in: {
     brand: 'iqbaldf',
+    monogram: 'ID',
     nav: {
       home: 'Beranda',
-      about: 'Tentang',
-      projects: 'Proyek',
       skills: 'Keahlian',
-      credentials: 'Kredensial',
+      projects: 'Proyek',
+      about: 'Tentang',
       contact: 'Kontak',
+      menuLabel: 'Buka menu navigasi',
+      closeMenuLabel: 'Tutup menu navigasi',
+      toggleLangLabel: 'Ganti ke Bahasa Inggris',
     },
     hero: {
-      eyebrow: 'Data Analyst',
-      headlineLine1: 'Mengolah data mentah',
-      headlineLine2: 'menjadi keputusan bisnis yang jelas',
+      headline: 'Mengolah data mentah menjadi keputusan bisnis yang jelas.',
       ctaProjects: 'Lihat Proyek',
       ctaCv: 'Lihat CV',
-      cursorLeft: 'SQL · MySQL',
-      cursorRight: 'Excel · Looker Studio',
-      bottomLinks: {
-        projects: 'Proyek',
-        skills: 'Keahlian',
-        credentials: 'Kredensial',
-        contact: 'Kontak',
+      location: 'Berdomisili di Yogyakarta, Indonesia',
+      circularBadgeText: 'DATA ANALYST • IQBAL DWI FATHONAH • ',
+      photoPlaceholderLabel: 'iqbaldf',
+    },
+    skills: {
+      sectionLabel: 'Keahlian Inti',
+      headline: 'Perangkat & Fokus Analisis',
+      subtitle: 'Fondasi teknis untuk ekstraksi data, pembersihan dataset, hingga pelaporan KPI interaktif.',
+      items: [
+        {
+          id: 'sql',
+          title: 'SQL & Database',
+          description: 'Ekstraksi data relasional, agregasi, dan validasi query terstruktur.',
+          pills: ['SQL', 'MySQL', 'Data Extraction', 'Relational Query'],
+        },
+        {
+          id: 'excel',
+          title: 'Spreadsheet & Reporting',
+          description: 'Pembersihan dataset skala besar, PivotTable, XLOOKUP, dan ringkasan bisnis kerangka PAR.',
+          pills: ['Excel', 'PivotTable', 'XLOOKUP', 'Data Cleaning'],
+        },
+        {
+          id: 'bi',
+          title: 'Dashboard & BI',
+          description: 'Visualisasi metrik operasional, pelacakan KPI, dan dashboard interaktif untuk pengambilan keputusan.',
+          pills: ['Looker Studio', 'Interactive BI', 'KPI Reporting', 'Git'],
+        },
+      ],
+    },
+    projects: {
+      headline: 'Proyek Pilihan',
+      subtitle: 'Studi kasus analisis data bisnis dan publik untuk menghasilkan insight operasional yang terukur.',
+      viewCaseButton: 'Lihat Detail',
+      previewLabel: 'Dashboard Preview',
+      modalLabels: {
+        overview: 'Ringkasan Proyek',
+        tools: 'Perangkat',
+        highlights: 'Temuan & Implementasi',
+        close: 'Tutup',
+        openDashboard: 'Buka Dashboard',
+        previous: 'Sebelumnya',
+        next: 'Berikutnya',
+      },
+      items: [
+        {
+          id: 'pizza-sales',
+          index: '01',
+          title: 'Pizza Sales Performance & Operational Dashboard',
+          category: 'Business Intelligence Project',
+          tools: ['Excel', 'Looker Studio'],
+          shortSummary:
+            'Rekonsiliasi 21,350+ transaksi ($817K+ revenue), pola jam sibuk 12–13 & 17–18, kategori menu, serta Top 5 SKU dalam dashboard BI interaktif.',
+          description:
+            'Analisis rekonsiliasi penjualan dan efisiensi operasional dari 21,350+ transaksi dengan total revenue $817K+. Memetakan pola jam sibuk (12–13 dan 17–18), kontribusi kategori menu, serta Top 5 SKU ke dalam dashboard BI interaktif.',
+          previewSubtitle: 'Excel · Looker Studio',
+          highlights: [
+            'Memvalidasi dan merekonsiliasi lebih dari 21,350+ transaksi penjualan dengan total revenue $817K+ menggunakan Microsoft Excel dan Google Looker Studio.',
+            'Mengidentifikasi pola jam sibuk operasional pada pukul 12–13 dan 17–18 sebagai dasar rekomendasi penjadwalan staf (staggered shift).',
+            'Menganalisis performa empat kategori menu (Classic, Supreme, Chicken, Veggie) dan memetakan Top 5 SKU untuk mendukung kontrol inventaris.',
+            'Merancang dashboard BI interaktif untuk memantau kinerja produk dan tren pesanan secara berkala.',
+          ],
+        },
+        {
+          id: 'superstore-sales',
+          index: '02',
+          title: 'Superstore Sales & Profitability Analysis',
+          category: 'Commercial Analytics Project',
+          tools: ['Excel'],
+          shortSummary:
+            'Analisis tren penjualan, profitabilitas lintas wilayah, dan dampak diskon terhadap margin laba dengan ringkasan kerangka PAR.',
+          description:
+            'Evaluasi menyeluruh atas tren penjualan musiman dan profitabilitas lintas wilayah. Berfokus pada pengukuran dampak diskon terhadap margin laba bersih yang dirangkum menggunakan kerangka PAR (Problem, Action, Result).',
+          previewSubtitle: 'Microsoft Excel',
+          highlights: [
+            'Menganalisis tren penjualan musiman serta perbandingan profitabilitas lintas wilayah pada dataset transaksi ritel.',
+            'Membangun pelaporan interaktif menggunakan PivotTable, Calculated Fields, dan Slicers untuk menelusuri dampak diskon terhadap margin laba.',
+            'Menyusun ringkasan analisis terstruktur berbasis kerangka PAR (Problem, Action, Result) guna mendukung evaluasi strategi harga.',
+          ],
+        },
+        {
+          id: 'nyc-traffic',
+          index: '03',
+          title: 'NYC Traffic Safety Analysis',
+          category: 'Public Data Analytics Project',
+          tools: ['Excel'],
+          shortSummary:
+            'Pembersihan dan validasi 238,000+ catatan kecelakaan lalu lintas untuk root cause analysis serta pemetaan pola insiden.',
+          description:
+            'Pembersihan, normalisasi, dan validasi dataset publik berskala besar mencakup 238,000+ catatan kecelakaan lalu lintas untuk melakukan root cause analysis terhadap faktor risiko utama dan pola kejadian.',
+          previewSubtitle: 'Microsoft Excel',
+          highlights: [
+            'Membersihkan dan memvalidasi lebih dari 238,000+ catatan kecelakaan lalu lintas guna menjaga konsistensi analisis.',
+            'Melakukan root cause analysis menggunakan XLOOKUP, INDEX/MATCH, dan PivotTable untuk memetakan faktor risiko utama serta pola waktu insiden.',
+            'Menyajikan ringkasan temuan terstruktur sebagai landasan rekomendasi peningkatan keselamatan operasional.',
+          ],
+        },
+      ],
+    },
+    about: {
+      heading: 'Tentang Saya.',
+      paragraphLead: 'Halo, saya Iqbal Dwi Fathonah,',
+      paragraphMuted1: ' seorang ',
+      paragraphHighlight1: 'fresh graduate S1 Teknologi Informasi Universitas Muhammadiyah Yogyakarta (2026)',
+      paragraphMuted2: ' yang berdedikasi mengubah kumpulan data mentah menjadi insight bisnis yang rapi dan terukur. Sebagai ',
+      paragraphHighlight2: 'Data Analyst yang berfokus pada SQL, MySQL, Excel, dan Looker Studio,',
+      paragraphClosing: ' saya terbiasa membersihkan dan memvalidasi puluhan ribu baris data transaksi untuk mendukung keputusan operasional.',
+      stats: [
+        { value: '21,350+', label: 'Transaksi Diolah' },
+        { value: '238,000+', label: 'Catatan Dibersihkan' },
+        { value: '3', label: 'Proyek Analisis & BI' },
+      ],
+      education: {
+        degree: 'S1 Teknologi Informasi',
+        university: 'Universitas Muhammadiyah Yogyakarta',
+        badge: 'Lulus 2026',
+        period: 'Sep 2022 – 2026',
+      },
+      credentials: {
+        viewCertButton: 'Lihat Sertifikat',
+        verifyLinkText: 'Verify',
+        items: [
+          {
+            id: 'certiport-ai',
+            title: 'Artificial Intelligence',
+            issuer: 'Certiport (IT Specialist)',
+            field: 'Artificial Intelligence',
+            date: '18 Jun 2026',
+            validity: 'Berlaku hingga 2031',
+            verification: {
+              site: 'verify.certiport.com',
+              code: 'hd9z-4wLu',
+              url: 'https://verify.certiport.com',
+            },
+            fileType: 'pdf',
+            fileUrl: '/certificates/certiport-ai.pdf',
+            thumbnailUrl: '/certificates/certiport-thumb.png',
+          },
+          {
+            id: 'bnsp-web-developer',
+            title: 'Certified Web Developer (CWDev)',
+            issuer: 'BNSP (LSP Informatika)',
+            field: 'Programming and Software Development',
+            date: '17 Mar 2026',
+            validity: 'Berlaku hingga 2029',
+            fileType: 'image',
+            fileUrl: '/certificates/bnsp-web-developer.jpg',
+            thumbnailUrl: '/certificates/bnsp-web-developer.jpg',
+          },
+        ],
       },
     },
-    console: {
-      sampleData: 'Data contoh',
-      modeLabel: 'MODE',
-      modes: {
-        sql: 'Kueri SQL',
-        excel: 'Laporan Excel',
-        dashboard: 'Dashboard',
+    contact: {
+      headline: 'Siap mengolah data Anda? Mari berdiskusi.',
+      subheading:
+        'Terbuka untuk peran Data Analyst purnawaktu maupun kolaborasi proyek analisis dan visualisasi data.',
+      availablePill: 'Tersedia untuk kerja',
+      email: 'iqbalfathonah20@gmail.com',
+      copyButton: 'Salin Email',
+      copiedButton: 'Tersalin ✓',
+      connectLabel: 'Terhubung di',
+      backToTop: 'Kembali ke Atas',
+      footerCopy: '© 2026 iqbaldf · Iqbal Dwi Fathonah · Yogyakarta, Indonesia',
+      socials: {
+        whatsapp: {
+          label: 'WhatsApp',
+          url: 'https://wa.me/6285726168917',
+        },
+        linkedin: {
+          label: 'LinkedIn',
+          url: 'https://www.linkedin.com/in/iqbal-dwi-fathonah-56ba2a3b0',
+        },
+        github: {
+          label: 'GitHub',
+          url: 'https://github.com/qivoradev',
+        },
       },
-      metrics: {
-        sales: 'Penjualan',
-        orders: 'Pesanan',
-        customers: 'Pelanggan',
-        growth: 'Pertumbuhan',
+      form: {
+        nameLabel: 'Nama Lengkap',
+        namePlaceholder: 'Nama lengkap Anda',
+        nameError: 'Nama lengkap wajib diisi',
+        emailLabel: 'Email',
+        emailPlaceholder: 'nama@perusahaan.com',
+        emailError: 'Masukkan alamat email yang valid',
+        subjectLabel: 'Subjek',
+        subjectPlaceholder: 'Peluang Kerja / Kolaborasi Analisis Data',
+        subjectError: 'Subjek wajib diisi',
+        messageLabel: 'Pesan',
+        messagePlaceholder: 'Ceritakan kebutuhan analisis data atau peran yang tersedia...',
+        messageError: 'Pesan minimal 10 karakter',
+        sendButton: 'Kirim Pesan →',
+        sendingButton: 'Mengirim...',
+        successTitle: 'Pesan terkirim. Terima kasih.',
+        successMessage: 'Terima kasih telah menghubungi saya. Pesan Anda telah diterima dan akan segera saya balas.',
+        sendAnotherButton: 'Kirim Pesan Lain',
+        fallbackNotice: 'Kunci API belum aktif. Mengarahkan ke aplikasi email Anda...',
+        errorMessage: 'Gagal mengirim pesan. Silakan coba lagi atau kirim email langsung.',
+        emailDirectly: 'Kirim email langsung',
       },
     },
     cvModal: {
       title: 'Curriculum Vitae',
-      subtitle: 'Iqbal Dwi Fathonah · Data Analyst (Fresh Graduate)',
+      subtitle: 'Iqbal Dwi Fathonah · Data Analyst',
       downloadButton: 'Unduh PDF',
       closeButton: 'Tutup',
       zoomIn: 'Perbesar 2×',
@@ -263,282 +412,226 @@ export const content: Record<Language, PortfolioContent> = {
       code: 'Kode',
       fallbackText: 'Buka berkas di tab baru',
     },
-    about: {
-      sectionLabel: 'Tentang Saya',
-      headline: 'Mengolah data menjadi keputusan bisnis yang jelas.',
-      story:
-        'Fresh graduate Teknologi Informasi UMY dengan fokus pada analisis data bisnis, pemodelan data relasional, dan Business Intelligence. Menggunakan Microsoft Excel tingkat lanjut (PivotTable, XLOOKUP, Data Modeling) dan Google Looker Studio untuk dashboard interaktif. Memiliki pemahaman di bidang Artificial Intelligence (Certiport) dan Web Development (BNSP). Terbiasa mengolah dan memvalidasi puluhan ribu baris data transaksi untuk mengidentifikasi tren, mengevaluasi performa produk, dan mendukung keputusan bisnis.',
-      metrics: [
+  },
+  en: {
+    brand: 'iqbaldf',
+    monogram: 'ID',
+    nav: {
+      home: 'Home',
+      skills: 'Skills',
+      projects: 'Projects',
+      about: 'About',
+      contact: 'Contact',
+      menuLabel: 'Open navigation menu',
+      closeMenuLabel: 'Close navigation menu',
+      toggleLangLabel: 'Switch to Indonesian',
+    },
+    hero: {
+      headline: 'Turning raw data into clear business decisions.',
+      ctaProjects: 'View Projects',
+      ctaCv: 'View CV',
+      location: 'Based in Yogyakarta, Indonesia',
+      circularBadgeText: 'DATA ANALYST • IQBAL DWI FATHONAH • ',
+      photoPlaceholderLabel: 'iqbaldf',
+    },
+    skills: {
+      sectionLabel: 'Core Skills',
+      headline: 'Analytical Stack & Focus',
+      subtitle: 'Technical foundation for relational extraction, dataset cleaning, and interactive KPI reporting.',
+      items: [
         {
-          value: 21350,
-          suffix: '+',
-          label: 'transaksi diolah',
+          id: 'sql',
+          title: 'SQL & Database',
+          description: 'Relational data extraction, aggregation, and structured query validation.',
+          pills: ['SQL', 'MySQL', 'Data Extraction', 'Relational Query'],
         },
         {
-          value: 238000,
-          suffix: '+',
-          label: 'data dibersihkan',
+          id: 'excel',
+          title: 'Spreadsheet & Reporting',
+          description: 'Large-scale dataset cleaning, PivotTables, XLOOKUP, and PAR-framework business summaries.',
+          pills: ['Excel', 'PivotTable', 'XLOOKUP', 'Data Cleaning'],
         },
         {
-          value: 3,
-          suffix: '',
-          label: 'proyek BI',
+          id: 'bi',
+          title: 'Dashboard & BI',
+          description: 'Operational metric visualization, KPI tracking, and interactive dashboards for decision-making.',
+          pills: ['Looker Studio', 'Interactive BI', 'KPI Reporting', 'Git'],
         },
       ],
-      approach: {
-        label: '5-Step Analytical Approach',
-        steps: [
-          'Memahami konteks & rumusan masalah bisnis',
-          'Pembersihan, normalisasi, dan validasi data transaksi',
-          'Ekstraksi relasional dengan query SQL terstruktur',
-          'Penyusunan ringkasan pelaporan & visualisasi metrik',
-          'Menyampaikan insight rekomendasi yang aplikatif',
-        ],
-      },
     },
     projects: {
-      sectionLabel: 'Karya Pilihan',
-      headline: 'Proyek Pilihan',
-      subtitle: '3 Studi Kasus Bisnis & Data Publik',
-      viewCase: 'Lihat Kasus',
-      viewDetails: 'Lihat detail →',
+      headline: 'Selected Work',
+      subtitle: 'Business and public data analytics case studies built to deliver measurable operational clarity.',
+      viewCaseButton: 'View Case Study',
+      previewLabel: 'Dashboard Preview',
       modalLabels: {
-        overview: 'Ringkasan',
-        context: 'Konteks & Lingkup',
+        overview: 'Project Overview',
         tools: 'Tools',
-        highlights: 'Sorotan Implementasi',
-        close: 'Tutup',
-        openDashboard: 'Buka Dashboard',
-        previous: '← Sebelumnya',
-        next: 'Berikutnya →',
+        highlights: 'Key Findings & Implementation',
+        close: 'Close',
+        openDashboard: 'Open Dashboard',
+        previous: 'Previous',
+        next: 'Next',
       },
       items: [
         {
           id: 'pizza-sales',
+          index: '01',
           title: 'Pizza Sales Performance & Operational Dashboard',
           category: 'Business Intelligence Project',
           tools: ['Excel', 'Looker Studio'],
-          toolsText: 'Excel · Looker Studio',
+          shortSummary:
+            'Reconciliation of 21,350+ transactions ($817K+ revenue), peak hours 12–13 & 17–18, menu categories, and Top 5 SKUs in an interactive BI dashboard.',
           description:
-            'Rekonsiliasi penjualan dan analisis jam sibuk dari 21.350+ transaksi, dengan dashboard BI interaktif.',
-          fact: '21.350+ transaksi · pendapatan $817K+',
-          previewLabel: 'Pola jam sibuk',
+            'Sales reconciliation and operational efficiency analysis across 21,350+ transactions generating $817K+ in revenue. Mapped rush-hour demand (12–13 and 17–18), menu category contribution, and Top 5 SKUs in an interactive BI dashboard.',
+          previewSubtitle: 'Excel · Looker Studio',
           highlights: [
-            'Mengolah dan memvalidasi rekonsiliasi data lebih dari 21.350 transaksi penjualan tahunan ($817K+) menggunakan Microsoft Excel dan Google Looker Studio.',
-            'Mengidentifikasi pola jam sibuk operasional pada 12.00–13.00 dan 17.00–18.00 untuk rekomendasi penjadwalan staf (staggered shift).',
-            'Menganalisis kontribusi kategori menu (Classic, Supreme, Chicken, Veggie) dan memetakan 5 produk terlaris (Top 5 SKU) untuk mendukung visibilitas supply chain dan inventory control.',
-            'Merancang dashboard BI interaktif untuk memantau Average Order Value (AOV) dan kinerja produk secara berkala.',
+            'Validated and reconciled 21,350+ sales transactions totaling $817K+ in revenue using Microsoft Excel and Google Looker Studio.',
+            'Identified peak operational hours at 12–13 and 17–18 to guide staggered staff scheduling recommendations.',
+            'Evaluated four menu categories (Classic, Supreme, Chicken, Veggie) and identified Top 5 SKUs to support inventory control.',
+            'Built an interactive BI dashboard to monitor product performance and order patterns continuously.',
           ],
         },
         {
           id: 'superstore-sales',
+          index: '02',
           title: 'Superstore Sales & Profitability Analysis',
           category: 'Commercial Analytics Project',
           tools: ['Excel'],
-          toolsText: 'Excel',
+          shortSummary:
+            'Sales trend evaluation, cross-regional profitability, and discount impact on net margin summarized with the PAR framework.',
           description:
-            'Analisis tren penjualan musiman dan profitabilitas wilayah, berfokus pada dampak diskon terhadap margin laba bersih.',
-          fact: 'Ribuan baris data transaksi',
-          previewLabel: 'Margin per wilayah',
+            'Comprehensive review of seasonal sales trends and cross-regional profitability. Focused on measuring how discount policies impact net profit margins, summarized through the PAR (Problem, Action, Result) framework.',
+          previewSubtitle: 'Microsoft Excel',
           highlights: [
-            'Menganalisis tren penjualan ritel musiman dan profitabilitas lintas wilayah dari ribuan baris data transaksi.',
-            'Membangun dashboard interaktif dengan PivotTable, Calculated Fields, dan Slicers untuk mengevaluasi dampak diskon terhadap penurunan margin laba bersih.',
-            'Menyusun ringkasan wawasan dengan kerangka PAR (Problem, Action, Result) untuk evaluasi efektivitas promosi dan rekomendasi strategi harga.',
+            'Analyzed seasonal retail sales trends and profitability differences across regions.',
+            'Built interactive reporting with PivotTables, Calculated Fields, and Slicers to evaluate discount impact on net profit margin.',
+            'Structured executive findings using the PAR (Problem, Action, Result) framework to inform pricing strategy reviews.',
           ],
         },
         {
           id: 'nyc-traffic',
+          index: '03',
           title: 'NYC Traffic Safety Analysis',
           category: 'Public Data Analytics Project',
           tools: ['Excel'],
-          toolsText: 'Excel',
+          shortSummary:
+            'Cleaning and validation of 238,000+ traffic accident records for root cause analysis and incident pattern mapping.',
           description:
-            'Pembersihan dan validasi 238.000+ catatan kecelakaan lalu lintas untuk menemukan faktor risiko utama dan pola insiden.',
-          fact: '238.000+ catatan insiden lalu lintas',
-          previewLabel: 'Insiden per jam',
+            'Large-scale data cleaning, normalization, and validation covering 238,000+ traffic accident records to perform root cause analysis on primary risk factors and incident patterns.',
+          previewSubtitle: 'Microsoft Excel',
           highlights: [
-            'Mengolah, membersihkan, dan memvalidasi dataset lebih dari 238.000 catatan kecelakaan lalu lintas.',
-            'Merancang dashboard berbasis formula lanjutan (XLOOKUP, INDEX/MATCH) dan Pivot Charts untuk Root Cause Analysis atas faktor risiko utama dan konsentrasi waktu insiden.',
-            'Menghasilkan visualisasi terstruktur untuk mengidentifikasi pola insiden sebagai dasar rekomendasi keselamatan operasional.',
+            'Cleaned and validated 238,000+ public traffic accident records to ensure analytical consistency.',
+            'Performed root cause analysis using XLOOKUP, INDEX/MATCH, and PivotTables to pinpoint primary risk factors and peak incident windows.',
+            'Delivered structured summaries of incident patterns to support operational safety recommendations.',
           ],
         },
       ],
     },
-    skills: {
-      sectionLabel: 'Kemampuan Inti',
-      headline: 'Keahlian & Tools',
-      metaLabels: {
-        scope: 'Cakupan',
-        tools: 'Tools',
+    about: {
+      heading: 'A little bit about me.',
+      paragraphLead: "Hi, I'm Iqbal Dwi Fathonah,",
+      paragraphMuted1: ' an ',
+      paragraphHighlight1: 'Information Technology fresh graduate from Universitas Muhammadiyah Yogyakarta (2026)',
+      paragraphMuted2: ' focused on turning messy transactional records into clear, actionable business insights. As a ',
+      paragraphHighlight2: 'Data Analyst working with SQL, MySQL, Excel, and Looker Studio,',
+      paragraphClosing: ' I clean and validate tens of thousands of transactional records to support reliable operational decisions.',
+      stats: [
+        { value: '21,350+', label: 'Transactions Analyzed' },
+        { value: '238,000+', label: 'Records Cleaned' },
+        { value: '3', label: 'Analytics & BI Projects' },
+      ],
+      education: {
+        degree: 'Bachelor of Information Technology (S1)',
+        university: 'Universitas Muhammadiyah Yogyakarta',
+        badge: 'Graduated 2026',
+        period: 'Sep 2022 – 2026',
       },
-      items: [
-        {
-          title: 'SQL & Database',
-          description:
-            'Dasar pemodelan relasional dan ekstraksi query terstruktur (JOIN, Grouping, Having, Filtering).',
-          tools: ['SQL', 'MySQL'],
-          toolsText: 'SQL · MySQL (dasar: JOIN, Grouping, Having, Filtering)',
-          scope: 'JOIN · Grouping · Having · Filtering',
-          levelOrUsageLabel: 'Tingkat',
-          levelOrUsageValue: 'Dasar',
-        },
-        {
-          title: 'Spreadsheet & Reporting',
-          description:
-            'Pengolahan data tingkat lanjut (PivotTable, XLOOKUP, INDEX/MATCH, Data Modeling) serta pembersihan data.',
-          tools: ['Microsoft Excel'],
-          toolsText: 'Microsoft Excel (PivotTable, XLOOKUP, INDEX/MATCH, Data Modeling) · Data Cleaning',
-          scope: 'PivotTable · XLOOKUP · INDEX/MATCH · Data Modeling · Data Cleaning',
-          levelOrUsageLabel: 'Tingkat',
-          levelOrUsageValue: 'Lanjut',
-        },
-        {
-          title: 'Dashboard & BI',
-          description:
-            'Pembuatan dashboard analitis interaktif, visualisasi metrik bisnis, dan manajemen version control.',
-          tools: ['Google Looker Studio', 'Git'],
-          toolsText: 'Google Looker Studio · Visualisasi Data · Business Intelligence · Git',
-          scope: 'Dashboard design · Data visualization · Business intelligence',
-          levelOrUsageLabel: 'Diterapkan di',
-          levelOrUsageValue: 'Pizza Sales Performance Dashboard',
-        },
-      ],
-      softSkillsLabel: 'Kemampuan Interpersonal & Kolaboratif',
-      softSkills: [
-        'Analytical Thinking & Problem Solving',
-        'Kolaborasi Lintas Divisi',
-        'Komunikasi Data',
-      ],
-    },
-    credentials: {
-      sectionLabel: 'Kredensial',
-      headline: 'Pendidikan & Sertifikasi',
-      educationTitle: 'Pendidikan Akademik',
-      degree: 'S1 Teknologi Informasi',
-      university: 'Universitas Muhammadiyah Yogyakarta',
-      period: 'Sep 2022 – Jun 2026',
-      certificationsTitle: 'Sertifikasi',
-      viewCertButton: 'Lihat Sertifikat',
-      verifyLinkText: 'Verify ↗',
-      certifications: [
-        {
-          id: 'certiport-ai',
-          title: 'Artificial Intelligence',
-          issuer: 'Certiport (IT Specialist)',
-          field: 'Artificial Intelligence',
-          date: '18 Jun 2026',
-          validity: 'berlaku 5 tahun (hingga 2031)',
-          verification: {
-            site: 'verify.certiport.com',
-            code: 'hd9z-4wLu',
-            url: 'https://verify.certiport.com',
+      credentials: {
+        viewCertButton: 'View Certificate',
+        verifyLinkText: 'Verify',
+        items: [
+          {
+            id: 'certiport-ai',
+            title: 'Artificial Intelligence',
+            issuer: 'Certiport (IT Specialist)',
+            field: 'Artificial Intelligence',
+            date: 'Jun 18, 2026',
+            validity: 'Valid until 2031',
+            verification: {
+              site: 'verify.certiport.com',
+              code: 'hd9z-4wLu',
+              url: 'https://verify.certiport.com',
+            },
+            fileType: 'pdf',
+            fileUrl: '/certificates/certiport-ai.pdf',
+            thumbnailUrl: '/certificates/certiport-thumb.png',
           },
-          fileType: 'pdf',
-          fileUrl: '/certificates/certiport-ai.pdf',
-        },
-        {
-          id: 'bnsp-web-developer',
-          title: 'Certified Web Developer (CWDev)',
-          issuer: 'BNSP (LSP Informatika)',
-          field: 'Programming and Software Development',
-          date: '17 Mar 2026',
-          validity: 'berlaku 3 tahun (hingga 2029)',
-          fileType: 'image',
-          fileUrl: '/certificates/bnsp-web-developer.jpg',
-        },
-      ],
+          {
+            id: 'bnsp-web-developer',
+            title: 'Certified Web Developer (CWDev)',
+            issuer: 'BNSP (LSP Informatika)',
+            field: 'Programming and Software Development',
+            date: 'Mar 17, 2026',
+            validity: 'Valid until 2029',
+            fileType: 'image',
+            fileUrl: '/certificates/bnsp-web-developer.jpg',
+            thumbnailUrl: '/certificates/bnsp-web-developer.jpg',
+          },
+        ],
+      },
     },
     contact: {
-      sectionLabel: 'Kontak',
-      heading: 'Mari berkolaborasi dengan data Anda.',
+      headline: "Ready to turn data into clarity? Let's talk.",
       subheading:
-        'Terbuka untuk kesempatan kerja Data Analyst purnawaktu, proyek pengolahan data, dan visualisasi Business Intelligence.',
-      email: 'iqbalfathonah10@gmail.com',
-      copyButton: 'Salin Email',
-      copiedButton: 'Tersalin ✓',
-      socials: [
-        {
+        'Open for full-time Data Analyst opportunities as well as data analytics and visualization collaborations.',
+      availablePill: 'Available for work',
+      email: 'iqbalfathonah20@gmail.com',
+      copyButton: 'Copy Email',
+      copiedButton: 'Copied ✓',
+      connectLabel: 'Connect on',
+      backToTop: 'Back to Top',
+      footerCopy: '© 2026 iqbaldf · Iqbal Dwi Fathonah · Yogyakarta, Indonesia',
+      socials: {
+        whatsapp: {
           label: 'WhatsApp',
           url: 'https://wa.me/6285726168917',
         },
-        {
+        linkedin: {
           label: 'LinkedIn',
           url: 'https://www.linkedin.com/in/iqbal-dwi-fathonah-56ba2a3b0',
         },
-        {
+        github: {
           label: 'GitHub',
           url: 'https://github.com/qivoradev',
         },
-      ],
+      },
       form: {
-        nameLabel: 'Nama Lengkap',
-        namePlaceholder: 'Nama Anda',
-        nameError: 'Nama wajib diisi',
-        emailLabel: 'Email',
-        emailPlaceholder: 'nama@perusahaan.com',
-        emailError: 'Alamat email tidak valid',
-        subjectLabel: 'Subjek',
-        subjectPlaceholder: 'Peluang Kerja / Proyek Analisis Data',
-        subjectError: 'Subjek wajib diisi',
-        messageLabel: 'Pesan',
-        messagePlaceholder: 'Ceritakan kebutuhan analisis data atau peran yang tersedia...',
-        messageError: 'Pesan minimal 10 karakter',
-        sendButton: 'Kirim pesan',
-        sendingButton: 'Mengirim...',
-        successTitle: 'Pesan terkirim. Terima kasih.',
-        successMessage: 'Pesan Anda telah berhasil dikirim. Saya akan segera menghubungi Anda kembali.',
-        sendAnotherButton: 'Kirim pesan lain',
-        fallbackNotice: 'Kunci API belum diatur. Mengalihkan ke email langsung...',
-        errorMessage: 'Gagal mengirim pesan. Silakan coba lagi atau kirim via email.',
-        emailDirectly: 'Kirim email langsung',
-      },
-      footerCopy: `© ${new Date().getFullYear()} iqbaldf · Iqbal Dwi Fathonah. Data Analyst.`,
-      footerLocation: 'Universitas Muhammadiyah Yogyakarta · Yogyakarta, Indonesia',
-    },
-  },
-  en: {
-    brand: 'iqbaldf',
-    nav: {
-      home: 'Home',
-      about: 'About',
-      projects: 'Projects',
-      skills: 'Skills',
-      credentials: 'Credentials',
-      contact: 'Contact',
-    },
-    hero: {
-      eyebrow: 'Data Analyst',
-      headlineLine1: 'I turn raw data',
-      headlineLine2: 'into clear decisions',
-      ctaProjects: 'View Projects',
-      ctaCv: 'View CV',
-      cursorLeft: 'SQL · MySQL',
-      cursorRight: 'Excel · Looker Studio',
-      bottomLinks: {
-        projects: 'Projects',
-        skills: 'Skills',
-        credentials: 'Credentials',
-        contact: 'Contact',
-      },
-    },
-    console: {
-      sampleData: 'Sample data',
-      modeLabel: 'MODE',
-      modes: {
-        sql: 'SQL Query',
-        excel: 'Excel Report',
-        dashboard: 'Dashboard',
-      },
-      metrics: {
-        sales: 'Sales',
-        orders: 'Orders',
-        customers: 'Customers',
-        growth: 'Growth',
+        nameLabel: 'Full Name',
+        namePlaceholder: 'Your full name',
+        nameError: 'Full name is required',
+        emailLabel: 'Email Address',
+        emailPlaceholder: 'name@company.com',
+        emailError: 'Please enter a valid email address',
+        subjectLabel: 'Subject',
+        subjectPlaceholder: 'Job Opportunity / Data Analytics Collaboration',
+        subjectError: 'Subject is required',
+        messageLabel: 'Message',
+        messagePlaceholder: 'Tell me about your data analytics needs or open role...',
+        messageError: 'Message must be at least 10 characters',
+        sendButton: 'Send Message →',
+        sendingButton: 'Sending...',
+        successTitle: 'Message sent. Thank you.',
+        successMessage: 'Thank you for reaching out. Your message has been received and I will reply shortly.',
+        sendAnotherButton: 'Send Another Message',
+        fallbackNotice: 'API key not configured. Opening your email client...',
+        errorMessage: 'Failed to send message. Please try again or email directly.',
+        emailDirectly: 'Email directly',
       },
     },
     cvModal: {
       title: 'Curriculum Vitae',
-      subtitle: 'Iqbal Dwi Fathonah · Data Analyst (Fresh Graduate)',
+      subtitle: 'Iqbal Dwi Fathonah · Data Analyst',
       downloadButton: 'Download PDF',
       closeButton: 'Close',
       zoomIn: 'Zoom 2×',
@@ -555,238 +648,6 @@ export const content: Record<Language, PortfolioContent> = {
       verification: 'Official Verification',
       code: 'Code',
       fallbackText: 'Open file in new tab',
-    },
-    about: {
-      sectionLabel: 'About Me',
-      headline: 'Turning data into clear business decisions.',
-      story:
-        'Information Technology fresh graduate from UMY focused on business data analytics, relational data modeling, and Business Intelligence. Proficient in advanced Microsoft Excel (PivotTable, XLOOKUP, Data Modeling) and Google Looker Studio for interactive dashboards. Possessing foundational literacy in Artificial Intelligence (Certiport) and Web Development (BNSP). Adept at processing and validating tens of thousands of transaction records to identify trends, evaluate product performance, and support business decisions.',
-      metrics: [
-        {
-          value: 21350,
-          suffix: '+',
-          label: 'transactions processed',
-        },
-        {
-          value: 238000,
-          suffix: '+',
-          label: 'records cleaned',
-        },
-        {
-          value: 3,
-          suffix: '',
-          label: 'BI projects',
-        },
-      ],
-      approach: {
-        label: '5-Step Analytical Approach',
-        steps: [
-          'Understand business context & define problem statement',
-          'Clean, normalize, and validate transactional datasets',
-          'Relational extraction using structured SQL queries',
-          'Compile structured reporting & visualize key metrics',
-          'Deliver actionable and practical recommendations',
-        ],
-      },
-    },
-    projects: {
-      sectionLabel: 'Featured Work',
-      headline: 'Selected Work',
-      subtitle: '3 Business & Public Data Case Studies',
-      viewCase: 'View Case',
-      viewDetails: 'View details →',
-      modalLabels: {
-        overview: 'Overview',
-        context: 'Context & Scope',
-        tools: 'Tools',
-        highlights: 'Key Highlights',
-        close: 'Close',
-        openDashboard: 'Open Dashboard',
-        previous: '← Previous',
-        next: 'Next →',
-      },
-      items: [
-        {
-          id: 'pizza-sales',
-          title: 'Pizza Sales Performance & Operational Dashboard',
-          category: 'Business Intelligence Project',
-          tools: ['Excel', 'Looker Studio'],
-          toolsText: 'Excel · Looker Studio',
-          description:
-            'Sales reconciliation and rush-hour analysis of 21,350+ transactions, with an interactive BI dashboard.',
-          fact: '21,350+ transactions · $817K+ revenue',
-          previewLabel: 'Rush hour pattern',
-          highlights: [
-            'Processed and validated reconciliation data of more than 21,350 annual sales transactions ($817K+) using Microsoft Excel and Google Looker Studio.',
-            'Identified operational rush hour patterns at 12:00–13:00 and 17:00–18:00 to recommend staggered staff scheduling.',
-            'Analyzed menu category contribution (Classic, Supreme, Chicken, Veggie) and mapped Top 5 SKUs to enhance supply chain visibility and inventory control.',
-            'Designed an interactive BI dashboard to track Average Order Value (AOV) and product performance regularly.',
-          ],
-        },
-        {
-          id: 'superstore-sales',
-          title: 'Superstore Sales & Profitability Analysis',
-          category: 'Commercial Analytics Project',
-          tools: ['Excel'],
-          toolsText: 'Excel',
-          description:
-            'Seasonal sales and regional profitability analysis, focused on how discounts affect net profit margin.',
-          fact: 'Thousands of transaction rows',
-          previewLabel: 'Margin by region',
-          highlights: [
-            'Analyzed seasonal retail sales trends and cross-regional profitability across thousands of transaction rows.',
-            'Built interactive dashboards utilizing PivotTables, Calculated Fields, and Slicers to assess discount impact on net margin decline.',
-            'Formulated insights using the PAR framework (Problem, Action, Result) for promotional effectiveness evaluation and pricing strategy recommendations.',
-          ],
-        },
-        {
-          id: 'nyc-traffic',
-          title: 'NYC Traffic Safety Analysis',
-          category: 'Public Data Analytics Project',
-          tools: ['Excel'],
-          toolsText: 'Excel',
-          description:
-            'Cleaning and validating 238,000+ traffic accident records to find root causes and incident patterns.',
-          fact: '238,000+ accident records',
-          previewLabel: 'Incidents by hour',
-          highlights: [
-            'Processed, cleaned, and validated large-scale datasets exceeding 238,000 traffic collision records.',
-            'Designed analytical dashboards with advanced formulas (XLOOKUP, INDEX/MATCH) and Pivot Charts for Root Cause Analysis on primary risk factors and peak incident hours.',
-            'Produced structured data visualizations to identify incident patterns as a foundation for operational safety recommendations.',
-          ],
-        },
-      ],
-    },
-    skills: {
-      sectionLabel: 'Core Capabilities',
-      headline: 'Skills & Tools',
-      metaLabels: {
-        scope: 'Scope',
-        tools: 'Tools',
-      },
-      items: [
-        {
-          title: 'SQL & Database',
-          description:
-            'Relational data modeling and structured query extraction (JOIN, Grouping, Having, Filtering).',
-          tools: ['SQL', 'MySQL'],
-          toolsText: 'SQL · MySQL (foundational: JOIN, Grouping, Having, Filtering)',
-          scope: 'JOIN · Grouping · Having · Filtering',
-          levelOrUsageLabel: 'Level',
-          levelOrUsageValue: 'Basic',
-        },
-        {
-          title: 'Spreadsheet & Reporting',
-          description:
-            'Advanced spreadsheet modeling (PivotTable, XLOOKUP, INDEX/MATCH, Data Modeling) and data cleaning.',
-          tools: ['Microsoft Excel'],
-          toolsText: 'Microsoft Excel (PivotTable, XLOOKUP, INDEX/MATCH, Data Modeling) · Data Cleaning',
-          scope: 'PivotTable · XLOOKUP · INDEX/MATCH · Data Modeling · Data Cleaning',
-          levelOrUsageLabel: 'Level',
-          levelOrUsageValue: 'Advanced',
-        },
-        {
-          title: 'Dashboard & BI',
-          description:
-            'Designing interactive visual dashboards, business metric visualization, and Git version control.',
-          tools: ['Google Looker Studio', 'Git'],
-          toolsText: 'Google Looker Studio · Data Visualization · Business Intelligence · Git',
-          scope: 'Dashboard design · Data visualization · Business intelligence',
-          levelOrUsageLabel: 'Used in',
-          levelOrUsageValue: 'Pizza Sales Performance Dashboard',
-        },
-      ],
-      softSkillsLabel: 'Soft Skills & Collaborative Strengths',
-      softSkills: [
-        'Analytical Thinking & Problem Solving',
-        'Cross-Divisional Collaboration',
-        'Data Communication',
-      ],
-    },
-    credentials: {
-      sectionLabel: 'Credentials',
-      headline: 'Education & Certifications',
-      educationTitle: 'Academic Degree',
-      degree: 'Bachelor of Information Technology (S1)',
-      university: 'Universitas Muhammadiyah Yogyakarta',
-      period: 'Sep 2022 – Jun 2026',
-      certificationsTitle: 'Certifications',
-      viewCertButton: 'View Certificate',
-      verifyLinkText: 'Verify ↗',
-      certifications: [
-        {
-          id: 'certiport-ai',
-          title: 'Artificial Intelligence',
-          issuer: 'Certiport (IT Specialist)',
-          field: 'Artificial Intelligence',
-          date: 'Jun 18, 2026',
-          validity: 'Valid for 5 years (until 2031)',
-          verification: {
-            site: 'verify.certiport.com',
-            code: 'hd9z-4wLu',
-            url: 'https://verify.certiport.com',
-          },
-          fileType: 'pdf',
-          fileUrl: '/certificates/certiport-ai.pdf',
-        },
-        {
-          id: 'bnsp-web-developer',
-          title: 'Certified Web Developer (CWDev)',
-          issuer: 'BNSP (LSP Informatika)',
-          field: 'Programming and Software Development',
-          date: 'Mar 17, 2026',
-          validity: 'Valid for 3 years (until 2029)',
-          fileType: 'image',
-          fileUrl: '/certificates/bnsp-web-developer.jpg',
-        },
-      ],
-    },
-    contact: {
-      sectionLabel: 'Contact',
-      heading: "Let's work with your data.",
-      subheading:
-        'Open for full-time Data Analyst opportunities, data processing projects, and Business Intelligence visualization.',
-      email: 'iqbalfathonah10@gmail.com',
-      copyButton: 'Copy Email',
-      copiedButton: 'Copied ✓',
-      socials: [
-        {
-          label: 'WhatsApp',
-          url: 'https://wa.me/6285726168917',
-        },
-        {
-          label: 'LinkedIn',
-          url: 'https://www.linkedin.com/in/iqbal-dwi-fathonah-56ba2a3b0',
-        },
-        {
-          label: 'GitHub',
-          url: 'https://github.com/qivoradev',
-        },
-      ],
-      form: {
-        nameLabel: 'Full Name',
-        namePlaceholder: 'Your name',
-        nameError: 'Name is required',
-        emailLabel: 'Email',
-        emailPlaceholder: 'name@company.com',
-        emailError: 'Valid email is required',
-        subjectLabel: 'Subject',
-        subjectPlaceholder: 'Job Opportunity / Data Analytics Project',
-        subjectError: 'Subject is required',
-        messageLabel: 'Message',
-        messagePlaceholder: 'Describe your data analytics needs or open opportunity...',
-        messageError: 'Message must be at least 10 characters',
-        sendButton: 'Send message',
-        sendingButton: 'Sending...',
-        successTitle: 'Message sent. Thank you.',
-        successMessage: 'Your message has been sent successfully. I will get back to you shortly.',
-        sendAnotherButton: 'Send another',
-        fallbackNotice: 'API key not configured. Redirecting to direct email...',
-        errorMessage: 'Failed to send message. Please try again or email directly.',
-        emailDirectly: 'Email me directly',
-      },
-      footerCopy: `© ${new Date().getFullYear()} iqbaldf · Iqbal Dwi Fathonah. Data Analyst.`,
-      footerLocation: 'Universitas Muhammadiyah Yogyakarta · Yogyakarta, Indonesia',
     },
   },
 };

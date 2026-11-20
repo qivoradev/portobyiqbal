@@ -1,46 +1,39 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { AnimatePresence } from 'motion/react';
 import { useLenis, scrollToLenis } from './hooks/useLenis';
 import { Header } from './components/Header';
-import { MobileBottomNav } from './components/MobileBottomNav';
 import { Hero } from './sections/Hero';
-import { About } from './sections/About';
-import { Projects } from './sections/Projects';
 import { Skills } from './sections/Skills';
-import { Credentials } from './sections/Credentials';
+import { Projects } from './sections/Projects';
+import { About } from './sections/About';
 import { Contact } from './sections/Contact';
 import { CVModal } from './components/CVModal';
-import { AnimatePresence, motion, useScroll } from 'motion/react';
 import { content, type Language } from './data/content';
 
 export default function App() {
   useLenis();
-  const { scrollYProgress } = useScroll();
 
-  // Language state with safe localStorage read
+  // Language state (default 'in')
   const [lang, setLang] = useState<Language>(() => {
     try {
       const saved = localStorage.getItem('iqbaldf_lang');
       if (saved === 'in' || saved === 'en') return saved;
     } catch {
-      // LocalStorage access restricted / SSR fallback
+      // Ignore storage access restrictions
     }
     return 'in';
   });
 
   const [activeSection, setActiveSection] = useState<string>('hero');
+  const [isDarkNav, setIsDarkNav] = useState<boolean>(false);
   const [isCvOpen, setIsCvOpen] = useState(false);
-  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
-  const [isCertModalOpen, setIsCertModalOpen] = useState(false);
   const cvTriggerRef = useRef<HTMLButtonElement | null>(null);
 
-  const isAnyModalOpen = isCvOpen || isProjectModalOpen || isCertModalOpen;
-
-  // Sync <html lang> on change and initial mount
   useEffect(() => {
     try {
       localStorage.setItem('iqbaldf_lang', lang);
     } catch {
-      // Ignore localStorage errors
+      // Ignore storage errors
     }
     document.documentElement.lang = lang === 'in' ? 'id' : 'en';
     document.title =
@@ -49,25 +42,42 @@ export default function App() {
         : 'iqbaldf — Iqbal Dwi Fathonah | Data Analyst Portfolio';
   }, [lang]);
 
-  // Section observer to update active nav indicator
+  // Adaptive Theme & Active Section Tracking
   useEffect(() => {
-    const sectionIds = ['hero', 'about', 'projects', 'skills', 'credentials', 'contact'];
+    const sectionIds = ['hero', 'skills', 'projects', 'about', 'contact'];
+
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
+
+      // Exact light -> dark transition check at Projects boundary
+      const projectsEl = document.getElementById('projects');
+      if (projectsEl) {
+        const projectsRect = projectsEl.getBoundingClientRect();
+        setIsDarkNav(projectsRect.top <= 64);
+      }
+
+      // Active section indicator
+      if (scrollY < 100) {
+        setActiveSection('hero');
+        return;
+      }
+
+      // Check bottom of page -> Contact active
+      if (scrollY + windowHeight >= document.documentElement.scrollHeight - 40) {
+        setActiveSection('contact');
+        return;
+      }
 
       for (let i = sectionIds.length - 1; i >= 0; i--) {
         const el = document.getElementById(sectionIds[i]);
         if (el) {
           const rect = el.getBoundingClientRect();
-          if (rect.top <= windowHeight * 0.4) {
+          if (rect.top <= windowHeight * 0.35) {
             setActiveSection(sectionIds[i]);
             break;
           }
         }
-      }
-      if (scrollY < 120) {
-        setActiveSection('hero');
       }
     };
 
@@ -80,35 +90,30 @@ export default function App() {
     setLang((prev) => (prev === 'in' ? 'en' : 'in'));
   }, []);
 
-  const handleNavigate = (sectionId: string) => {
+  const handleNavigate = useCallback((sectionId: string) => {
     const target = document.getElementById(sectionId);
     if (target) {
-      scrollToLenis(target, -88);
+      const offset = sectionId === 'hero' ? 0 : -24;
+      scrollToLenis(target, offset);
     }
-  };
+  }, []);
 
   const currentContent = content[lang];
 
   return (
-    <div className="relative min-h-screen selection:bg-black selection:text-white">
-      {/* 2px Scroll Progress Bar at very top (z-30: below header & modals) */}
-      <motion.div
-        style={{ scaleX: scrollYProgress }}
-        className="fixed top-0 left-0 right-0 h-[2px] bg-[#111111] origin-left z-30 pointer-events-none"
-        aria-hidden="true"
-      />
-
-      {/* Sticky / Fixed Navigation Header */}
+    <div className="relative min-h-screen overflow-x-clip selection:bg-[#259B52] selection:text-white">
+      {/* Adaptive Floating Pill Header (Desktop & Mobile) */}
       <Header
         onNavigate={handleNavigate}
         lang={lang}
         onToggleLang={handleToggleLang}
         content={currentContent}
         activeSection={activeSection}
+        isDarkTheme={isDarkNav}
       />
 
-      {/* Main Sections: Hero → About Me → Projects → Core Skills → Credentials → Contact */}
-      <main className="relative z-10 pb-28 md:pb-0">
+      {/* Main Editorial Flow: Light (Hero → Skills) → Dark (Projects → About & Credentials → Contact & Footer) */}
+      <main className="relative">
         <Hero
           onNavigate={handleNavigate}
           onOpenCV={() => setIsCvOpen(true)}
@@ -116,30 +121,13 @@ export default function App() {
           content={currentContent}
           cvTriggerRef={cvTriggerRef}
         />
-        <About content={currentContent} lang={lang} />
-        <Projects
-          content={currentContent}
-          lang={lang}
-          onModalStateChange={setIsProjectModalOpen}
-        />
         <Skills content={currentContent} lang={lang} />
-        <Credentials
-          content={currentContent}
-          lang={lang}
-          onModalStateChange={setIsCertModalOpen}
-        />
+        <Projects content={currentContent} lang={lang} />
+        <About content={currentContent} lang={lang} />
         <Contact content={currentContent} lang={lang} />
       </main>
 
-      {/* Floating Bottom Nav for Mobile Only */}
-      <MobileBottomNav
-        activeSection={activeSection}
-        onNavigate={handleNavigate}
-        content={currentContent.nav}
-        isHidden={isAnyModalOpen}
-      />
-
-      {/* CV Preview Modal */}
+      {/* Preserved CV Preview Modal */}
       <AnimatePresence>
         {isCvOpen && (
           <CVModal

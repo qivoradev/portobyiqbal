@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Menu, X } from 'lucide-react';
 import type { Language, PortfolioContent } from '../data/content';
+import { EDITORIAL_EASE } from './ScrollAnimations';
 
 interface HeaderProps {
   onNavigate: (sectionId: string) => void;
   lang: Language;
   onToggleLang: () => void;
   content: PortfolioContent;
-  activeSection?: string;
+  activeSection: string;
+  isDarkTheme: boolean;
 }
 
 export function Header({
@@ -14,144 +18,214 @@ export function Header({
   lang,
   onToggleLang,
   content,
-  activeSection = 'hero',
+  activeSection,
+  isDarkTheme,
 }: HeaderProps) {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const navItems = [
+    { id: 'hero', label: content.nav.home },
+    { id: 'skills', label: content.nav.skills },
+    { id: 'projects', label: content.nav.projects },
+    { id: 'about', label: content.nav.about },
+    { id: 'contact', label: content.nav.contact },
+  ];
+
+  // Close mobile menu on Escape or resize to desktop
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 8);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleResize = () => {
+      if (window.innerWidth >= 768) setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
-  return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-40 select-none bg-[#EFEFEF]/82 backdrop-blur-[12px] transition-all duration-200 ${
-        isScrolled ? 'border-b border-black/10 shadow-[0_2px_12px_rgba(0,0,0,0.03)]' : 'border-b border-transparent'
-      }`}
-    >
-      {/* Gradient fade ±24px underneath header */}
-      <div className="absolute top-full left-0 right-0 h-6 bg-gradient-to-b from-[#EFEFEF]/82 to-transparent pointer-events-none" />
+  const handleNavClick = (sectionId: string) => {
+    setMobileMenuOpen(false);
+    onNavigate(sectionId);
+  };
 
-      {/* Desktop Header (≥ md / 768px): Nav pill at center, language & contact at right */}
-      <div className="hidden md:flex site-container items-center justify-between py-3.5">
-        {/* Left: Text Logo */}
-        <div className="flex items-center">
+  const pillSurfaceClass = isDarkTheme
+    ? 'bg-neutral-900/85 text-white border-neutral-800 shadow-[0_8px_28px_rgba(0,0,0,0.45)]'
+    : 'bg-neutral-200/80 text-neutral-900 border-neutral-300/80 shadow-[0_4px_20px_rgba(0,0,0,0.05)]';
+
+  const dividerClass = isDarkTheme ? 'bg-neutral-700' : 'bg-neutral-400/70';
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none select-none">
+      {/* Desktop Floating Pill Header (≥ 768px) */}
+      <div className="hidden md:flex justify-center pt-4 px-4">
+        <div
+          className={`pointer-events-auto flex items-center gap-5 lg:gap-7 px-3.5 py-2 rounded-2xl border backdrop-blur-md transition-colors duration-300 ${pillSurfaceClass}`}
+        >
+          {/* Left: Monogram ID | iqbaldf */}
           <button
             type="button"
-            onClick={() => onNavigate('hero')}
-            className="text-[19px] font-bold tracking-tight text-[#111111] hover:opacity-75 transition-opacity cursor-pointer"
+            onClick={() => handleNavClick('hero')}
+            className="flex items-center gap-2.5 pl-1 pr-1 cursor-pointer group focus-visible:outline-2"
             aria-label="iqbaldf home"
           >
-            {content.brand}
-          </button>
-        </div>
-
-        {/* Center: Desktop Nav Pill with Curved Arrows */}
-        <nav
-          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#E5E5E5]/80 backdrop-blur-md border border-black/5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] text-[13px] sm:text-[14px] text-[#444444]"
-          aria-label="Main navigation"
-        >
-          <button
-            type="button"
-            onClick={() => onNavigate('hero')}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-full transition-colors cursor-pointer ${
-              activeSection === 'hero' ? 'bg-white text-black font-semibold shadow-2xs' : 'hover:text-black'
-            }`}
-          >
-            <span className="text-[#888888] text-[12px]">↪</span>
-            <span>{content.nav.home}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigate('about')}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-full transition-colors cursor-pointer ${
-              activeSection === 'about' ? 'bg-white text-black font-semibold shadow-2xs' : 'hover:text-black'
-            }`}
-          >
-            <span className="text-[#888888] text-[12px]">↪</span>
-            <span>{content.nav.about}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigate('projects')}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-full transition-colors cursor-pointer ${
-              activeSection === 'projects' ? 'bg-white text-black font-semibold shadow-2xs' : 'hover:text-black'
-            }`}
-          >
-            <span className="text-[#888888] text-[12px]">↪</span>
-            <span>{content.nav.projects}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigate('skills')}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-full transition-colors cursor-pointer ${
-              activeSection === 'skills' ? 'bg-white text-black font-semibold shadow-2xs' : 'hover:text-black'
-            }`}
-          >
-            <span className="text-[#888888] text-[12px]">↪</span>
-            <span>{content.nav.skills}</span>
-          </button>
-        </nav>
-
-        {/* Right: Desktop Actions (Lang Toggle + Contact Button) */}
-        <div className="flex items-center gap-2.5">
-          {/* Language Toggle Pill */}
-          <button
-            type="button"
-            onClick={onToggleLang}
-            className="px-3 py-1.5 rounded-full border border-black/10 bg-white/90 backdrop-blur-sm text-[12px] font-semibold text-[#222222] shadow-xs hover:bg-white hover:border-black/25 active:scale-95 transition-all cursor-pointer"
-            aria-label={lang === 'in' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
-            title={lang === 'in' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
-          >
-            <span className="inline-block transition-opacity duration-150">
-              {lang === 'in' ? 'IN' : 'EN'}
+            <span className="text-[19px] font-extrabold tracking-tighter leading-none">
+              {content.monogram}
+            </span>
+            <span className={`w-px h-5 transition-colors duration-300 ${dividerClass}`} />
+            <span className="text-[13px] font-bold tracking-tight leading-none">
+              {content.brand}
             </span>
           </button>
 
-          {/* Contact Button */}
+          {/* Center: Nav Links with motion layoutId active black box */}
+          <nav className="flex items-center gap-1" aria-label="Main navigation">
+            {navItems.map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => handleNavClick(item.id)}
+                  className={`relative px-3.5 py-2 rounded-lg text-[13.5px] font-medium transition-colors duration-200 cursor-pointer ${
+                    isActive
+                      ? 'text-white'
+                      : isDarkTheme
+                        ? 'text-neutral-300 hover:text-white'
+                        : 'text-neutral-700 hover:text-neutral-950'
+                  }`}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="desktop-nav-active-pill"
+                      transition={{ type: 'spring', stiffness: 260, damping: 28 }}
+                      className={`absolute inset-0 rounded-lg -z-10 ${
+                        isDarkTheme
+                          ? 'bg-[#050505] border border-neutral-800'
+                          : 'bg-[#0A0A0A]'
+                      }`}
+                    />
+                  )}
+                  <span className="relative z-10">{item.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Right: Compact Language Toggle IN / EN */}
           <button
             type="button"
-            onClick={() => onNavigate('contact')}
-            className={`px-4 sm:px-5 py-1.5 rounded-full border border-black/15 bg-white/90 backdrop-blur-sm text-[13px] sm:text-[14px] font-medium shadow-xs hover:bg-white hover:border-black/30 active:scale-98 transition-all cursor-pointer ${
-              activeSection === 'contact' ? 'border-black/40 text-black font-semibold bg-white' : 'text-black'
+            onClick={onToggleLang}
+            aria-label={content.nav.toggleLangLabel}
+            title={content.nav.toggleLangLabel}
+            className={`px-2.5 py-1.5 rounded-lg text-[12px] font-bold tracking-wide border transition-colors duration-200 cursor-pointer ${
+              isDarkTheme
+                ? 'bg-neutral-800/90 border-neutral-700 text-neutral-100 hover:bg-neutral-800'
+                : 'bg-white/80 border-neutral-300 text-neutral-900 hover:bg-white'
             }`}
           >
-            {content.nav.contact}
+            {lang === 'in' ? 'IN' : 'EN'}
           </button>
         </div>
       </div>
 
-      {/* Mobile Header (< md): Exactly 56px height, consistent padding. Left: Logo, Right: Lang Toggle. No Nav! */}
-      <div className="flex md:hidden site-container h-[56px] items-center justify-between">
-        <div>
+      {/* Mobile Floating Top Bar (< 768px): mx-4 mt-3 rounded-2xl px-4 py-3 */}
+      <div className="md:hidden mx-4 mt-3">
+        <div
+          className={`pointer-events-auto rounded-2xl px-4 py-3 border backdrop-blur-md flex items-center justify-between transition-colors duration-300 ${pillSurfaceClass}`}
+        >
+          {/* Left: Monogram ID | iqbaldf */}
           <button
             type="button"
-            onClick={() => onNavigate('hero')}
-            className="text-[18px] font-bold tracking-tight text-[#111111] hover:opacity-75 transition-opacity cursor-pointer"
+            onClick={() => handleNavClick('hero')}
+            className="flex items-center gap-2.5 cursor-pointer"
             aria-label="iqbaldf home"
           >
-            {content.brand}
+            <span className="text-[19px] font-extrabold tracking-tighter leading-none">
+              {content.monogram}
+            </span>
+            <span className={`w-px h-5 transition-colors duration-300 ${dividerClass}`} />
+            <span className="text-[13.5px] font-bold tracking-tight leading-none">
+              {content.brand}
+            </span>
           </button>
+
+          {/* Right: Compact IN/EN Toggle + Hamburger Menu */}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onToggleLang}
+              aria-label={content.nav.toggleLangLabel}
+              title={content.nav.toggleLangLabel}
+              className={`min-w-[40px] h-9 px-2.5 rounded-lg text-[12px] font-bold tracking-wide border flex items-center justify-center transition-colors duration-200 cursor-pointer ${
+                isDarkTheme
+                  ? 'bg-neutral-800/90 border-neutral-700 text-neutral-100'
+                  : 'bg-white/85 border-neutral-300 text-neutral-900'
+              }`}
+            >
+              {lang === 'in' ? 'IN' : 'EN'}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-expanded={mobileMenuOpen}
+              aria-label={mobileMenuOpen ? content.nav.closeMenuLabel : content.nav.menuLabel}
+              className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-200 cursor-pointer ${
+                isDarkTheme
+                  ? 'text-white hover:bg-neutral-800'
+                  : 'text-neutral-900 hover:bg-neutral-300/60'
+              }`}
+            >
+              {mobileMenuOpen ? <X size={20} strokeWidth={2} /> : <Menu size={20} strokeWidth={2} />}
+            </button>
+          </div>
         </div>
 
-        <div>
-          <button
-            type="button"
-            onClick={onToggleLang}
-            className="min-w-[44px] min-h-[44px] w-11 h-11 rounded-full border border-black/10 bg-white/90 backdrop-blur-md text-[12px] font-bold text-[#222222] shadow-xs flex items-center justify-center active:scale-95 transition-all cursor-pointer"
-            aria-label={lang === 'in' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
-            title={lang === 'in' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
-          >
-            <span>{lang === 'in' ? 'IN' : 'EN'}</span>
-          </button>
-        </div>
+        {/* Mobile Dropdown Navigation Menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.nav
+              initial={{ opacity: 0, y: -8, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.98 }}
+              transition={{ duration: 0.22, ease: EDITORIAL_EASE }}
+              aria-label="Mobile navigation"
+              className={`pointer-events-auto mt-2 rounded-2xl p-2 border backdrop-blur-md transition-colors duration-300 ${
+                isDarkTheme
+                  ? 'bg-neutral-900/95 border-neutral-800 text-white shadow-[0_16px_36px_rgba(0,0,0,0.6)]'
+                  : 'bg-white/95 border-neutral-300 text-neutral-900 shadow-[0_16px_36px_rgba(0,0,0,0.08)]'
+              }`}
+            >
+              <div className="flex flex-col gap-1">
+                {navItems.map((item) => {
+                  const isActive = activeSection === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => handleNavClick(item.id)}
+                      className={`w-full text-left px-4 py-2.5 rounded-xl text-[15px] font-medium transition-colors cursor-pointer ${
+                        isActive
+                          ? isDarkTheme
+                            ? 'bg-[#050505] text-white border border-neutral-800'
+                            : 'bg-[#0A0A0A] text-white'
+                          : isDarkTheme
+                            ? 'text-neutral-300 hover:bg-neutral-800 hover:text-white'
+                            : 'text-neutral-700 hover:bg-neutral-100 hover:text-neutral-950'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );
