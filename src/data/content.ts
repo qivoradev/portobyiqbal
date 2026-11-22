@@ -58,16 +58,13 @@ export interface ProjectItem {
   };
 }
 
-export interface SkillWorkflowItem {
+export interface SkillPipelineItem {
   id: 'sql' | 'excel' | 'bi';
-  index: string;
-  shortTitle: string;
+  stageLabel: string;
   title: string;
-  role: string;
-  stepLabel: string;
-  focus: string;
+  subLabel: string;
   capabilities: [string, string, string];
-  keyOutput: string;
+  output: string;
 }
 
 export interface StatItem {
@@ -116,8 +113,8 @@ export interface PortfolioContent {
   skills: {
     headline: string;
     subtitle: string;
-    keyOutputLabel: string;
-    items: SkillWorkflowItem[];
+    outputLabel: string;
+    items: SkillPipelineItem[];
   };
   projects: {
     headline: string;
@@ -247,55 +244,43 @@ export const content: Record<Language, PortfolioContent> = {
     skills: {
       headline: 'Alur Kerja & Perangkat',
       subtitle: 'Tiga perangkat utama yang saya gunakan dari ekstraksi data mentah hingga keputusan operasional.',
-      keyOutputLabel: 'Fokus Output',
+      outputLabel: 'OUTPUT',
       items: [
         {
           id: 'sql',
-          index: '01',
-          shortTitle: 'SQL',
+          stageLabel: '01 · EKSTRAKSI',
           title: 'SQL',
-          role: 'Ekstraksi & Validasi Data',
-          stepLabel: 'STEP 01 · EXTRACT',
-          focus:
-            'Mengambil, menggabungkan, dan memvalidasi dataset relasional secara terstruktur sebelum masuk tahap analisis.',
+          subLabel: 'MySQL / DBeaver',
           capabilities: [
-            'Penggabungan multi-tabel (JOIN) dan pemfilteran kondisi transaksi (WHERE, HAVING)',
-            'Agregasi metrik operasional menggunakan GROUP BY dan fungsi agregat',
-            'Pengecekan konsistensi skema, duplikasi, serta anomali nilai kosong pada database',
+            'Penggabungan multi-tabel (JOIN) dan pemfilteran transaksi (WHERE, HAVING)',
+            'Agregasi metrik operasional dengan GROUP BY dan fungsi agregat',
+            'Validasi konsistensi skema, duplikasi, dan anomali nilai kosong',
           ],
-          keyOutput: 'Dataset relasional bersih & tervalidasi',
+          output: 'Dataset relasional bersih & tervalidasi',
         },
         {
           id: 'excel',
-          index: '02',
-          shortTitle: 'Excel',
+          stageLabel: '02 · ANALISIS',
           title: 'Microsoft Excel',
-          role: 'Pembersihan, Pemodelan & Analisis',
-          stepLabel: 'STEP 02 · ANALYZE',
-          focus:
-            'Mengolah dataset skala besar menjadi model analisis terstruktur, tabel ringkasan dinamis, dan temuan bisnis yang terukur.',
+          subLabel: 'Pembersihan & Pemodelan',
           capabilities: [
-            'Pembersihan data dan standarisasi atribut skala ratusan ribu baris',
-            'Pemodelan analisis dengan PivotTable, PivotChart, XLOOKUP, dan INDEX/MATCH',
-            'Penyusunan narasi temuan berbasis kerangka PAR (Problem–Action–Result)',
+            'Pembersihan, standardisasi format, dan transformasi dataset besar',
+            'Pemodelan analisis menggunakan Pivot Table, formula logika, dan lookup',
+            'Identifikasi tren waktu, anomali kategori, serta struktur KPI bisnis',
           ],
-          keyOutput: 'Diterapkan pada analisis 238.421 catatan kecelakaan lalu lintas NYC',
+          output: 'Model analisis & temuan terstruktur',
         },
         {
           id: 'bi',
-          index: '03',
-          shortTitle: 'Looker Studio',
+          stageLabel: '03 · VISUALISASI',
           title: 'Google Looker Studio',
-          role: 'Dashboard BI & Pelaporan KPI',
-          stepLabel: 'STEP 03 · VISUALIZE',
-          focus:
-            'Merancang dashboard Business Intelligence interaktif agar pemangku kepentingan dapat memantau tren dan mengambil keputusan dengan cepat.',
+          subLabel: 'Dashboard BI & Pelaporan',
           capabilities: [
-            'Pelacakan KPI utama (Revenue, Volume Pesanan, Average Order Value, dan Jam Sibuk)',
-            'Pembuatan calculated fields, filter rentang tanggal, dan segmentasi kategori dinamis',
-            'Hierarki visual bersih yang langsung menyorot pola puncak dan produk kontributor utama',
+            'Perancangan dashboard KPI interaktif untuk pemantauan performa',
+            'Konfigurasi filter dinamis, drill-down, dan segmentasi lintas dimensi',
+            'Penyajian visual terarah untuk mendukung keputusan operasional harian',
           ],
-          keyOutput: 'Diterapkan pada dashboard interaktif 21.350 transaksi ($817.860,05 omzet)',
+          output: 'Dashboard interaktif siap keputusan',
         },
       ],
     },
@@ -572,57 +557,45 @@ export const content: Record<Language, PortfolioContent> = {
       photoPlaceholderLabel: 'iqbaldf',
     },
     skills: {
-      headline: 'Workflow & Stack',
-      subtitle: 'Three core tools I rely on from raw data extraction to clear operational decisions.',
-      keyOutputLabel: 'Key Output',
+      headline: 'Workflow & Toolkit',
+      subtitle: 'Three core tools I use from raw data extraction to operational decisions.',
+      outputLabel: 'OUTPUT',
       items: [
         {
           id: 'sql',
-          index: '01',
-          shortTitle: 'SQL',
+          stageLabel: '01 · EXTRACT',
           title: 'SQL',
-          role: 'Data Extraction & Validation',
-          stepLabel: 'STEP 01 · EXTRACT',
-          focus:
-            'Querying, joining, and validating structured relational datasets prior to business analysis.',
+          subLabel: 'MySQL / DBeaver',
           capabilities: [
-            'Multi-table joins (JOIN) and conditional transaction filtering (WHERE, HAVING)',
-            'Operational metric aggregation using GROUP BY and summary functions',
+            'Multi-table joins (JOIN) and transaction filtering (WHERE, HAVING)',
+            'Operational metric aggregation using GROUP BY and aggregate functions',
             'Schema consistency checks, deduplication, and null-value validation',
           ],
-          keyOutput: 'Clean, validated relational datasets',
+          output: 'Clean, validated relational datasets',
         },
         {
           id: 'excel',
-          index: '02',
-          shortTitle: 'Excel',
+          stageLabel: '02 · ANALYZE',
           title: 'Microsoft Excel',
-          role: 'Cleaning, Modeling & Analysis',
-          stepLabel: 'STEP 02 · ANALYZE',
-          focus:
-            'Transforming large raw datasets into structured analytical models, dynamic summaries, and measurable findings.',
+          subLabel: 'Cleaning & Modeling',
           capabilities: [
-            'Large-scale data cleaning and attribute standardization across hundreds of thousands of rows',
-            'Analytical modeling using PivotTable, PivotChart, XLOOKUP, and INDEX/MATCH',
-            'Structured business takeaways using the PAR (Problem–Action–Result) framework',
+            'Data cleaning, formatting standardization, and large-dataset transformation',
+            'Analytical modeling with Pivot Tables, logical formulas, and lookups',
+            'Time-series trend discovery, category anomalies, and business KPIs',
           ],
-          keyOutput: 'Applied to 238,421 NYC motor vehicle collision records',
+          output: 'Structured analytical models & findings',
         },
         {
           id: 'bi',
-          index: '03',
-          shortTitle: 'Looker Studio',
+          stageLabel: '03 · VISUALIZE',
           title: 'Google Looker Studio',
-          role: 'BI Dashboards & KPI Reporting',
-          stepLabel: 'STEP 03 · VISUALIZE',
-          focus:
-            'Designing interactive Business Intelligence dashboards so stakeholders can monitor trends and act quickly.',
+          subLabel: 'BI Dashboards & Reporting',
           capabilities: [
-            'Core KPI tracking (Revenue, Order Volume, Average Order Value, and Peak Hours)',
-            'Calculated fields, date-range filters, and dynamic category segmentation',
-            'Clean visual hierarchy highlighting peak patterns and top-performing products',
+            'Interactive KPI dashboard design for ongoing performance monitoring',
+            'Dynamic filters, drill-downs, and cross-dimensional segmentation',
+            'Decision-focused visual reporting for daily operational clarity',
           ],
-          keyOutput: 'Applied to an interactive dashboard covering 21,350 orders ($817,860.05 revenue)',
+          output: 'Decision-ready interactive dashboards',
         },
       ],
     },
