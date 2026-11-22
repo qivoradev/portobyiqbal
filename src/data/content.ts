@@ -60,10 +60,10 @@ export interface ProjectItem {
 
 export interface SkillItem {
   id: 'sql' | 'excel' | 'bi';
-  index: string;
   title: string;
-  subLabel: string;
-  description: string;
+  context: string;
+  summary: string;
+  scopes: [string, string, string, string];
 }
 
 export interface StatItem {
@@ -241,31 +241,46 @@ export const content: Record<Language, PortfolioContent> = {
     },
     skills: {
       headline: 'Keahlian & Perangkat',
-      subtitle: 'Tiga perangkat utama yang saya gunakan dari pengolahan data hingga pelaporan KPI.',
+      subtitle: 'Tiga perangkat utama yang saya gunakan dari pengolahan data mentah hingga pelaporan KPI.',
       items: [
         {
           id: 'sql',
-          index: '01',
           title: 'SQL',
-          subLabel: 'MySQL / DBeaver',
-          description:
-            'Mengambil, menggabungkan, dan memvalidasi dataset relasional menggunakan JOIN, pemfilteran kondisi (WHERE, HAVING), serta agregasi GROUP BY agar data bebas duplikasi dan anomali sebelum dianalisis.',
+          context: 'MySQL / DBeaver',
+          summary:
+            'Mengambil, menggabungkan, dan memvalidasi dataset relasional sebelum masuk tahap analisis.',
+          scopes: [
+            'JOIN multi-tabel',
+            'WHERE & HAVING',
+            'GROUP BY & agregasi',
+            'Validasi duplikasi & nilai kosong',
+          ],
         },
         {
           id: 'excel',
-          index: '02',
           title: 'Microsoft Excel',
-          subLabel: 'Pembersihan & Analisis Data',
-          description:
-            'Membersihkan dan menstandardisasi dataset berskala besar, membangun model analisis dengan Pivot Table serta formula logika dan lookup, hingga memetakan tren waktu dan metrik KPI operasional.',
+          context: 'Pembersihan & Analisis Data',
+          summary:
+            'Membersihkan dataset berskala besar dan membangun model analisis operasional yang terstruktur.',
+          scopes: [
+            'Data cleaning & standardisasi',
+            'Pivot Table',
+            'Formula logika & lookup',
+            'Analisis tren & KPI',
+          ],
         },
         {
           id: 'bi',
-          index: '03',
           title: 'Google Looker Studio',
-          subLabel: 'Dashboard BI & Visualisasi',
-          description:
-            'Merancang dashboard BI interaktif yang terstruktur dengan filter dinamis dan segmentasi lintas dimensi untuk memantau performa serta mendukung keputusan operasional harian.',
+          context: 'Dashboard BI & Visualisasi',
+          summary:
+            'Merancang dashboard interaktif untuk memantau metrik performa dan mendukung keputusan harian.',
+          scopes: [
+            'Dashboard KPI interaktif',
+            'Filter dinamis & drill-down',
+            'Segmentasi lintas dimensi',
+            'Pelaporan operasional',
+          ],
         },
       ],
     },
@@ -547,27 +562,42 @@ export const content: Record<Language, PortfolioContent> = {
       items: [
         {
           id: 'sql',
-          index: '01',
           title: 'SQL',
-          subLabel: 'MySQL / DBeaver',
-          description:
-            'Extracting, joining, and validating relational datasets with JOINs, conditional filters (WHERE, HAVING), and GROUP BY aggregations to ensure clean, deduplicated data prior to analysis.',
+          context: 'MySQL / DBeaver',
+          summary:
+            'Extracting, joining, and validating relational datasets prior to analysis.',
+          scopes: [
+            'Multi-table JOINs',
+            'WHERE & HAVING',
+            'GROUP BY & aggregations',
+            'Duplicate & null validation',
+          ],
         },
         {
           id: 'excel',
-          index: '02',
           title: 'Microsoft Excel',
-          subLabel: 'Data Cleaning & Analysis',
-          description:
-            'Cleaning and standardizing large datasets, building analytical models with Pivot Tables plus logical and lookup formulas, and mapping time-series trends and operational KPIs.',
+          context: 'Data Cleaning & Analysis',
+          summary:
+            'Cleaning large datasets and building structured operational analysis models.',
+          scopes: [
+            'Data cleaning & standardization',
+            'Pivot Tables',
+            'Logical & lookup formulas',
+            'Trend & KPI analysis',
+          ],
         },
         {
           id: 'bi',
-          index: '03',
           title: 'Google Looker Studio',
-          subLabel: 'BI Dashboards & Visualization',
-          description:
-            'Designing structured, interactive BI dashboards with dynamic filters and cross-dimensional segmentation to track performance and support daily operational decisions.',
+          context: 'BI Dashboards & Visualization',
+          summary:
+            'Designing interactive dashboards to track performance metrics and support daily decisions.',
+          scopes: [
+            'Interactive KPI dashboards',
+            'Dynamic filters & drill-downs',
+            'Cross-dimensional segmentation',
+            'Operational reporting',
+          ],
         },
       ],
     },
