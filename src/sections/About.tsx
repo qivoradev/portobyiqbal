@@ -60,6 +60,32 @@ export function About({ content, onModalStateChange }: AboutProps) {
                   {about.paragraphBody}
                   <span className="text-white font-semibold">{about.paragraphClosing}</span>
                 </p>
+
+                {/* Core Tools (Directly below Bio Paragraph, Above Stats Card) */}
+                <div className="mt-6 text-left">
+                  <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-neutral-500 mb-3">
+                    {about.coreToolsLabel}
+                  </p>
+                  <div className="flex flex-wrap items-center gap-3">
+                    {about.coreTools.map((tool) => (
+                      <div
+                        key={tool.id}
+                        className="inline-flex items-center gap-2.5 rounded-xl bg-white/[0.04] border border-white/10 px-3.5 py-2 transition-colors duration-200 hover:border-white/25 hover:bg-white/[0.07]"
+                      >
+                        <div className="w-7 h-7 rounded-lg bg-white/95 p-1 flex items-center justify-center shrink-0">
+                          <img
+                            src={tool.iconUrl}
+                            alt={tool.alt}
+                            className="w-full h-full object-contain select-none"
+                          />
+                        </div>
+                        <span className="text-xs md:text-sm font-medium text-neutral-200 whitespace-nowrap">
+                          {tool.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </FadeUp>

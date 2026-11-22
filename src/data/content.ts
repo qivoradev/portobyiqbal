@@ -3,7 +3,7 @@
  * Owner: Iqbal Dwi Fathonah
  * Role: Data Analyst (Fresh Graduate)
  *
- * Strictly permitted stack: SQL, MySQL, Excel, Looker Studio, Git.
+ * Strictly permitted stack: SQL, Excel, Looker Studio.
  * Verified metrics only: 21,350+, $817K+, 238,000+, 12–13 & 17–18, Top 5 SKU, 3 projects.
  */
 
@@ -58,12 +58,11 @@ export interface ProjectItem {
   };
 }
 
-export interface SkillItem {
-  id: 'sql' | 'excel' | 'bi';
-  title: string;
-  context: string;
-  summary: string;
-  scopes: [string, string, string, string];
+export interface CoreToolItem {
+  id: 'sql' | 'excel' | 'looker-studio';
+  label: string;
+  alt: string;
+  iconUrl: string;
 }
 
 export interface StatItem {
@@ -93,7 +92,6 @@ export interface PortfolioContent {
   monogram: string;
   nav: {
     home: string;
-    skills: string;
     projects: string;
     about: string;
     contact: string;
@@ -108,11 +106,6 @@ export interface PortfolioContent {
     location: string;
     circularBadgeText: string;
     photoPlaceholderLabel: string;
-  };
-  skills: {
-    headline: string;
-    subtitle: string;
-    items: SkillItem[];
   };
   projects: {
     headline: string;
@@ -144,6 +137,8 @@ export interface PortfolioContent {
     paragraphLead: string;
     paragraphBody: string;
     paragraphClosing: string;
+    coreToolsLabel: string;
+    coreTools: CoreToolItem[];
     stats: StatItem[];
     education: {
       degree: string;
@@ -223,7 +218,6 @@ export const content: Record<Language, PortfolioContent> = {
     monogram: 'ID',
     nav: {
       home: 'Beranda',
-      skills: 'Keahlian',
       projects: 'Proyek',
       about: 'Tentang',
       contact: 'Kontak',
@@ -238,51 +232,6 @@ export const content: Record<Language, PortfolioContent> = {
       location: 'Berdomisili di Yogyakarta, Indonesia',
       circularBadgeText: 'DATA ANALYST • IQBAL DWI FATHONAH • ',
       photoPlaceholderLabel: 'iqbaldf',
-    },
-    skills: {
-      headline: 'Keahlian & Perangkat',
-      subtitle: 'Tiga perangkat utama yang saya gunakan dari pengolahan data mentah hingga pelaporan KPI.',
-      items: [
-        {
-          id: 'sql',
-          title: 'SQL',
-          context: 'MySQL / DBeaver',
-          summary:
-            'Mengambil, menggabungkan, dan memvalidasi dataset relasional sebelum masuk tahap analisis.',
-          scopes: [
-            'JOIN multi-tabel',
-            'WHERE & HAVING',
-            'GROUP BY & agregasi',
-            'Validasi duplikasi & nilai kosong',
-          ],
-        },
-        {
-          id: 'excel',
-          title: 'Microsoft Excel',
-          context: 'Pembersihan & Analisis Data',
-          summary:
-            'Membersihkan dataset berskala besar dan membangun model analisis operasional yang terstruktur.',
-          scopes: [
-            'Data cleaning & standardisasi',
-            'Pivot Table',
-            'Formula logika & lookup',
-            'Analisis tren & KPI',
-          ],
-        },
-        {
-          id: 'bi',
-          title: 'Google Looker Studio',
-          context: 'Dashboard BI & Visualisasi',
-          summary:
-            'Merancang dashboard interaktif untuk memantau metrik performa dan mendukung keputusan harian.',
-          scopes: [
-            'Dashboard KPI interaktif',
-            'Filter dinamis & drill-down',
-            'Segmentasi lintas dimensi',
-            'Pelaporan operasional',
-          ],
-        },
-      ],
     },
     projects: {
       headline: 'Proyek Pilihan',
@@ -420,7 +369,28 @@ export const content: Record<Language, PortfolioContent> = {
       paragraphBody:
         ' fresh graduate S1 Teknologi Informasi Universitas Muhammadiyah Yogyakarta (2026) yang berdedikasi mengolah data mentah menjadi insight bisnis yang rapi dan terukur. ',
       paragraphClosing:
-        'Saya berfokus sebagai Data Analyst menggunakan SQL, MySQL, Excel, dan Looker Studio untuk mendukung keputusan operasional.',
+        'Saya berfokus sebagai Data Analyst menggunakan SQL, Excel, dan Looker Studio untuk mendukung keputusan operasional.',
+      coreToolsLabel: 'PERANGKAT UTAMA',
+      coreTools: [
+        {
+          id: 'sql',
+          label: 'SQL',
+          alt: 'SQL',
+          iconUrl: '/images/icons/sql.svg',
+        },
+        {
+          id: 'excel',
+          label: 'Microsoft Excel',
+          alt: 'Microsoft Excel',
+          iconUrl: '/images/icons/excel.svg',
+        },
+        {
+          id: 'looker-studio',
+          label: 'Looker Studio',
+          alt: 'Google Looker Studio',
+          iconUrl: '/images/icons/looker-studio.svg',
+        },
+      ],
       stats: [
         { value: '21,350+', label: 'Transaksi Diolah' },
         { value: '238,000+', label: 'Catatan Dibersihkan' },
@@ -540,7 +510,6 @@ export const content: Record<Language, PortfolioContent> = {
     monogram: 'ID',
     nav: {
       home: 'Home',
-      skills: 'Skills',
       projects: 'Projects',
       about: 'About',
       contact: 'Contact',
@@ -555,51 +524,6 @@ export const content: Record<Language, PortfolioContent> = {
       location: 'Based in Yogyakarta, Indonesia',
       circularBadgeText: 'DATA ANALYST • IQBAL DWI FATHONAH • ',
       photoPlaceholderLabel: 'iqbaldf',
-    },
-    skills: {
-      headline: 'Skills & Toolkit',
-      subtitle: 'Three core tools I use from raw data preparation to KPI reporting.',
-      items: [
-        {
-          id: 'sql',
-          title: 'SQL',
-          context: 'MySQL / DBeaver',
-          summary:
-            'Extracting, joining, and validating relational datasets prior to analysis.',
-          scopes: [
-            'Multi-table JOINs',
-            'WHERE & HAVING',
-            'GROUP BY & aggregations',
-            'Duplicate & null validation',
-          ],
-        },
-        {
-          id: 'excel',
-          title: 'Microsoft Excel',
-          context: 'Data Cleaning & Analysis',
-          summary:
-            'Cleaning large datasets and building structured operational analysis models.',
-          scopes: [
-            'Data cleaning & standardization',
-            'Pivot Tables',
-            'Logical & lookup formulas',
-            'Trend & KPI analysis',
-          ],
-        },
-        {
-          id: 'bi',
-          title: 'Google Looker Studio',
-          context: 'BI Dashboards & Visualization',
-          summary:
-            'Designing interactive dashboards to track performance metrics and support daily decisions.',
-          scopes: [
-            'Interactive KPI dashboards',
-            'Dynamic filters & drill-downs',
-            'Cross-dimensional segmentation',
-            'Operational reporting',
-          ],
-        },
-      ],
     },
     projects: {
       headline: 'Selected Work',
@@ -737,7 +661,28 @@ export const content: Record<Language, PortfolioContent> = {
       paragraphBody:
         ' an Information Technology graduate from Universitas Muhammadiyah Yogyakarta (2026) dedicated to transforming raw datasets into clear, measurable business insights. ',
       paragraphClosing:
-        'I specialize as a Data Analyst using SQL, MySQL, Excel, and Looker Studio to support operational decisions.',
+        'I specialize as a Data Analyst using SQL, Excel, and Looker Studio to support operational decisions.',
+      coreToolsLabel: 'CORE TOOLS',
+      coreTools: [
+        {
+          id: 'sql',
+          label: 'SQL',
+          alt: 'SQL',
+          iconUrl: '/images/icons/sql.svg',
+        },
+        {
+          id: 'excel',
+          label: 'Microsoft Excel',
+          alt: 'Microsoft Excel',
+          iconUrl: '/images/icons/excel.svg',
+        },
+        {
+          id: 'looker-studio',
+          label: 'Looker Studio',
+          alt: 'Google Looker Studio',
+          iconUrl: '/images/icons/looker-studio.svg',
+        },
+      ],
       stats: [
         { value: '21,350+', label: 'Transactions Analyzed' },
         { value: '238,000+', label: 'Records Cleaned' },

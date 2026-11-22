@@ -100,7 +100,6 @@ export function Header({
 
   const navItems = [
     { id: 'hero', label: content.nav.home },
-    { id: 'skills', label: content.nav.skills },
     { id: 'projects', label: content.nav.projects },
     { id: 'about', label: content.nav.about },
     { id: 'contact', label: content.nav.contact },

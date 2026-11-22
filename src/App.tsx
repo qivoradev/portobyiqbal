@@ -4,7 +4,6 @@ import { useLenis, scrollToLenis } from './hooks/useLenis';
 import { Preloader } from './components/Preloader';
 import { Header } from './components/Header';
 import { Hero } from './sections/Hero';
-import { Skills } from './sections/Skills';
 import { Projects } from './sections/Projects';
 import { About } from './sections/About';
 import { Contact } from './sections/Contact';
@@ -64,7 +63,7 @@ export default function App() {
 
   // Adaptive Theme & Active Section Tracking
   useEffect(() => {
-    const sectionIds = ['hero', 'skills', 'projects', 'about', 'contact'];
+    const sectionIds = ['hero', 'projects', 'about', 'contact'];
 
     const handleScroll = () => {
       const scrollY = window.scrollY;
@@ -139,7 +138,7 @@ export default function App() {
         isDarkTheme={isDarkNav}
       />
 
-      {/* Main Editorial Flow: Light (Hero → Skills) → Dark (Projects → About & Credentials → Contact & Footer) */}
+      {/* Main Editorial Flow: Light (Hero) → Dark (Projects → About & Credentials → Contact & Footer) */}
       <main className="relative">
         <Hero
           onNavigate={handleNavigate}
@@ -150,7 +149,6 @@ export default function App() {
           content={currentContent}
           cvTriggerRef={cvTriggerRef}
         />
-        <Skills content={currentContent} lang={lang} />
         <Projects content={currentContent} lang={lang} />
         <About content={currentContent} lang={lang} />
         <Contact content={currentContent} lang={lang} />
