@@ -24,103 +24,113 @@ export function About({ content, onModalStateChange }: AboutProps) {
     <>
       <section
         id="about"
-        className="relative w-full bg-[#050505] text-[#FAFAFA] py-16 md:py-24 scroll-mt-16"
+        className="relative w-full bg-[#050505] text-[#FAFAFA] py-16 md:py-16 lg:py-20 scroll-mt-16"
       >
-        <div className="site-container max-w-5xl">
-          {/* Part 1: Profile Avatar, 2-Line Heading & Editorial Contrast Paragraph */}
-          <FadeUp>
-            <div className="max-w-[320px] md:max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-12 items-center gap-0 md:gap-8 lg:gap-12 text-left">
-              {/* Left (Desktop col-span-5): Circular Avatar + Tight 2-Line Heading */}
-              <div className="md:col-span-5 flex items-center gap-4 md:gap-5">
-                <div className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 shrink-0 rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 border border-neutral-700 overflow-hidden flex items-center justify-center select-none">
-                  {ABOUT_AVATAR_URL ? (
-                    <img
-                      src={ABOUT_AVATAR_URL}
-                      alt="Iqbal Dwi Fathonah"
-                      className="w-full h-full object-cover object-top scale-105 select-none pointer-events-none"
-                    />
-                  ) : (
-                    <span className="font-mono text-lg md:text-xl font-bold tracking-tight text-neutral-300">
-                      {content.monogram}
-                    </span>
-                  )}
+        <div className="site-container">
+          <div className="max-w-5xl mx-auto">
+            {/* Part 1: Profile Avatar, 2-Line Heading & Editorial Contrast Paragraph */}
+            <FadeUp>
+              <div className="max-w-[320px] md:max-w-none mx-auto grid grid-cols-1 md:grid-cols-12 lg:grid-cols-[auto_1fr] items-center md:items-start lg:items-start gap-0 md:gap-8 lg:gap-10 text-left">
+                {/* Left: Circular Avatar + Tight 2-Line Heading */}
+                <div className="md:col-span-5 lg:col-span-1 lg:shrink-0 flex items-center gap-4 md:gap-5 md:pt-1">
+                  <div className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 shrink-0 rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 border border-neutral-700 overflow-hidden flex items-center justify-center select-none">
+                    {ABOUT_AVATAR_URL ? (
+                      <img
+                        src={ABOUT_AVATAR_URL}
+                        alt="Iqbal Dwi Fathonah"
+                        className="w-full h-full object-cover object-top scale-105 select-none pointer-events-none"
+                      />
+                    ) : (
+                      <span className="font-mono text-lg md:text-xl font-bold tracking-tight text-neutral-300">
+                        {content.monogram}
+                      </span>
+                    )}
+                  </div>
+
+                  <h2 className="text-[28px] md:text-3xl lg:text-[34px] font-bold tracking-tight leading-[1.08] text-white whitespace-nowrap">
+                    {about.headingLine1}
+                    <br />
+                    {about.headingLine2}
+                  </h2>
                 </div>
 
-                <h2 className="text-[28px] md:text-3xl lg:text-[34px] font-bold tracking-tight leading-[1.08] text-white whitespace-nowrap">
-                  {about.headingLine1}
-                  <br />
-                  {about.headingLine2}
-                </h2>
-              </div>
-
-              {/* Right (Desktop col-span-7): White ONLY on opening name & closing specialization sentence */}
-              <div className="md:col-span-7 mt-4 md:mt-0">
-                <p className="text-[13.5px] md:text-[15px] leading-[1.68] md:leading-[1.7] md:max-w-md text-left text-neutral-500">
-                  <span className="text-white font-semibold">{about.paragraphLead}</span>
-                  {about.paragraphBody}
-                  <span className="text-white font-semibold">{about.paragraphClosing}</span>
-                </p>
-
-                {/* Core Tools (Directly below Bio Paragraph, Above Stats Card) */}
-                <div className="mt-6 text-left">
-                  <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-neutral-500 mb-3">
-                    {about.coreToolsLabel}
+                {/* Right: White ONLY on opening name & closing specialization sentence */}
+                <div className="md:col-span-7 lg:col-span-1 mt-4 md:mt-0">
+                  <p className="text-[13.5px] md:text-[15px] leading-[1.68] md:leading-[1.7] text-left text-neutral-500">
+                    <span className="text-white font-semibold">{about.paragraphLead}</span>
+                    {about.paragraphBody}
+                    <span className="text-white font-semibold">{about.paragraphClosing}</span>
                   </p>
-                  <div className="flex flex-wrap items-center gap-3">
-                    {about.coreTools.map((tool) => (
-                      <div
-                        key={tool.id}
-                        className="inline-flex items-center gap-2.5 rounded-xl bg-white/[0.04] border border-white/10 px-3.5 py-2 transition-colors duration-200 hover:border-white/25 hover:bg-white/[0.07]"
-                      >
-                        <div className="w-7 h-7 rounded-lg bg-white/95 p-1 flex items-center justify-center shrink-0">
-                          <img
-                            src={tool.iconUrl}
-                            alt={tool.alt}
-                            className="w-full h-full object-contain select-none"
-                          />
+
+                  {/* Core Tools (Directly below Bio Paragraph, Above Stats Card) */}
+                  <div className="mt-6 text-left">
+                    <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-neutral-500 mb-3">
+                      {about.coreToolsLabel}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-3">
+                      {about.coreTools.map((tool) => (
+                        <div
+                          key={tool.id}
+                          className="inline-flex items-center gap-2.5 rounded-xl bg-white/[0.04] border border-white/10 px-3.5 py-2 transition-colors duration-200 hover:border-white/25 hover:bg-white/[0.07]"
+                        >
+                          <div className="w-7 h-7 rounded-lg bg-white/95 p-1 flex items-center justify-center shrink-0">
+                            <img
+                              src={tool.iconUrl}
+                              alt={tool.alt}
+                              className="w-full h-full object-contain select-none"
+                            />
+                          </div>
+                          <span className="text-xs md:text-sm font-medium text-neutral-200 whitespace-nowrap">
+                            {tool.label}
+                          </span>
                         </div>
-                        <span className="text-xs md:text-sm font-medium text-neutral-200 whitespace-nowrap">
-                          {tool.label}
-                        </span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </FadeUp>
+            </FadeUp>
 
-          {/* Part 2: 3-Column Single-Row Stats Bar (Desktop & Mobile) with Subtle Radial Emerald Glow */}
-          <FadeUp delay={0.08}>
-            <div className="max-w-3xl mx-auto mt-10 md:mt-14 rounded-2xl bg-[#0B0D0C] border border-white/[0.06] px-4 py-5 sm:px-8 sm:py-7 relative overflow-hidden">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    'radial-gradient(ellipse 70% 100% at 50% 50%, rgba(37, 155, 82, 0.07) 0%, transparent 72%)',
-                }}
-              />
-              <div className="relative z-10 grid grid-cols-[1.1fr_1.3fr_0.75fr] gap-2.5 sm:grid-cols-3 sm:gap-8 items-start text-left">
-                {about.stats.map((stat) => (
-                  <div key={stat.label} className="min-w-0">
-                    <div className="text-[19px] sm:text-3xl md:text-4xl font-semibold tracking-tight text-white tabular-nums whitespace-nowrap leading-none">
-                      {stat.value}
+            {/* Part 2: 3-Column Single-Row Stats Bar (Aligned to exact same max-w-5xl container) */}
+            <FadeUp delay={0.08}>
+              <div className="w-full mt-10 md:mt-10 lg:mt-11 rounded-2xl bg-[#0B0D0C] border border-white/[0.06] px-4 py-5 sm:px-8 md:px-10 md:py-6 relative overflow-hidden">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      'radial-gradient(ellipse 70% 100% at 50% 50%, rgba(37, 155, 82, 0.07) 0%, transparent 72%)',
+                  }}
+                />
+                <div className="relative z-10 grid grid-cols-[1.1fr_1.3fr_0.75fr] gap-2.5 sm:grid-cols-3 sm:gap-8 md:gap-0 md:divide-x md:divide-white/10 items-start text-left">
+                  {about.stats.map((stat, idx) => (
+                    <div
+                      key={stat.label}
+                      className={`min-w-0 ${
+                        idx === 0
+                          ? 'md:pr-8'
+                          : idx === 1
+                            ? 'md:px-10'
+                            : 'md:pl-10'
+                      }`}
+                    >
+                      <div className="text-[19px] sm:text-3xl md:text-4xl font-semibold tracking-tight text-white tabular-nums whitespace-nowrap leading-none">
+                        {stat.value}
+                      </div>
+                      <p className="text-[11px] sm:text-sm text-neutral-400 leading-snug mt-1.5">
+                        {stat.label}
+                      </p>
                     </div>
-                    <p className="text-[11px] sm:text-sm text-neutral-400 leading-snug mt-1">
-                      {stat.label}
-                    </p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          </FadeUp>
+            </FadeUp>
 
-          {/* Part 3: Education & Credentials (Compact Dark Theme) */}
-          <div id="credentials" className="scroll-mt-24">
-            {/* Education Hairline Row */}
-            <FadeUp delay={0.12}>
-              <div className="border-y border-neutral-800 py-5 mt-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-left">
+            {/* Part 3: Education & Credentials (Compact Dark Theme) */}
+            <div id="credentials" className="scroll-mt-24">
+              {/* Education Hairline Row */}
+              <FadeUp delay={0.12}>
+                <div className="border-y border-neutral-800 py-5 mt-10 md:mt-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-left">
                 <div className="flex items-start sm:items-center gap-3.5">
                   <div className="w-10 h-10 rounded-xl bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-300 shrink-0">
                     <GraduationCap size={19} strokeWidth={1.8} />
@@ -193,6 +203,7 @@ export function About({ content, onModalStateChange }: AboutProps) {
                 </FadeUp>
               ))}
             </div>
+          </div>
           </div>
         </div>
       </section>
