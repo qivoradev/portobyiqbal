@@ -217,30 +217,17 @@ function ProjectDetailModal({
             </div>
 
             {/* Action Row */}
-            {project.id === 'pizza-sales' && (
+            {project.id === 'pizza-sales' && project.liveDashboardUrl && (
               <div className="flex flex-wrap items-center gap-3 pt-1">
-                {project.liveDashboardUrl && (
-                  <a
-                    href={project.liveDashboardUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#259B52] hover:bg-[#1E7D42] text-white text-xs sm:text-sm font-semibold transition-colors duration-200 shadow-sm"
-                  >
-                    <span>{labels.openLiveDashboard}</span>
-                    <ExternalLink size={15} />
-                  </a>
-                )}
-                {project.datasetUrl && (
-                  <a
-                    href={project.datasetUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-neutral-200 hover:text-white text-xs sm:text-sm font-medium transition-colors duration-200"
-                  >
-                    <span>{labels.viewDataset}</span>
-                    <ExternalLink size={15} />
-                  </a>
-                )}
+                <a
+                  href={project.liveDashboardUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#259B52] hover:bg-[#1E7D42] text-white text-xs sm:text-sm font-semibold transition-colors duration-200 shadow-sm"
+                >
+                  <span>{labels.openLiveDashboard}</span>
+                  <ExternalLink size={15} />
+                </a>
               </div>
             )}
 

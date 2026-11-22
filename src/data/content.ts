@@ -27,7 +27,6 @@ export interface ProjectItem {
   highlights: string[];
   image: string;
   liveDashboardUrl?: string;
-  datasetUrl?: string;
   workbookInfo?: string;
   metrics?: ProjectMetric[];
   businessContext?: {
@@ -59,11 +58,16 @@ export interface ProjectItem {
   };
 }
 
-export interface SkillCardItem {
+export interface SkillWorkflowItem {
   id: 'sql' | 'excel' | 'bi';
+  index: string;
+  shortTitle: string;
   title: string;
-  description: string;
-  pills: string[];
+  role: string;
+  stepLabel: string;
+  focus: string;
+  capabilities: [string, string, string];
+  keyOutput: string;
 }
 
 export interface StatItem {
@@ -110,10 +114,10 @@ export interface PortfolioContent {
     photoPlaceholderLabel: string;
   };
   skills: {
-    sectionLabel: string;
     headline: string;
     subtitle: string;
-    items: SkillCardItem[];
+    keyOutputLabel: string;
+    items: SkillWorkflowItem[];
   };
   projects: {
     headline: string;
@@ -127,7 +131,6 @@ export interface PortfolioContent {
       close: string;
       openDashboard: string;
       openLiveDashboard: string;
-      viewDataset: string;
       workbookFile: string;
       metricsHeading: string;
       businessContextHeading: string;
@@ -242,27 +245,57 @@ export const content: Record<Language, PortfolioContent> = {
       photoPlaceholderLabel: 'iqbaldf',
     },
     skills: {
-      sectionLabel: 'Keahlian Inti',
-      headline: 'Perangkat & Fokus Analisis',
-      subtitle: 'Fondasi teknis untuk ekstraksi data, pembersihan dataset, hingga pelaporan KPI interaktif.',
+      headline: 'Alur Kerja & Perangkat',
+      subtitle: 'Tiga perangkat utama yang saya gunakan dari ekstraksi data mentah hingga keputusan operasional.',
+      keyOutputLabel: 'Fokus Output',
       items: [
         {
           id: 'sql',
-          title: 'SQL & Database',
-          description: 'Ekstraksi data relasional, agregasi, dan validasi query terstruktur.',
-          pills: ['SQL', 'MySQL', 'Data Extraction', 'Relational Query'],
+          index: '01',
+          shortTitle: 'SQL',
+          title: 'SQL',
+          role: 'Ekstraksi & Validasi Data',
+          stepLabel: 'STEP 01 · EXTRACT',
+          focus:
+            'Mengambil, menggabungkan, dan memvalidasi dataset relasional secara terstruktur sebelum masuk tahap analisis.',
+          capabilities: [
+            'Penggabungan multi-tabel (JOIN) dan pemfilteran kondisi transaksi (WHERE, HAVING)',
+            'Agregasi metrik operasional menggunakan GROUP BY dan fungsi agregat',
+            'Pengecekan konsistensi skema, duplikasi, serta anomali nilai kosong pada database',
+          ],
+          keyOutput: 'Dataset relasional bersih & tervalidasi',
         },
         {
           id: 'excel',
-          title: 'Spreadsheet & Reporting',
-          description: 'Pembersihan dataset skala besar, PivotTable, XLOOKUP, dan ringkasan bisnis kerangka PAR.',
-          pills: ['Excel', 'PivotTable', 'XLOOKUP', 'Data Cleaning'],
+          index: '02',
+          shortTitle: 'Excel',
+          title: 'Microsoft Excel',
+          role: 'Pembersihan, Pemodelan & Analisis',
+          stepLabel: 'STEP 02 · ANALYZE',
+          focus:
+            'Mengolah dataset skala besar menjadi model analisis terstruktur, tabel ringkasan dinamis, dan temuan bisnis yang terukur.',
+          capabilities: [
+            'Pembersihan data dan standarisasi atribut skala ratusan ribu baris',
+            'Pemodelan analisis dengan PivotTable, PivotChart, XLOOKUP, dan INDEX/MATCH',
+            'Penyusunan narasi temuan berbasis kerangka PAR (Problem–Action–Result)',
+          ],
+          keyOutput: 'Diterapkan pada analisis 238.421 catatan kecelakaan lalu lintas NYC',
         },
         {
           id: 'bi',
-          title: 'Dashboard & BI',
-          description: 'Visualisasi metrik operasional, pelacakan KPI, dan dashboard interaktif untuk pengambilan keputusan.',
-          pills: ['Looker Studio', 'Interactive BI', 'KPI Reporting', 'Git'],
+          index: '03',
+          shortTitle: 'Looker Studio',
+          title: 'Google Looker Studio',
+          role: 'Dashboard BI & Pelaporan KPI',
+          stepLabel: 'STEP 03 · VISUALIZE',
+          focus:
+            'Merancang dashboard Business Intelligence interaktif agar pemangku kepentingan dapat memantau tren dan mengambil keputusan dengan cepat.',
+          capabilities: [
+            'Pelacakan KPI utama (Revenue, Volume Pesanan, Average Order Value, dan Jam Sibuk)',
+            'Pembuatan calculated fields, filter rentang tanggal, dan segmentasi kategori dinamis',
+            'Hierarki visual bersih yang langsung menyorot pola puncak dan produk kontributor utama',
+          ],
+          keyOutput: 'Diterapkan pada dashboard interaktif 21.350 transaksi ($817.860,05 omzet)',
         },
       ],
     },
@@ -278,7 +311,6 @@ export const content: Record<Language, PortfolioContent> = {
         close: 'Tutup',
         openDashboard: 'Buka Dashboard',
         openLiveDashboard: 'Buka Dashboard Interaktif',
-        viewDataset: 'Lihat Dataset',
         workbookFile: 'Info File',
         metricsHeading: '4 Metrik Kunci',
         businessContextHeading: 'Latar Belakang Bisnis',
@@ -298,7 +330,6 @@ export const content: Record<Language, PortfolioContent> = {
           tools: ['Excel', 'Looker Studio'],
           image: '/images/projects/pizza-dashboard.png',
           liveDashboardUrl: 'https://datastudio.google.com/reporting/81574dad-5d2d-4a15-aafb-eefb54548a3e',
-          datasetUrl: 'https://docs.google.com/spreadsheets/d/1lT0tvBmZi7sswTzVoYQziJopoOdlBn5c/edit?usp=sharing&ouid=103313291434112811548&rtpof=true&sd=true',
           shortSummary:
             'Evaluasi penjualan tahunan ($817.860,05 dari 21.350 transaksi), pola jam sibuk operasional, distribusi kategori menu, dan Top 5 SKU dalam dashboard BI interaktif.',
           description:
@@ -541,27 +572,57 @@ export const content: Record<Language, PortfolioContent> = {
       photoPlaceholderLabel: 'iqbaldf',
     },
     skills: {
-      sectionLabel: 'Core Skills',
-      headline: 'Analytical Stack & Focus',
-      subtitle: 'Technical foundation for relational extraction, dataset cleaning, and interactive KPI reporting.',
+      headline: 'Workflow & Stack',
+      subtitle: 'Three core tools I rely on from raw data extraction to clear operational decisions.',
+      keyOutputLabel: 'Key Output',
       items: [
         {
           id: 'sql',
-          title: 'SQL & Database',
-          description: 'Relational data extraction, aggregation, and structured query validation.',
-          pills: ['SQL', 'MySQL', 'Data Extraction', 'Relational Query'],
+          index: '01',
+          shortTitle: 'SQL',
+          title: 'SQL',
+          role: 'Data Extraction & Validation',
+          stepLabel: 'STEP 01 · EXTRACT',
+          focus:
+            'Querying, joining, and validating structured relational datasets prior to business analysis.',
+          capabilities: [
+            'Multi-table joins (JOIN) and conditional transaction filtering (WHERE, HAVING)',
+            'Operational metric aggregation using GROUP BY and summary functions',
+            'Schema consistency checks, deduplication, and null-value validation',
+          ],
+          keyOutput: 'Clean, validated relational datasets',
         },
         {
           id: 'excel',
-          title: 'Spreadsheet & Reporting',
-          description: 'Large-scale dataset cleaning, PivotTables, XLOOKUP, and PAR-framework business summaries.',
-          pills: ['Excel', 'PivotTable', 'XLOOKUP', 'Data Cleaning'],
+          index: '02',
+          shortTitle: 'Excel',
+          title: 'Microsoft Excel',
+          role: 'Cleaning, Modeling & Analysis',
+          stepLabel: 'STEP 02 · ANALYZE',
+          focus:
+            'Transforming large raw datasets into structured analytical models, dynamic summaries, and measurable findings.',
+          capabilities: [
+            'Large-scale data cleaning and attribute standardization across hundreds of thousands of rows',
+            'Analytical modeling using PivotTable, PivotChart, XLOOKUP, and INDEX/MATCH',
+            'Structured business takeaways using the PAR (Problem–Action–Result) framework',
+          ],
+          keyOutput: 'Applied to 238,421 NYC motor vehicle collision records',
         },
         {
           id: 'bi',
-          title: 'Dashboard & BI',
-          description: 'Operational metric visualization, KPI tracking, and interactive dashboards for decision-making.',
-          pills: ['Looker Studio', 'Interactive BI', 'KPI Reporting', 'Git'],
+          index: '03',
+          shortTitle: 'Looker Studio',
+          title: 'Google Looker Studio',
+          role: 'BI Dashboards & KPI Reporting',
+          stepLabel: 'STEP 03 · VISUALIZE',
+          focus:
+            'Designing interactive Business Intelligence dashboards so stakeholders can monitor trends and act quickly.',
+          capabilities: [
+            'Core KPI tracking (Revenue, Order Volume, Average Order Value, and Peak Hours)',
+            'Calculated fields, date-range filters, and dynamic category segmentation',
+            'Clean visual hierarchy highlighting peak patterns and top-performing products',
+          ],
+          keyOutput: 'Applied to an interactive dashboard covering 21,350 orders ($817,860.05 revenue)',
         },
       ],
     },
@@ -577,7 +638,6 @@ export const content: Record<Language, PortfolioContent> = {
         close: 'Close',
         openDashboard: 'Open Dashboard',
         openLiveDashboard: 'Open Live Dashboard',
-        viewDataset: 'View Dataset',
         workbookFile: 'File Info',
         metricsHeading: '4 Key Metrics',
         businessContextHeading: 'Business Context',
@@ -597,7 +657,6 @@ export const content: Record<Language, PortfolioContent> = {
           tools: ['Excel', 'Looker Studio'],
           image: '/images/projects/pizza-dashboard.png',
           liveDashboardUrl: 'https://datastudio.google.com/reporting/81574dad-5d2d-4a15-aafb-eefb54548a3e',
-          datasetUrl: 'https://docs.google.com/spreadsheets/d/1lT0tvBmZi7sswTzVoYQziJopoOdlBn5c/edit?usp=sharing&ouid=103313291434112811548&rtpof=true&sd=true',
           shortSummary:
             'Annual sales evaluation ($817,860.05 across 21,350 orders), operational peak-hour patterns, menu category mix, and Top 5 SKUs in an interactive BI dashboard.',
           description:
