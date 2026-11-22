@@ -58,13 +58,12 @@ export interface ProjectItem {
   };
 }
 
-export interface SkillPipelineItem {
+export interface SkillItem {
   id: 'sql' | 'excel' | 'bi';
-  stageLabel: string;
+  index: string;
   title: string;
   subLabel: string;
-  capabilities: [string, string, string];
-  output: string;
+  description: string;
 }
 
 export interface StatItem {
@@ -113,8 +112,7 @@ export interface PortfolioContent {
   skills: {
     headline: string;
     subtitle: string;
-    outputLabel: string;
-    items: SkillPipelineItem[];
+    items: SkillItem[];
   };
   projects: {
     headline: string;
@@ -242,45 +240,32 @@ export const content: Record<Language, PortfolioContent> = {
       photoPlaceholderLabel: 'iqbaldf',
     },
     skills: {
-      headline: 'Alur Kerja & Perangkat',
-      subtitle: 'Tiga perangkat utama yang saya gunakan dari ekstraksi data mentah hingga keputusan operasional.',
-      outputLabel: 'OUTPUT',
+      headline: 'Keahlian & Perangkat',
+      subtitle: 'Tiga perangkat utama yang saya gunakan dari pengolahan data hingga pelaporan KPI.',
       items: [
         {
           id: 'sql',
-          stageLabel: '01 · EKSTRAKSI',
+          index: '01',
           title: 'SQL',
           subLabel: 'MySQL / DBeaver',
-          capabilities: [
-            'Penggabungan multi-tabel (JOIN) dan pemfilteran transaksi (WHERE, HAVING)',
-            'Agregasi metrik operasional dengan GROUP BY dan fungsi agregat',
-            'Validasi konsistensi skema, duplikasi, dan anomali nilai kosong',
-          ],
-          output: 'Dataset relasional bersih & tervalidasi',
+          description:
+            'Mengambil, menggabungkan, dan memvalidasi dataset relasional menggunakan JOIN, pemfilteran kondisi (WHERE, HAVING), serta agregasi GROUP BY agar data bebas duplikasi dan anomali sebelum dianalisis.',
         },
         {
           id: 'excel',
-          stageLabel: '02 · ANALISIS',
+          index: '02',
           title: 'Microsoft Excel',
-          subLabel: 'Pembersihan & Pemodelan',
-          capabilities: [
-            'Pembersihan, standardisasi format, dan transformasi dataset besar',
-            'Pemodelan analisis menggunakan Pivot Table, formula logika, dan lookup',
-            'Identifikasi tren waktu, anomali kategori, serta struktur KPI bisnis',
-          ],
-          output: 'Model analisis & temuan terstruktur',
+          subLabel: 'Pembersihan & Analisis Data',
+          description:
+            'Membersihkan dan menstandardisasi dataset berskala besar, membangun model analisis dengan Pivot Table serta formula logika dan lookup, hingga memetakan tren waktu dan metrik KPI operasional.',
         },
         {
           id: 'bi',
-          stageLabel: '03 · VISUALISASI',
+          index: '03',
           title: 'Google Looker Studio',
-          subLabel: 'Dashboard BI & Pelaporan',
-          capabilities: [
-            'Perancangan dashboard KPI interaktif untuk pemantauan performa',
-            'Konfigurasi filter dinamis, drill-down, dan segmentasi lintas dimensi',
-            'Penyajian visual terarah untuk mendukung keputusan operasional harian',
-          ],
-          output: 'Dashboard interaktif siap keputusan',
+          subLabel: 'Dashboard BI & Visualisasi',
+          description:
+            'Merancang dashboard BI interaktif yang terstruktur dengan filter dinamis dan segmentasi lintas dimensi untuk memantau performa serta mendukung keputusan operasional harian.',
         },
       ],
     },
@@ -557,45 +542,32 @@ export const content: Record<Language, PortfolioContent> = {
       photoPlaceholderLabel: 'iqbaldf',
     },
     skills: {
-      headline: 'Workflow & Toolkit',
-      subtitle: 'Three core tools I use from raw data extraction to operational decisions.',
-      outputLabel: 'OUTPUT',
+      headline: 'Skills & Toolkit',
+      subtitle: 'Three core tools I use from raw data preparation to KPI reporting.',
       items: [
         {
           id: 'sql',
-          stageLabel: '01 · EXTRACT',
+          index: '01',
           title: 'SQL',
           subLabel: 'MySQL / DBeaver',
-          capabilities: [
-            'Multi-table joins (JOIN) and transaction filtering (WHERE, HAVING)',
-            'Operational metric aggregation using GROUP BY and aggregate functions',
-            'Schema consistency checks, deduplication, and null-value validation',
-          ],
-          output: 'Clean, validated relational datasets',
+          description:
+            'Extracting, joining, and validating relational datasets with JOINs, conditional filters (WHERE, HAVING), and GROUP BY aggregations to ensure clean, deduplicated data prior to analysis.',
         },
         {
           id: 'excel',
-          stageLabel: '02 · ANALYZE',
+          index: '02',
           title: 'Microsoft Excel',
-          subLabel: 'Cleaning & Modeling',
-          capabilities: [
-            'Data cleaning, formatting standardization, and large-dataset transformation',
-            'Analytical modeling with Pivot Tables, logical formulas, and lookups',
-            'Time-series trend discovery, category anomalies, and business KPIs',
-          ],
-          output: 'Structured analytical models & findings',
+          subLabel: 'Data Cleaning & Analysis',
+          description:
+            'Cleaning and standardizing large datasets, building analytical models with Pivot Tables plus logical and lookup formulas, and mapping time-series trends and operational KPIs.',
         },
         {
           id: 'bi',
-          stageLabel: '03 · VISUALIZE',
+          index: '03',
           title: 'Google Looker Studio',
-          subLabel: 'BI Dashboards & Reporting',
-          capabilities: [
-            'Interactive KPI dashboard design for ongoing performance monitoring',
-            'Dynamic filters, drill-downs, and cross-dimensional segmentation',
-            'Decision-focused visual reporting for daily operational clarity',
-          ],
-          output: 'Decision-ready interactive dashboards',
+          subLabel: 'BI Dashboards & Visualization',
+          description:
+            'Designing structured, interactive BI dashboards with dynamic filters and cross-dimensional segmentation to track performance and support daily operational decisions.',
         },
       ],
     },
