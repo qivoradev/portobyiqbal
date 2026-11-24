@@ -159,25 +159,14 @@ export function Contact({ content }: ContactProps) {
       className="relative w-full bg-[#050505] text-[#FAFAFA] pt-16 pb-12 md:pt-24 md:pb-16 scroll-mt-16"
     >
       <div className="site-container">
-        {/* Centered Header + 2 Status Pills */}
-        <FadeUp className="max-w-2xl mx-auto text-center mb-10 md:mb-12">
+        {/* Centered Header */}
+        <FadeUp className="max-w-2xl mx-auto text-center mb-8 md:mb-10">
           <h2 className="text-[30px] sm:text-[40px] md:text-[48px] font-bold tracking-[-0.03em] leading-[1.08] text-white">
             {contact.headline}
           </h2>
           <p className="mt-4 text-[15px] md:text-[16px] text-[#737373] leading-relaxed max-w-xl mx-auto">
             {contact.subheading}
           </p>
-
-          {/* Status Badge: Available for Work */}
-          <div className="mt-6 flex justify-center">
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-neutral-900 border border-neutral-800 text-[13px] font-medium text-neutral-200">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#259B52] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#259B52]" />
-              </span>
-              <span>{contact.availablePill}</span>
-            </div>
-          </div>
         </FadeUp>
 
         {/* Centered Dark Web3Forms Contact Card */}

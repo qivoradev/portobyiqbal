@@ -104,7 +104,7 @@ export interface PortfolioContent {
     headline: string;
     ctaProjects: string;
     ctaCv: string;
-    location: string;
+    availablePill: string;
     circularBadgeText: string;
     photoPlaceholderLabel: string;
   };
@@ -156,7 +156,6 @@ export interface PortfolioContent {
   contact: {
     headline: string;
     subheading: string;
-    availablePill: string;
     email: string;
     copyButton: string;
     copiedButton: string;
@@ -231,7 +230,7 @@ export const content: Record<Language, PortfolioContent> = {
       headline: 'Mengolah data mentah menjadi keputusan bisnis yang jelas.',
       ctaProjects: 'Lihat Proyek',
       ctaCv: 'Lihat CV',
-      location: 'Yogyakarta, Indonesia · Terbuka untuk Relokasi & Remote',
+      availablePill: 'Tersedia untuk kerja',
       circularBadgeText: 'DATA ANALYST • IQBAL DWI FATHONAH • ',
       photoPlaceholderLabel: 'iqbaldf',
     },
@@ -442,7 +441,6 @@ export const content: Record<Language, PortfolioContent> = {
       headline: 'Siap mengolah data Anda? Mari berdiskusi.',
       subheading:
         'Terbuka untuk peran Data Analyst purnawaktu maupun kolaborasi proyek analisis dan visualisasi data.',
-      availablePill: 'Tersedia untuk kerja',
       email: 'iqbalfathonah20@gmail.com',
       copyButton: 'Salin Email',
       copiedButton: 'Tersalin ✓',
@@ -524,7 +522,7 @@ export const content: Record<Language, PortfolioContent> = {
       headline: 'Turning raw data into clear business decisions.',
       ctaProjects: 'View Projects',
       ctaCv: 'View CV',
-      location: 'Yogyakarta, Indonesia · Open to Relocation & Remote',
+      availablePill: 'Available for work',
       circularBadgeText: 'DATA ANALYST • IQBAL DWI FATHONAH • ',
       photoPlaceholderLabel: 'iqbaldf',
     },
@@ -735,7 +733,6 @@ export const content: Record<Language, PortfolioContent> = {
       headline: "Ready to turn data into clarity? Let's talk.",
       subheading:
         'Open for full-time Data Analyst opportunities as well as data analytics and visualization collaborations.',
-      availablePill: 'Available for work',
       email: 'iqbalfathonah20@gmail.com',
       copyButton: 'Copy Email',
       copiedButton: 'Copied ✓',

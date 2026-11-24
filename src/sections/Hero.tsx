@@ -1,6 +1,6 @@
 import type { RefObject } from 'react';
 import { motion } from 'motion/react';
-import { MapPin, FileText } from 'lucide-react';
+import { FileText } from 'lucide-react';
 import type { PortfolioContent, Language } from '../data/content';
 import { PROFILE_PHOTO_URL } from '../config/assets';
 import { ENABLE_CV_MODAL } from '../config/features';
@@ -85,74 +85,73 @@ export function Hero({
           className="mt-11 md:mt-14 w-full flex flex-col items-start md:items-center"
         >
           {/* Portrait Wrapper: 72% max-w-[260px] on mobile, max-w-[320px] md:max-w-[340px] on desktop */}
-          <div className="relative w-[72%] max-w-[260px] sm:max-w-[320px] md:w-full md:max-w-[340px]">
-            {/* Portrait Card: 3:4.2 aspect ratio, full-bleed suit to edges */}
-            <div className="relative w-full aspect-[3/4.2] rounded-2xl bg-gradient-to-b from-[#E4E6E8] via-[#D8DADC] to-[#CACDD0] border border-neutral-300/80 overflow-hidden flex items-end justify-center p-0">
-              {PROFILE_PHOTO_URL ? (
-                <img
-                  src={PROFILE_PHOTO_URL}
-                  alt="Iqbal Dwi Fathonah"
-                  className="w-full h-auto block object-bottom scale-[1.01] origin-bottom select-none pointer-events-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.08)]"
-                />
-              ) : (
-                /* Clean Minimalist Portrait Placeholder (Swap via PROFILE_PHOTO_URL in src/config/assets.ts) */
-                <div className="relative w-full h-full flex flex-col items-center justify-end pt-10 select-none">
-                  {/* Minimalist silhouette geometry */}
-                  <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-neutral-400/35 border border-neutral-400/20 mb-3" />
-                  <div className="w-[74%] h-[42%] rounded-t-[80px] bg-neutral-400/30 border-t border-x border-neutral-400/20 flex items-center justify-center">
-                    <span className="font-mono text-[12px] tracking-[0.22em] uppercase text-neutral-600/80 font-medium">
-                      {hero.photoPlaceholderLabel}
-                    </span>
+          <div className="w-[72%] max-w-[260px] sm:max-w-[320px] md:w-full md:max-w-[340px] flex flex-col items-center">
+            <div className="relative w-full">
+              {/* Portrait Card: 3:4.2 aspect ratio, full-bleed suit to edges */}
+              <div className="relative w-full aspect-[3/4.2] rounded-2xl bg-gradient-to-b from-[#E4E6E8] via-[#D8DADC] to-[#CACDD0] border border-neutral-300/80 overflow-hidden flex items-end justify-center p-0">
+                {PROFILE_PHOTO_URL ? (
+                  <img
+                    src={PROFILE_PHOTO_URL}
+                    alt="Iqbal Dwi Fathonah"
+                    className="w-full h-auto block object-bottom scale-[1.01] origin-bottom select-none pointer-events-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.08)]"
+                  />
+                ) : (
+                  /* Clean Minimalist Portrait Placeholder (Swap via PROFILE_PHOTO_URL in src/config/assets.ts) */
+                  <div className="relative w-full h-full flex flex-col items-center justify-end pt-10 select-none">
+                    {/* Minimalist silhouette geometry */}
+                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-neutral-400/35 border border-neutral-400/20 mb-3" />
+                    <div className="w-[74%] h-[42%] rounded-t-[80px] bg-neutral-400/30 border-t border-x border-neutral-400/20 flex items-center justify-center">
+                      <span className="font-mono text-[12px] tracking-[0.22em] uppercase text-neutral-600/80 font-medium">
+                        {hero.photoPlaceholderLabel}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+
+              {/* Rotating Circular Badge overlapping Top-Right Corner with #F5F5F5 cutout backing */}
+              <div
+                aria-hidden="true"
+                className="absolute -top-7 -right-7 sm:-top-8 sm:-right-8 md:-top-9 md:-right-9 w-[104px] h-[104px] sm:w-[116px] sm:h-[116px] md:w-[126px] md:h-[126px] rounded-full bg-[#F5F5F5] flex items-center justify-center pointer-events-none select-none z-10"
+              >
+                <motion.svg
+                  viewBox="0 0 120 120"
+                  className="w-[96%] h-[96%] text-[#111111]"
+                  animate={reduced ? undefined : { rotate: 360 }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 22,
+                    ease: 'linear',
+                  }}
+                >
+                  <defs>
+                    <path
+                      id="hero-badge-circle-path"
+                      d="M 60, 60 m -41, 0 a 41,41 0 1,1 82,0 a 41,41 0 1,1 -82,0"
+                    />
+                  </defs>
+                  <text
+                    fill="currentColor"
+                    fontSize="9.1"
+                    fontWeight="700"
+                    letterSpacing="2.45"
+                  >
+                    <textPath href="#hero-badge-circle-path" startOffset="0%" textLength="252">
+                      {hero.circularBadgeText}
+                    </textPath>
+                  </text>
+                </motion.svg>
+              </div>
             </div>
 
-            {/* Rotating Circular Badge overlapping Top-Right Corner with #F5F5F5 cutout backing */}
-            <div
-              aria-hidden="true"
-              className="absolute -top-7 -right-7 sm:-top-8 sm:-right-8 md:-top-9 md:-right-9 w-[104px] h-[104px] sm:w-[116px] sm:h-[116px] md:w-[126px] md:h-[126px] rounded-full bg-[#F5F5F5] flex items-center justify-center pointer-events-none select-none z-10"
-            >
-              <motion.svg
-                viewBox="0 0 120 120"
-                className="w-[96%] h-[96%] text-[#111111]"
-                animate={reduced ? undefined : { rotate: 360 }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 22,
-                  ease: 'linear',
-                }}
-              >
-                <defs>
-                  <path
-                    id="hero-badge-circle-path"
-                    d="M 60, 60 m -41, 0 a 41,41 0 1,1 82,0 a 41,41 0 1,1 -82,0"
-                  />
-                </defs>
-                <text
-                  fill="currentColor"
-                  fontSize="9.1"
-                  fontWeight="700"
-                  letterSpacing="2.45"
-                >
-                  <textPath href="#hero-badge-circle-path" startOffset="0%" textLength="252">
-                    {hero.circularBadgeText}
-                  </textPath>
-                </text>
-              </motion.svg>
+            {/* Availability Pill Badge directly beneath Portrait Frame */}
+            <div className="mt-4 mx-auto inline-flex items-center gap-2 rounded-full bg-white border border-black/10 px-3.5 py-1.5 shadow-2xs">
+              <span className="w-2 h-2 rounded-full bg-[#259B52] shrink-0" aria-hidden="true" />
+              <span className="text-xs sm:text-sm font-medium text-neutral-800 whitespace-nowrap">
+                {hero.availablePill}
+              </span>
             </div>
           </div>
-
-          {/* Minimalist Location Row directly beneath Portrait Frame */}
-          <p className="mt-3.5 w-full text-center text-xs sm:text-[13.5px] font-medium text-[#525252] leading-relaxed">
-            <MapPin
-              size={15}
-              strokeWidth={1.8}
-              aria-hidden="true"
-              className="inline-block align-[-2px] mr-1.5 text-[#111111]"
-            />
-            <span>{hero.location}</span>
-          </p>
         </motion.div>
       </div>
     </section>
