@@ -29,12 +29,22 @@ export function Hero({
       className="relative w-full bg-[#F5F5F5] text-[#111111] pt-28 pb-16 sm:pt-32 md:pt-36 md:pb-24 overflow-x-clip"
     >
       <div className="site-container flex flex-col items-start text-left md:items-center md:text-center">
+        {/* Editorial Role & Location Label */}
+        <motion.p
+          initial={reduced ? { opacity: 1 } : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: EDITORIAL_EASE }}
+          className="mb-4 text-[11px] sm:text-xs font-mono uppercase tracking-[0.2em] text-neutral-500"
+        >
+          {hero.roleLabel}
+        </motion.p>
+
         {/* Bold High-Contrast Editorial Headline (Max 3 lines) */}
         <motion.h1
           initial={reduced ? { opacity: 1 } : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EDITORIAL_EASE }}
-          className="text-[30px] sm:text-[44px] md:text-[56px] lg:text-[64px] font-bold text-[#111111] tracking-[-0.035em] leading-[1.08] max-w-[18ch] sm:max-w-[19ch] md:max-w-[19ch]"
+          className="text-[30px] sm:text-[44px] md:text-[56px] lg:text-[64px] font-bold text-[#111111] tracking-[-0.015em] [word-spacing:0.04em] leading-[1.08] max-w-[18.5ch]"
         >
           {hero.headline}
         </motion.h1>
@@ -134,10 +144,15 @@ export function Hero({
           </div>
 
           {/* Minimalist Location Row directly beneath Portrait Frame */}
-          <div className="mt-3.5 flex items-center gap-1.5 text-[13.5px] font-medium text-[#525252]">
-            <MapPin size={15} strokeWidth={1.8} className="text-[#111111] shrink-0" />
+          <p className="mt-3.5 w-full text-center text-xs sm:text-[13.5px] font-medium text-[#525252] leading-relaxed">
+            <MapPin
+              size={15}
+              strokeWidth={1.8}
+              aria-hidden="true"
+              className="inline-block align-[-2px] mr-1.5 text-[#111111]"
+            />
             <span>{hero.location}</span>
-          </div>
+          </p>
         </motion.div>
       </div>
     </section>

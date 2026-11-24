@@ -386,12 +386,12 @@ export function Contact({ content }: ContactProps) {
 
         {/* Minimalist Footer */}
         <footer className="mt-14 md:mt-16">
-          {/* Center: Connect On + 3 Monochrome Icons (WA icon only, NO phone number text) */}
-          <div className="flex flex-col items-center justify-center gap-3.5">
+          {/* Center: Connect On + 3 Brand-Hover Social Icons + Centered Email Link */}
+          <div className="flex flex-col items-center justify-center">
             <span className="text-xs font-medium uppercase tracking-[0.14em] text-neutral-500">
               {contact.connectLabel}
             </span>
-            <div className="flex items-center gap-3">
+            <div className="mt-3.5 flex items-center gap-3">
               {/* WhatsApp */}
               <a
                 href={contact.socials.whatsapp.url}
@@ -399,7 +399,7 @@ export function Contact({ content }: ContactProps) {
                 rel="noopener noreferrer"
                 aria-label={contact.socials.whatsapp.label}
                 title={contact.socials.whatsapp.label}
-                className="w-11 h-11 rounded-full bg-neutral-900 border border-neutral-800 hover:border-neutral-600 hover:text-white text-neutral-400 flex items-center justify-center transition-colors"
+                className="w-11 h-11 rounded-full bg-white/[0.04] border border-white/10 text-neutral-300 flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5 active:scale-95 hover:bg-[#25D366] hover:border-[#25D366] hover:text-white active:bg-[#25D366] active:border-[#25D366] active:text-white focus-visible:bg-[#25D366] focus-visible:border-[#25D366] focus-visible:text-white"
               >
                 <svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12.031 2c-5.508 0-9.984 4.477-9.984 9.984 0 1.761.458 3.479 1.332 4.996L2 22l5.163-1.353c1.464.798 3.119 1.218 4.868 1.218 5.508 0 9.984-4.477 9.984-9.984 0-5.507-4.476-9.984-9.984-9.984zm0 18.257c-1.517 0-3.003-.408-4.306-1.182l-.309-.184-3.203.84.855-3.123-.203-.323c-.848-1.35-1.296-2.915-1.296-4.485 0-4.551 3.704-8.255 8.256-8.255 4.552 0 8.256 3.704 8.256 8.255 0 4.551-3.704 8.257-8.256 8.257zm4.526-6.183c-.248-.124-1.467-.724-1.694-.807-.228-.083-.393-.124-.559.124-.165.249-.641.807-.786.972-.145.166-.29.187-.538.062-.249-.124-1.049-.387-1.998-1.233-.738-.658-1.237-1.472-1.382-1.72-.145-.248-.016-.383.109-.506.112-.111.249-.29.373-.435.124-.145.166-.248.249-.414.083-.166.041-.311-.021-.435-.062-.124-.559-1.347-.766-1.846-.201-.486-.406-.419-.559-.427l-.476-.008c-.166 0-.435.062-.663.311-.228.249-.87 0.85-.87 2.073 0 1.223.891 2.404 1.015 2.57.124.166 1.752 2.675 4.246 3.751.593.256 1.057.41 1.418.524.596.19 1.138.163 1.567.099.478-.072 1.467-.6 1.674-1.18.207-.58.207-1.077.145-1.18-.062-.104-.228-.166-.476-.29z" />
@@ -413,7 +413,7 @@ export function Contact({ content }: ContactProps) {
                 rel="noopener noreferrer"
                 aria-label={contact.socials.linkedin.label}
                 title={contact.socials.linkedin.label}
-                className="w-11 h-11 rounded-full bg-neutral-900 border border-neutral-800 hover:border-neutral-600 hover:text-white text-neutral-400 flex items-center justify-center transition-colors"
+                className="w-11 h-11 rounded-full bg-white/[0.04] border border-white/10 text-neutral-300 flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5 active:scale-95 hover:bg-[#0A66C2] hover:border-[#0A66C2] hover:text-white active:bg-[#0A66C2] active:border-[#0A66C2] active:text-white focus-visible:bg-[#0A66C2] focus-visible:border-[#0A66C2] focus-visible:text-white"
               >
                 <svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.3a1.5 1.5 0 0 0-1.5 1.5c0 .83.67 1.5 1.5 1.5a1.5 1.5 0 0 0 1.5-1.5c0-.83-.67-1.5-1.5-1.5z" />
@@ -427,35 +427,50 @@ export function Contact({ content }: ContactProps) {
                 rel="noopener noreferrer"
                 aria-label={contact.socials.github.label}
                 title={contact.socials.github.label}
-                className="w-11 h-11 rounded-full bg-neutral-900 border border-neutral-800 hover:border-neutral-600 hover:text-white text-neutral-400 flex items-center justify-center transition-colors"
+                className="w-11 h-11 rounded-full bg-white/[0.04] border border-white/10 text-neutral-300 flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5 active:scale-95 hover:bg-white hover:border-white hover:text-[#050505] active:bg-white active:border-white active:text-[#050505] focus-visible:bg-white focus-visible:border-white focus-visible:text-[#050505]"
               >
                 <svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z" />
                 </svg>
               </a>
             </div>
+
+            <a
+              href={`mailto:${contact.email}`}
+              className="mt-5 inline-flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors"
+            >
+              {contact.email}
+            </a>
           </div>
 
-          {/* Bottom Bar: Back to Top (Left) + Copyright & Email (Center/Right) */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-neutral-900 pt-6 mt-10 text-[12.5px] sm:text-[13px] text-neutral-500">
-            <button
-              type="button"
-              onClick={handleBackToTop}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-neutral-800 hover:border-neutral-600 text-neutral-300 hover:text-white transition-colors cursor-pointer"
-            >
-              <ArrowUp size={13} />
-              <span>{contact.backToTop}</span>
-            </button>
+          {/* Bottom Bar: Copyright (Left on desktop, Bottom-Center on mobile) + Back to Top (Right) */}
+          <div className="mt-10 border-t border-white/10 pt-4 sm:pt-6 flex flex-col-reverse sm:flex-row items-center sm:justify-between gap-3 sm:gap-4">
+            <p className="text-xs sm:text-sm text-neutral-500 text-center sm:text-left">
+              {contact.footerCopy}
+            </p>
 
-            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-right">
-              <span>{contact.footerCopy}</span>
-              <span className="hidden sm:inline text-neutral-700">·</span>
-              <a
-                href={`mailto:${contact.email}`}
-                className="text-neutral-300 hover:text-white transition-colors"
+            <div className="w-full sm:w-auto flex justify-end">
+              <button
+                type="button"
+                onClick={handleBackToTop}
+                aria-label={contact.backToTop}
+                title={contact.backToTop}
+                className="group w-10 h-10 p-0 sm:w-auto sm:h-auto sm:px-4 sm:py-2 rounded-lg border border-neutral-800 bg-white/[0.02] text-xs sm:text-[13px] text-neutral-300 hover:border-white/30 hover:bg-white/[0.06] hover:text-white transition-colors inline-flex items-center justify-center gap-2 cursor-pointer shrink-0"
               >
-                {contact.email}
-              </a>
+                <span className="relative inline-flex w-4 h-4 overflow-hidden items-center justify-center">
+                  <ArrowUp
+                    size={14}
+                    aria-hidden="true"
+                    className="transition-transform duration-300 ease-out group-hover:-translate-y-5 group-active:-translate-y-5"
+                  />
+                  <ArrowUp
+                    size={14}
+                    aria-hidden="true"
+                    className="absolute translate-y-5 transition-transform duration-300 ease-out group-hover:translate-y-0 group-active:translate-y-0"
+                  />
+                </span>
+                <span className="hidden sm:inline">{contact.backToTop}</span>
+              </button>
             </div>
           </div>
         </footer>

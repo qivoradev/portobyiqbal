@@ -100,6 +100,7 @@ export interface PortfolioContent {
     toggleLangLabel: string;
   };
   hero: {
+    roleLabel: string;
     headline: string;
     ctaProjects: string;
     ctaCv: string;
@@ -226,10 +227,11 @@ export const content: Record<Language, PortfolioContent> = {
       toggleLangLabel: 'Ganti ke Bahasa Inggris',
     },
     hero: {
+      roleLabel: 'DATA ANALYST',
       headline: 'Mengolah data mentah menjadi keputusan bisnis yang jelas.',
       ctaProjects: 'Lihat Proyek',
       ctaCv: 'Lihat CV',
-      location: 'Berdomisili di Yogyakarta, Indonesia',
+      location: 'Yogyakarta, Indonesia · Terbuka untuk Relokasi & Remote',
       circularBadgeText: 'DATA ANALYST • IQBAL DWI FATHONAH • ',
       photoPlaceholderLabel: 'iqbaldf',
     },
@@ -446,7 +448,7 @@ export const content: Record<Language, PortfolioContent> = {
       copiedButton: 'Tersalin ✓',
       connectLabel: 'Terhubung di',
       backToTop: 'Kembali ke Atas',
-      footerCopy: '© 2026 iqbaldf · Iqbal Dwi Fathonah · Yogyakarta, Indonesia',
+      footerCopy: '© 2026 iqbaldf · Iqbal Dwi Fathonah · Indonesia',
       socials: {
         whatsapp: {
           label: 'WhatsApp',
@@ -518,10 +520,11 @@ export const content: Record<Language, PortfolioContent> = {
       toggleLangLabel: 'Switch to Indonesian',
     },
     hero: {
+      roleLabel: 'DATA ANALYST',
       headline: 'Turning raw data into clear business decisions.',
       ctaProjects: 'View Projects',
       ctaCv: 'View CV',
-      location: 'Based in Yogyakarta, Indonesia',
+      location: 'Yogyakarta, Indonesia · Open to Relocation & Remote',
       circularBadgeText: 'DATA ANALYST • IQBAL DWI FATHONAH • ',
       photoPlaceholderLabel: 'iqbaldf',
     },
@@ -738,7 +741,7 @@ export const content: Record<Language, PortfolioContent> = {
       copiedButton: 'Copied ✓',
       connectLabel: 'Connect on',
       backToTop: 'Back to Top',
-      footerCopy: '© 2026 iqbaldf · Iqbal Dwi Fathonah · Yogyakarta, Indonesia',
+      footerCopy: '© 2026 iqbaldf · Iqbal Dwi Fathonah · Indonesia',
       socials: {
         whatsapp: {
           label: 'WhatsApp',
