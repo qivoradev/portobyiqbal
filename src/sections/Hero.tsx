@@ -144,10 +144,10 @@ export function Hero({
               </div>
             </div>
 
-            {/* Availability Pill Badge directly beneath Portrait Frame */}
-            <div className="mt-4 mx-auto inline-flex items-center gap-2 rounded-full bg-white border border-black/10 px-3.5 py-1.5 shadow-2xs">
-              <span className="w-2 h-2 rounded-full bg-[#259B52] shrink-0" aria-hidden="true" />
-              <span className="text-xs sm:text-sm font-medium text-neutral-800 whitespace-nowrap">
+            {/* Minimalist Editorial Availability Status directly beneath Portrait Frame */}
+            <div className="mt-3.5 inline-flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-[#259B52] shrink-0" aria-hidden="true" />
+              <span className="text-xs sm:text-sm font-medium text-neutral-600 whitespace-nowrap">
                 {hero.availablePill}
               </span>
             </div>
